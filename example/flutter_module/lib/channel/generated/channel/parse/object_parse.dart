@@ -1,22 +1,22 @@
 extension  IParse on Object{
-	T parse<T>(instance, String cls, String method, [dynamic args]) {
+	dynamic parse(instance, String cls, String method, [dynamic args]) {
 		if ("$cls.getPageName" == "$cls.$method") {
-			return instance.getPageName() as T;
+			return instance.getPageName() ;
 		}
 		if ("$cls.getFps" == "$cls.$method") {
-			return instance.getFps() as T;
+			return instance.getFps() ;
 		}
 		if ("$cls.add" == "$cls.$method") {
-			return instance.add() as T;
+			return instance.add() ;
 		}
 		if ("$cls.getPageName" == "$cls.$method") {
-			return instance.getPageName() as T;
+			return instance.getPageName() ;
 		}
 		if ("$cls.getFps" == "$cls.$method") {
-			return instance.getFps() as T;
+			return instance.getFps() ;
 		}
 		if ("$cls.add" == "$cls.$method") {
-			return instance.add() as T;
+			return instance.add() ;
 		}
 	}
 }

@@ -18,6 +18,6 @@
 
 * add  native2flutter channel
 
-## 0.2.4
+## 0.2.5
 
 * fix flutter manager bug when no native2flutter
