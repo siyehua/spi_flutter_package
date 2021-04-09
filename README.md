@@ -2,7 +2,7 @@
 
 a dev tools create platform's code when use Platform channel exchange data<br>
 
-## [中文文档](https://github.com/siyehua/spi_flutter_package/README_CN.md)
+## [中文文档](https://github.com/siyehua/spi_flutter_package/blob/master/README_CN.md)
 
 # Getting Started
 
@@ -27,7 +27,7 @@ and, in your flutter project, create custom dir: `lib/channel`, the dir use save
 | | |____flutter_fps.dart // your interface code
 ```
 
-crete `account.dart`:
+create `account.dart`:
 
 ```dart
 abstract class IAccount{
