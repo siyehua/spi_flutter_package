@@ -43,6 +43,7 @@ void _native2flutter(String flutterPath, String packageName,
     String androidSavePath) {
   Directory directory = Directory(flutterPath + "/native2flutter");
   if (!directory.existsSync()) {
+    _genFlutterParse(flutterPath, packageName, []);
     return;
   }
   List<GenClassBean> list = platforms_source_gen_init(

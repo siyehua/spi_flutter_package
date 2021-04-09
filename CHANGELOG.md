@@ -17,3 +17,7 @@
 ## 0.2.0
 
 * add  native2flutter channel
+
+## 0.2.3
+
+* fix flutter manager bug when no native2flutter
