@@ -54,6 +54,7 @@ void _native2flutter(String flutterPath, String packageName,
           packageName.replaceAll(".", "/") //your android file save path
   );
   if (list.isEmpty) {
+    _genFlutterParse(flutterPath, packageName, []);
     return;
   }
 
