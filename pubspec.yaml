@@ -1,7 +1,7 @@
 name: spi_flutter_package
-description: A new Flutter package.
-version: 0.2.0
-#homepage: http:www.baidu.com
+description: a dev tools create platform's code when use Platform channel exchange data.
+version: 0.2.1
+homepage: https://github.com/siyehua/spi_flutter_package
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
