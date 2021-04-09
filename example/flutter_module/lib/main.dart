@@ -2,6 +2,44 @@ import 'package:flutter/material.dart';
 
 import 'channel/flutter2native/account.dart';
 import 'channel/generated/channel/ChannelManager.dart';
+import 'channel/native2flutter/flutter_fps.dart';
+
+class FpsImpl extends Fps {
+  @override
+  Future<double> getFps() {
+    print("getFps method");
+    return Future.delayed(Duration(seconds: 1)).then((value) => 3.1415826);
+  }
+
+  @override
+  Future<String> getPageName() {
+    print("getPageName method");
+    return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
+  }
+
+  @override
+  void add() {
+    print("add method");
+  }
+}
+class FpsImpl2 extends Fps2 {
+  @override
+  Future<double> getFps() {
+    print("getFps method2");
+    return Future.delayed(Duration(seconds: 1)).then((value) => 3.1415826);
+  }
+
+  @override
+  Future<String> getPageName() {
+    print("getPageName method2");
+    return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
+  }
+
+  @override
+  void add() {
+    print("add method2");
+  }
+}
 
 void main() {
   runApp(MyApp());
@@ -10,7 +48,8 @@ void main() {
 
 void initFlutter() async {
   ChannelManager.init();
-
+  ChannelManager.add(Fps, FpsImpl());
+  ChannelManager.add(Fps2, FpsImpl2());
 
   IAccount account = ChannelManager.getChannel(IAccount);
   var result = await account.login("userName", "password");

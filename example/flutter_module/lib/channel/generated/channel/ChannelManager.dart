@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/services.dart';
 import '../../flutter2native/account.dart';
 import 'impl/iaccount_impl.dart';
+import 'parse/object_parse.dart';
 
 
 abstract class PackageTag {
@@ -35,11 +36,12 @@ class ChannelManager {
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
       String callMethod = call.method.split("#")[1];
-      Parse targetChanel = _channelImplMap[callClass
+      String cls = callClass
           .replaceAll("interface ", "")
-          .replaceAll(_package + ".", "")];
+          .replaceAll(_package + ".native2flutter.", "");
+      dynamic targetChanel = _channelImplMap[cls];
       if (targetChanel != null) {
-        return targetChanel.parse(targetChanel, callMethod, call.arguments);
+        return (targetChanel as Object).parse(targetChanel, cls, callMethod, call.arguments);
       } else {
         return _ErrorCode.NoFoundChannel.toString();
         // result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass

@@ -1,9 +1,9 @@
-
-
-String dartStr = '''
 import 'dart:collection';
 
 import 'package:flutter/services.dart';
+import '../../flutter2native/example.dart';
+import 'impl/iaccount_impl.dart';
+
 
 abstract class PackageTag {
   String package;
@@ -20,7 +20,7 @@ abstract class _ErrorCode {
 }
 
 class ChannelManager {
-  static const _package = "123567";
+  static const _package = "com.siyehua.platforms_channel_plugin.channel";
   static const _platform = const MethodChannel(_package);
   static final _channelImplMap = new HashMap<String, dynamic>();
 
@@ -29,17 +29,17 @@ class ChannelManager {
   }
 
   static void init() {
-    //replace
+    		add(IAccount, IAccountImpl());
+
 
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
       String callMethod = call.method.split("#")[1];
-      String cls = callClass
+      Parse targetChanel = _channelImplMap[callClass
           .replaceAll("interface ", "")
-          .replaceAll(_package + ".native2flutter.", "");
-      dynamic targetChanel = _channelImplMap[cls];
+          .replaceAll(_package + ".", "")];
       if (targetChanel != null) {
-        return (targetChanel as Object).parse(targetChanel, cls, callMethod, call.arguments);
+        return targetChanel.parse(targetChanel, callMethod, call.arguments);
       } else {
         return _ErrorCode.NoFoundChannel.toString();
         // result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass
@@ -59,4 +59,3 @@ class ChannelManager {
   }
 }
 
-''';

@@ -31,7 +31,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  spi_flutter_package: 0.1.5
+  spi_flutter_package:
+    path: ../../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

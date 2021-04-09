@@ -110,10 +110,10 @@ packages:
   spi_flutter_package:
     dependency: "direct dev"
     description:
-      name: spi_flutter_package
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.5"
+      path: "../.."
+      relative: true
+    source: path
+    version: "0.1.7"
   stack_trace:
     dependency: transitive
     description:

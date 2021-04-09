@@ -56,7 +56,7 @@ void _native2flutter(String flutterPath, String packageName,
     return;
   }
 
-  // _genFlutterImpl(flutterPath, packageName, list);
+  _genFlutterParse(flutterPath, packageName, list);
   _genJavaCode(list, packageName, androidSavePath, ".native2flutter");
   _gentJavaImpl(list, packageName, androidSavePath);
 }
@@ -70,7 +70,7 @@ void _gentManager(String flutterPath, String packageName,
   dartStr
       .replaceAll("import 'package:flutter/services.dart';", _channelImport)
       .replaceAll("static const _package = \"123567\";",
-      "static const _package = \"${packageName}\";");
+      "static const _package = \"${packageName}\";")
       .replaceAll("//replace", _implStr);
   Directory dir = Directory(flutterSavePath);
   if (!dir.existsSync()) {
@@ -82,6 +82,8 @@ void _gentManager(String flutterPath, String packageName,
   // File file2 = File("./tool/ChannelManager_java");
   String newContent2 = javaStr.replaceAll("package tool",
       "package " + packageName.replaceAll(".flutter2native", ""))
+      .replaceAll("import java.lang.reflect.Type;", _javaChannelImport)
+      .replaceAll("//generated add native2flutter impl in this", _javaImplStr)
       .replaceAll("private static final String channelName = \"123456\";",
       "private static final String channelName = \"${packageName}\";");
   androidSavePath += "/" + packageName.replaceAll(".", "/");
@@ -116,9 +118,15 @@ void _genJavaCode(List<GenClassBean> list, String packageName, String savePath,
       list);
 }
 
+////////////////////_gentJavaImpl/////////////////////////////////
+////////////////////_gentJavaImpl/////////////////////////////////
+////////////////////_gentJavaImpl/////////////////////////////////
+////////////////////_gentJavaImpl/////////////////////////////////
+String _javaChannelImport = "";
+String _javaImplStr = "";
+
 void _gentJavaImpl(List<GenClassBean> list, String packageName,
     String savePath) {
-  // package com.tencent.teamgallery.flutter.channel;
   //
   // import java.util.ArrayList;
   // import java.util.List;
@@ -167,20 +175,31 @@ void _gentJavaImpl(List<GenClassBean> list, String packageName,
 
       String methodContent = "\t\tList args = new ArrayList();\n" +
           argNames +
-          "\t\tChannelManager.invoke(this.getClass(), \"${method
+          "\t\tChannelManager.invoke(this.getClass().getInterfaces()[0], \"${method
               .name}\", args, ${hasCallback ? 'callback' : 'null'});\n";
       methodStr += "\t@Override\n" +
           "\tpublic void ${method.name}($argsStr) {\n" +
           methodContent +
           "\t}\n";
     });
+    // import com.siyehua.spiexample.channel.native2flutter.Fps;
+    // import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
+    _javaChannelImport +=
+    "import ${packageName}.${classBean.classInfo.name};\n";
+    _javaChannelImport +=
+    "import ${packageName}.${classBean.classInfo.name}Impl;\n";
+    _javaImplStr +=
+    "addChannelImpl(${classBean.classInfo.name}.class, new ${classBean.classInfo
+        .name}Impl());";
+
     String importStr =
         "import ${packageName.replaceAll(
             ".native2flutter", "")}.ChannelManager;\n" +
             "import java.util.List;\nimport java.util.ArrayList;\nimport java.util.HashMap;\n";
     String allContent = "package $packageName;\n\n" +
         importStr +
-        "class ${classBean.classInfo.name}Impl  implements ${classBean.classInfo
+        "public class ${classBean.classInfo.name}Impl  implements ${classBean
+            .classInfo
             .name}{\n" +
         methodStr +
         "}\n";
@@ -193,6 +212,10 @@ void _gentJavaImpl(List<GenClassBean> list, String packageName,
   });
 }
 
+////////////////////_genFlutterImpl/////////////////////////////////
+////////////////////_genFlutterImpl/////////////////////////////////
+////////////////////_genFlutterImpl/////////////////////////////////
+////////////////////_genFlutterImpl/////////////////////////////////
 String _channelImport = "import 'package:flutter/services.dart';\n";
 String _implStr = "";
 
@@ -292,4 +315,53 @@ _genFlutterImpl(String flutterPath, String packageName,
     File(dir.path + "/${classBean.classInfo.name.toLowerCase()}_impl.dart");
     impFile.writeAsStringSync(allContent);
   });
+}
+
+
+////////////////////_genFlutterParse/////////////////////////////////
+////////////////////_genFlutterParse/////////////////////////////////
+////////////////////_genFlutterParse/////////////////////////////////
+////////////////////_genFlutterParse/////////////////////////////////
+
+_genFlutterParse(String flutterPath, String packageName,
+    List<GenClassBean> list) {
+  String flutterSavePath = flutterPath + "/generated/channel";
+  flutterPath += "/native2flutter";
+  packageName += ".native2flutter";
+  String methodContent = "";
+  list
+      .where((classBean) =>
+  classBean.classInfo.type == 1 &&
+      File(classBean.path).parent.path != flutterSavePath)
+      .forEach((classBean) {
+    //	T parse<T>(instance, String method, [dynamic args]) {
+    // if ("getToken" == method) {
+    //       return instance.getToken(args[0], args[1]) as T;
+    //     }
+    classBean.methods.forEach((method) {
+      String argsStr = "";
+      method.args.asMap().forEach((index, arg) {
+        argsStr += "(args[${index}], ";
+      });
+
+      methodContent += "\t\tif (\"\$cls.${method.name}\" == \"\$cls.\$method\") {\n"
+          + "\t\t\treturn instance.${method.name}(${argsStr}) as T;\n" + "\t\t}\n";
+    });
+  });
+
+  String methodStr = "\tT parse<T>(instance, String cls, String method, [dynamic args]) {\n" +
+      methodContent +
+      "\t}\n";
+  String allContent =
+      "extension  IParse on Object{\n" +
+      methodStr +
+      "}\n";
+  _channelImport += "import 'parse/object_parse.dart';\n";
+  Directory dir = Directory(flutterSavePath + "/parse");
+  if (!dir.existsSync()) {
+    dir.createSync(recursive: true);
+  }
+  File impFile =
+  File(dir.path + "/object_parse.dart");
+  impFile.writeAsStringSync(allContent);
 }

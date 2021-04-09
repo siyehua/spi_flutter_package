@@ -13,3 +13,7 @@
 ## 0.1.6
 
 * fix channel name
+
+## 0.2.0
+
+* add  native2flutter channel
