@@ -21,3 +21,7 @@
 ## 0.2.5
 
 * fix flutter manager bug when no native2flutter
+
+## 0.2.7
+
+* fix dart io bug
