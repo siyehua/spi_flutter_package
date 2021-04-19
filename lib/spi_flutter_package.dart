@@ -76,7 +76,12 @@ void _gentManager(
   if (!dir.existsSync()) {
     dir.createSync(recursive: true);
   }
-  File(flutterSavePath + "/ChannelManager.dart").writeAsStringSync(newContent);
+  File file = File(flutterSavePath + "/ChannelManager.dart");
+  file.writeAsStringSync(newContent);
+  if (!file.existsSync()) {
+//if not create use dart io, use shell
+    _savePath(newContent, file.path);
+  }
 
   //create android manager
   // File file2 = File("./tool/ChannelManager_java");
@@ -88,7 +93,13 @@ void _gentManager(
       .replaceAll("private static final String channelName = \"123456\";",
           "private static final String channelName = \"${packageName}\";");
   androidSavePath += "/" + packageName.replaceAll(".", "/");
-  File(androidSavePath + "/ChannelManager.java").writeAsStringSync(newContent2);
+  File androidFile = File(androidSavePath + "/ChannelManager.java");
+  androidFile.createSync(recursive: true);
+  androidFile.writeAsStringSync(newContent2);
+  if (!androidFile.existsSync()) {
+//if not create use dart io, use shell
+    _savePath(newContent2, androidFile.path);
+  }
 }
 
 void _genJavaCode(
@@ -213,6 +224,10 @@ void _gentJavaImpl(
     }
     File impFile = File(dir.path + "/${classBean.classInfo.name}Impl.java");
     impFile.writeAsStringSync(allContent);
+    if (!impFile.existsSync()) {
+//if not create use dart io, use shell
+      _savePath(allContent, impFile.path);
+    }
   });
 }
 
@@ -305,6 +320,10 @@ _genFlutterImpl(
     File impFile =
         File(dir.path + "/${classBean.classInfo.name.toLowerCase()}_impl.dart");
     impFile.writeAsStringSync(allContent);
+    if (!impFile.existsSync()) {
+//if not create use dart io, use shell
+      _savePath(allContent, impFile.path);
+    }
   });
 }
 
@@ -353,4 +372,15 @@ _genFlutterParse(
   }
   File impFile = File(dir.path + "/object_parse.dart");
   impFile.writeAsStringSync(allContent);
+  if (!impFile.existsSync()) {
+//if not create use dart io, use shell
+    _savePath(allContent, impFile.path);
+  }
+}
+
+void _savePath(String content, String path) {
+  ProcessResult a = Process.runSync('bash', ['-c', "echo -e '${content.replaceAll("'", "\'\"\'\"\'")}' > $path"],
+      runInShell: true);
+  print(
+      "file: $path \n create result: ${a.exitCode}\n err: ${a.stderr}\n out: ${a.stdout}");
 }
