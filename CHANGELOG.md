@@ -25,3 +25,7 @@
 ## 0.2.7
 
 * fix dart io bug
+
+## 0.2.8
+
+* fix arg is int, and invoke fail

@@ -112,6 +112,12 @@ public class ChannelManager {
                     }
                 }
                 Object[] args = argList.toArray();
+                for (int i = 0; i < args.length; i++) {
+                    if(args[i].getClass() == Integer.class){
+                        Long tmpArg = ((Integer) args[i]).longValue();
+                        args[i] = tmpArg;
+                    }
+                }
                 try {
                     Object invokeResult = method.invoke(targetChanel, args);
                     if (should) {
