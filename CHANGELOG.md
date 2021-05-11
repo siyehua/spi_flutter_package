@@ -29,3 +29,7 @@
 ## 0.2.8
 
 * fix arg is int, and invoke fail
+
+## 0.2.9
+
+* add more error details

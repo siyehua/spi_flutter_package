@@ -5,6 +5,7 @@ package tool;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -123,8 +124,13 @@ public class ChannelManager {
                     if (should) {
                         result.success(invokeResult);
                     }
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    result.error(ErrorCode.CanNotMatchArgs, "can not match method's args: " + Arrays.toString(args), null);
+                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    result.error(ErrorCode.CanNotMatchArgs, targetChanel.getClass().getSimpleName()
+                            + " invoke method: " + callMethod
+                            + " argument:" + Arrays.toString(method.getParameterTypes())
+                            + " receiver args: " + Arrays.toString(args), Log.getStackTraceString(e));
+                } catch (Exception e) {
+                    result.error("Invoke Error", e.getMessage(), Log.getStackTraceString(e));
                 }
             } else {
                 result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass

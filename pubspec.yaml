@@ -1,6 +1,6 @@
 name: spi_flutter_package
 description: a dev tools create platform's code when use Platform channel exchange data.
-version: 0.2.8
+version: 0.2.9
 homepage: https://github.com/siyehua/spi_flutter_package
 
 environment:
