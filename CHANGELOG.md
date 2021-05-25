@@ -33,3 +33,7 @@
 ## 0.2.9
 
 * add more error details
+
+## 0.3.0
+
+* add ChannelManager.dart remove method

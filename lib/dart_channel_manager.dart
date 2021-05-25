@@ -27,7 +27,11 @@ class ChannelManager {
   static void add(Type type, dynamic impl) {
     _channelImplMap[type.toString()] = impl;
   }
-
+  
+  static void remove(Type type){
+    _channelImplMap.remove(type);
+  }
+  
   static void init() {
     //replace
 
