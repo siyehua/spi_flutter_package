@@ -37,3 +37,7 @@
 ## 0.3.0
 
 * add ChannelManager.dart remove method
+
+## 0.3.1
+
+* fix method args List<int> or Map<int,int> cover to java Long error

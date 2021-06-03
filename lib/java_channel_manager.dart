@@ -113,10 +113,47 @@ public class ChannelManager {
                     }
                 }
                 Object[] args = argList.toArray();
+                //cover integer to long
                 for (int i = 0; i < args.length; i++) {
-                    if(args[i].getClass() == Integer.class){
+                    if (args[i].getClass() == Integer.class) {
                         Long tmpArg = ((Integer) args[i]).longValue();
                         args[i] = tmpArg;
+                    } else if (args[i].getClass() == ArrayList.class) {
+                        ArrayList tmpArg = (ArrayList) args[i];
+                        if (tmpArg.isEmpty()) {
+                            continue;
+                        }
+                        ArrayList newList = new ArrayList();
+                        for (Object item : tmpArg) {
+                            if (item.getClass() == Integer.class) {
+                                //如果是 integer, 则强行转成成 long
+                                Long newValue = ((Integer) item).longValue();
+                                newList.add(newValue);
+                            } else {
+                                newList.add(item);
+                            }
+                        }
+                        //修改成新的 list
+                        args[i] = newList;
+                    } else if (args[i].getClass() == HashMap.class) {
+                        HashMap tmpArg = (HashMap) args[i];
+                        if (tmpArg.isEmpty()) {
+                            continue;
+                        }
+                        HashMap newMap = new HashMap();
+                        for (Object item : tmpArg.keySet()) {
+                            Object key = item;
+                            Object value = tmpArg.get(item);
+                            if (item.getClass() == Integer.class) {
+                                //如果是 integer, 则强行转成成 long
+                                key = ((Integer) item).longValue();
+                            }
+                            if (value != null && value.getClass() == Integer.class) {
+                                value = ((Integer) value).longValue();
+                            }
+                            newMap.put(key, value);
+                        }
+                        args[i] = newMap;
                     }
                 }
                 try {
