@@ -41,3 +41,7 @@
 ## 0.3.1
 
 * fix method args List<int> or Map<int,int> cover to java Long error
+
+## 0.3.2
+
+* fix:  java ChannelManager no import HashMap
