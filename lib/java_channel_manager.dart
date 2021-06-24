@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
+import java.lang.reflect.Type;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -115,6 +116,9 @@ public class ChannelManager {
                 Object[] args = argList.toArray();
                 //cover integer to long
                 for (int i = 0; i < args.length; i++) {
+                    if (argList == null) {
+                        argList = new ArrayList<>();
+                    }
                     if (args[i].getClass() == Integer.class) {
                         Long tmpArg = ((Integer) args[i]).longValue();
                         args[i] = tmpArg;

@@ -2,22 +2,24 @@ package com.siyehua.spiexample.channel;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import com.siyehua.spiexample.channel.native2flutter.Fps;
 import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
 import com.siyehua.spiexample.channel.native2flutter.Fps2;
 import com.siyehua.spiexample.channel.native2flutter.Fps2Impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.flutter.plugin.common.BinaryMessenger;
@@ -113,13 +115,64 @@ public class ChannelManager {
                     }
                 }
                 Object[] args = argList.toArray();
+                //cover integer to long
+                for (int i = 0; i < args.length; i++) {
+                    if (argList == null) {
+                        argList = new ArrayList<>();
+                    }
+                    if (args[i].getClass() == Integer.class) {
+                        Long tmpArg = ((Integer) args[i]).longValue();
+                        args[i] = tmpArg;
+                    } else if (args[i].getClass() == ArrayList.class) {
+                        ArrayList tmpArg = (ArrayList) args[i];
+                        if (tmpArg.isEmpty()) {
+                            continue;
+                        }
+                        ArrayList newList = new ArrayList();
+                        for (Object item : tmpArg) {
+                            if (item.getClass() == Integer.class) {
+                                //如果是 integer, 则强行转成成 long
+                                Long newValue = ((Integer) item).longValue();
+                                newList.add(newValue);
+                            } else {
+                                newList.add(item);
+                            }
+                        }
+                        //修改成新的 list
+                        args[i] = newList;
+                    } else if (args[i].getClass() == HashMap.class) {
+                        HashMap tmpArg = (HashMap) args[i];
+                        if (tmpArg.isEmpty()) {
+                            continue;
+                        }
+                        HashMap newMap = new HashMap();
+                        for (Object item : tmpArg.keySet()) {
+                            Object key = item;
+                            Object value = tmpArg.get(item);
+                            if (item.getClass() == Integer.class) {
+                                //如果是 integer, 则强行转成成 long
+                                key = ((Integer) item).longValue();
+                            }
+                            if (value != null && value.getClass() == Integer.class) {
+                                value = ((Integer) value).longValue();
+                            }
+                            newMap.put(key, value);
+                        }
+                        args[i] = newMap;
+                    }
+                }
                 try {
                     Object invokeResult = method.invoke(targetChanel, args);
                     if (should) {
                         result.success(invokeResult);
                     }
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    result.error(ErrorCode.CanNotMatchArgs, "can not match method's args: " + Arrays.toString(args), null);
+                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    result.error(ErrorCode.CanNotMatchArgs, targetChanel.getClass().getSimpleName()
+                            + " invoke method: " + callMethod
+                            + " argument:" + Arrays.toString(method.getParameterTypes())
+                            + " receiver args: " + Arrays.toString(args), Log.getStackTraceString(e));
+                } catch (Exception e) {
+                    result.error("Invoke Error", e.getMessage(), Log.getStackTraceString(e));
                 }
             } else {
                 result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass
