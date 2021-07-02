@@ -46,6 +46,6 @@
 
 * fix:  java ChannelManager no import HashMap
 
-## 0.3.4
+## 0.3.5
 
 * fix:  java ChannelManager no import custom impl
