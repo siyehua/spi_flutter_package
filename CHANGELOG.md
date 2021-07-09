@@ -49,3 +49,7 @@
 ## 0.3.5
 
 * fix:  java ChannelManager no import custom impl
+
+## 0.3.4
+
+* feat: support new gen_plugin version

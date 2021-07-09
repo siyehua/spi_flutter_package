@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'channel/flutter2native/account.dart';
-import 'channel/generated/channel/ChannelManager.dart';
+import 'channel/generated/channel/channel_manager.dart';
 import 'channel/native2flutter/flutter_fps.dart';
 
 class FpsImpl extends Fps {
@@ -12,31 +14,55 @@ class FpsImpl extends Fps {
   }
 
   @override
-  Future<String> getPageName() {
-    print("getPageName method");
+  Future<String> getPageName(int a) {
+    print("getPageName method:$a");
     return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
   }
 
   @override
-  void add() {
-    print("add method");
+  void add11(int b) {
+    print("add method:$b");
+  }
+
+  int point = 0;
+
+  FpsImpl() {
+    point = Random().nextInt(10000000);
+  }
+
+  @override
+  String toString() {
+    return 'FpsImpl{point: $point}';
   }
 }
+
 class FpsImpl2 extends Fps2 {
+  int point = 0;
+
+  FpsImpl2() {
+    point = Random().nextInt(10000000);
+  }
+
+
   @override
-  Future<double> getFps() {
-    print("getFps method2");
+  String toString() {
+    return 'FpsImpl2{point: $point}';
+  }
+
+  @override
+  Future<double> getFps(String t) {
+    print("getFps method2:$t");
     return Future.delayed(Duration(seconds: 1)).then((value) => 3.1415826);
   }
 
   @override
-  Future<String> getPageName() {
+  Future<String> getPageName(Map<String, int> t) {
     print("getPageName method2");
     return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
   }
 
   @override
-  void add() {
+  void add23() {
     print("add method2");
   }
 }
@@ -52,13 +78,25 @@ void initFlutter() async {
   ChannelManager.add(Fps2, FpsImpl2());
 
   IAccount account = ChannelManager.getChannel(IAccount);
-  var result = await account.login("userName", "password");
+  var result = await account.login(null, "password");
   print(result);
   account.logout();
-  var name = await account.getName();
+  var name = await account.getToken();
   print(name);
-  var age = await account.getAge();
-  print(age);
+  var list = await account.getList();
+  print(list);
+  print(await account.getMap());
+  account.setMap({1: true});
+  var allResult = await account.all([
+    4,
+    6,
+    6,
+    6,
+    77,
+  ], {
+    "key from flutter": 10086
+  }, -1100);
+  print(allResult);
 }
 
 class MyApp extends StatelessWidget {

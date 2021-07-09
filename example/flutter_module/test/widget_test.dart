@@ -7,9 +7,9 @@
 
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
-void main() {
+void main() async {
   String flutterPath = "./lib/channel";
   String packageName = "com.siyehua.spiexample.channel";
   String androidSavePath = "../app/src/main/java";
-  spi_flutter_package_start(flutterPath, packageName, androidSavePath);
+  await spi_flutter_package_start(flutterPath, packageName, androidSavePath);
 }
