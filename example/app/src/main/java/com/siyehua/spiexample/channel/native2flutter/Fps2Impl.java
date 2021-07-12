@@ -2,18 +2,21 @@ package com.siyehua.spiexample.channel.native2flutter;
 
 import com.siyehua.spiexample.channel.ChannelManager;
 import com.siyehua.spiexample.channel.ChannelManager.Result;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class Fps2Impl  implements Fps2{
 	@Override
-	public void getPageName(HashMap<String, Long> t, Result<String> callback) {
+	public void getPageName(@NotNull HashMap<String, Long> t, @NotNull Result<String> callback) {
 		List args = new ArrayList();
 		args.add(t);
 		ChannelManager.invoke(this.getClass().getInterfaces()[0], "getPageName", args, callback);
 	}
 	@Override
-	public void getFps(String t, Result<Double> callback) {
+	public void getFps( @NotNull String t,  @NotNull Result<Double> callback) {
 		List args = new ArrayList();
 		args.add(t);
 		ChannelManager.invoke(this.getClass().getInterfaces()[0], "getFps", args, callback);

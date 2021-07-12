@@ -50,6 +50,10 @@
 
 * fix:  java ChannelManager no import custom impl
 
-## 0.3.4
+## 0.4.0
 
 * feat: support new gen_plugin version
+
+## 0.4.2
+
+* feat: support null safe

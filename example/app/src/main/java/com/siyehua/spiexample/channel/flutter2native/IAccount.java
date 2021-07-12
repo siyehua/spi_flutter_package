@@ -1,14 +1,16 @@
 package com.siyehua.spiexample.channel.flutter2native;
 import java.util.ArrayList;
  import java.util.HashMap;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
 public interface IAccount {
- 	void login(String name, String password, Result<String> callback);
-	void getToken(Result<String> callback);
+ 	void login( @Nullable String name,  @NotNull String password,  @NotNull Result<String> callback);
+	void getToken( @NotNull Result<String> callback);
 	void logout();
-	void getList(Result<ArrayList<String>> callback);
-	void getMap(Result<HashMap<String, Long>> callback);
-	void setMap(HashMap<Long, Boolean> a);
-	void all(ArrayList<Long> a, HashMap<String, Long> b, Long c, Result<HashMap<Long, Boolean>> callback);
+	void getList( @NotNull Result<ArrayList<String>> callback);
+	void getMap( @NotNull Result<HashMap<String, Long>> callback);
+	void setMap( @Nullable HashMap<Long, Boolean> a);
+	void all( @Nullable ArrayList<Long> a,  @NotNull HashMap<String, Long> b,  @Nullable Long c,  @NotNull Result<HashMap<Long, Boolean>> callback);
  
 }

@@ -1,17 +1,17 @@
 name: spi_flutter_package
 description: a dev tools create platform's code when use Platform channel exchange data.
-version: 0.4.0
+version: 0.4.2
 homepage: https://github.com/siyehua/spi_flutter_package
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  platforms_source_gen: ^0.3.3
+  platforms_source_gen: ^0.4.2
 
 dev_dependencies:
   flutter_test:

@@ -55,8 +55,9 @@ class FpsImpl2 extends Fps2 {
     return Future.delayed(Duration(seconds: 1)).then((value) => 3.1415826);
   }
 
+  //don't support map in this version
   @override
-  Future<String> getPageName(Map<String, int> t) {
+  Future<String> getPageName(Map<dynamic, dynamic> t) {
     print("getPageName method2");
     return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
   }
@@ -122,7 +123,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title = ""}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect

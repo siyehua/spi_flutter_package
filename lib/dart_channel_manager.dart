@@ -6,7 +6,7 @@ import 'dart:collection';
 import 'package:flutter/services.dart';
 
 abstract class PackageTag {
-  String package;
+  String package = "";
 }
 
 abstract class Parse {
@@ -52,7 +52,7 @@ class ChannelManager {
     });
   }
 
-  static Future<T> invoke<T>(String packageName, String clsName, String method,
+  static Future<T?> invoke<T>(String packageName, String clsName, String method,
       [dynamic arguments]) {
     return _platform.invokeMethod(
         packageName + "." + clsName + "#" + method, arguments);

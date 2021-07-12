@@ -35,7 +35,7 @@ public class MainActivity2 extends FlutterActivity {
             public void run() {
                 super.run();
                 try {
-                    Thread.sleep(15000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
