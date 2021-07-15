@@ -50,14 +50,13 @@ class FpsImpl2 extends Fps2 {
   }
 
   @override
-  Future<double> getFps(String t) {
+  Future<double> getFps(String t, int a) {
     print("getFps method2:$t");
     return Future.delayed(Duration(seconds: 1)).then((value) => 3.1415826);
   }
 
-  //don't support map in this version
   @override
-  Future<String> getPageName(Map<dynamic, dynamic> t) {
+  Future<String> getPageName(Map<String, int> t, String t2) {
     print("getPageName method2");
     return Future.delayed(Duration(seconds: 3)).then((value) => "main page");
   }
@@ -86,7 +85,8 @@ void initFlutter() async {
   print(name);
   var list = await account.getList();
   print(list);
-  print(await account.getMap());
+  Map<List<String>?, int>  map  =await account.getMap();
+  print(map);
   account.setMap({1: true});
   var allResult = await account.all([
     4,

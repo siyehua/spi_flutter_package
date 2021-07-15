@@ -9,9 +9,9 @@ abstract class Fps {
 }
 
 abstract class Fps2 {
-  Future<String> getPageName(Map<String,int> t);
+  Future<String> getPageName(Map<String,int> t,String t2);
 
-  Future<double> getFps(String t);
+  Future<double> getFps(String t,int a);
 
   void add23();
 

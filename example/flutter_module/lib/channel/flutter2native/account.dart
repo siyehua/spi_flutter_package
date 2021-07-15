@@ -7,7 +7,8 @@ abstract class IAccount {
 
   Future<List<String>?> getList();
 
-  Future<Map<String?, int>> getMap();
+  Future<Map<List<String>?, int>> getMap();
+
 
   void setMap(Map<int, bool>? a);
 

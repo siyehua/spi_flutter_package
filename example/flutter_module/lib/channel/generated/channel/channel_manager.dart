@@ -5,6 +5,7 @@ import '../../flutter2native/account.dart';
 import 'impl/iaccount_impl.dart';
 import 'parse/object_parse.dart';
 
+
 abstract class PackageTag {
   String package = "";
 }
@@ -27,13 +28,14 @@ class ChannelManager {
   static void add(Type type, dynamic impl) {
     _channelImplMap[type.toString()] = impl;
   }
-
-  static void remove(Type type) {
+  
+  static void remove(Type type){
     _channelImplMap.remove(type);
   }
-
+  
   static void init() {
-    add(IAccount, IAccountImpl());
+    		add(IAccount, IAccountImpl());
+
 
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
@@ -62,3 +64,4 @@ class ChannelManager {
     return _channelImplMap[clsName.toString()];
   }
 }
+

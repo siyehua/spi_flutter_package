@@ -5,6 +5,8 @@ import android.util.Log;
 import com.siyehua.spiexample.channel.ChannelManager;
 import com.siyehua.spiexample.channel.flutter2native.IAccount;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,10 +52,14 @@ public class AccountImpl implements IAccount {
     }
 
     @Override
-    public void getMap(ChannelManager.Result<HashMap<String, Long>> callback) {
-        HashMap<String, Long> data = new HashMap<>();
-        data.put("key1", 123L);
-        data.put("key2", 423L);
+    public void getMap(@NotNull ChannelManager.Result<HashMap<ArrayList<String>, Long>> callback) {
+        HashMap<ArrayList<String>, Long> data = new HashMap<>();
+        ArrayList<String> key1 = new ArrayList<>();
+        key1.add("key1");
+        ArrayList<String> key2 = new ArrayList<>();
+        key2.add("key2");
+        data.put(key1 , 123L);
+        data.put(key2, 423L);
         callback.success(data);
     }
 

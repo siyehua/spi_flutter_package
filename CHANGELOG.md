@@ -57,3 +57,7 @@
 ## 0.4.2
 
 * feat: support null safe
+
+## 0.5.0
+
+* feat: support List or Map params

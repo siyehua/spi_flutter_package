@@ -19,15 +19,15 @@ class IAccountImpl  implements IAccount, PackageTag{
 	@override
 	Future<List<String>?> getList() async {
 		Type _clsType = IAccount;
-		List<dynamic> _a = await  ChannelManager.invoke(package, _clsType.toString(), "getList", );
-		List<String>? _b = _a.map((e) => e as String).toList();
+		dynamic result = await  ChannelManager.invoke(package, _clsType.toString(), "getList", );
+		List<String>? _b = (result as List?)?.map((result) =>  result as String ).toList();
 		return _b;
 	}
 	@override
-	Future<Map<String?, int>> getMap() async {
+	Future<Map<List<String>?, int>> getMap() async {
 		Type _clsType = IAccount;
-		Map<dynamic, dynamic> _a = await  ChannelManager.invoke(package, _clsType.toString(), "getMap", );
-		Map<String?, int> _b = _a.map((key, value) => MapEntry(key as String?, value as int));
+		dynamic result = await  ChannelManager.invoke(package, _clsType.toString(), "getMap", );
+		Map<List<String>?, int> _b =  (result as Map).map((key, value) =>  MapEntry((key as List?)?.map((result) =>  result as String ).toList(), value as int ));
 		return _b;
 	}
 	@override
@@ -38,8 +38,8 @@ class IAccountImpl  implements IAccount, PackageTag{
 	@override
 	Future<Map<int, bool>> all(List<int>? a, Map<String?, int> b, int? c, ) async {
 		Type _clsType = IAccount;
-		Map<dynamic, dynamic> _a = await  ChannelManager.invoke(package, _clsType.toString(), "all", [a, b, c]);
-		Map<int, bool> _b = _a.map((key, value) => MapEntry(key as int, value as bool));
+		dynamic result = await  ChannelManager.invoke(package, _clsType.toString(), "all", [a, b, c]);
+		Map<int, bool> _b =  (result as Map).map((key, value) =>  MapEntry( key as int , value as bool ));
 		return _b;
 	}
 	@override

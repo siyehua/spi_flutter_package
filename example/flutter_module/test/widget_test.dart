@@ -8,8 +8,8 @@
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
 void main() async {
-  String flutterPath = "./lib/channel";
-  String packageName = "com.siyehua.spiexample.channel";
-  String androidSavePath = "../app/src/main/java";
+  String flutterPath = "./lib/channel";//需要转换的 dart 目录
+  String packageName = "com.siyehua.spiexample.channel";//java 包名
+  String androidSavePath = "../app/src/main/java";//需要保存的 java 路径
   await spi_flutter_package_start(flutterPath, packageName, androidSavePath);
 }

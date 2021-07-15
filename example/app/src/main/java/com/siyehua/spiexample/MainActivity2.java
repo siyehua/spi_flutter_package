@@ -51,7 +51,7 @@ public class MainActivity2 extends FlutterActivity {
     }
 
     private void testMethod() {
-        ChannelManager.getChannel(Fps2.class).getFps(" native fps str", new ChannelManager.Result<Double>() {
+        ChannelManager.getChannel(Fps2.class).getFps(" native fps str", 100L, new ChannelManager.Result<Double>() {
             @Override
             public void success(@Nullable Double result) {
                 Log.e("android", "getFps method:" + result + "");
@@ -70,7 +70,7 @@ public class MainActivity2 extends FlutterActivity {
         });
         HashMap<String, Long> data = new HashMap<>();
         data.put("nativekey", 100L);
-        ChannelManager.getChannel(Fps2.class).getPageName(data, new ChannelManager.Result<String>() {
+        ChannelManager.getChannel(Fps2.class).getPageName(data, "second params", new ChannelManager.Result<String>() {
             @Override
             public void success(@Nullable String result) {
                 Log.e("android", "getPageName method:" + result + "");

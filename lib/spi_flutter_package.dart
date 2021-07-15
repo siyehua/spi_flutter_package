@@ -13,6 +13,26 @@ void main() async {
   await spi_flutter_package_start(flutterPath, packageName, androidSavePath);
 }
 
+String createPasrseCode(Property property, {String paramsName = ""}) {
+  var isEmpty = property.canBeNull ? "?" : "";
+  var first = paramsName.isNotEmpty ? paramsName : "result";
+  if (property.type == "dart.core.List") {
+    // (result as List).map((e) => e as test(property.subType[0], e)).toList();
+    return "($first as List$isEmpty)$isEmpty.map((result) => ${createPasrseCode(
+        property.subType[0])}).toList()";
+  } else if (property.type == "dart.core.Map") {
+    // (result as Map).map((e) => e as MapEntry(
+    //     test(property.subType[0], e), test(property.subType[1], e))).toList();
+    return " ($first as Map$isEmpty)$isEmpty.map((key, value) =>  MapEntry(${createPasrseCode(
+        property.subType[0], paramsName: "key")},${createPasrseCode(
+        property.subType[1], paramsName: "value")}))";
+  } else {
+    return " $first as ${property.type
+        .split(".")
+        .last}$isEmpty ";
+  }
+}
+
 Future<void> spi_flutter_package_start(String flutterPath, String packageName,
     String androidSavePath) async {
   await _flutter2Native(flutterPath, packageName, androidSavePath);
@@ -267,19 +287,21 @@ _genFlutterImpl(String flutterPath, String packageName,
         //     return b;
         if (method.returnType.subType[0].type == "dart.core.List") {
           //list
-          returnStr = "List<dynamic> _a = await ";
+          returnStr = "dynamic result = await ";
           String type = getTypeStr(method.returnType.subType[0]);
           String subType = getTypeStr(method.returnType.subType[0].subType[0]);
           exp =
-          "\t\t$type _b = _a.map((e) => e as $subType).toList();\n\t\treturn _b;\n";
+          "\t\t$type _b = ${createPasrseCode(
+              method.returnType.subType[0])};\n\t\treturn _b;\n";
         } else if (method.returnType.subType[0].type == "dart.core.Map") {
-          returnStr = "Map<dynamic, dynamic> _a = await ";
+          returnStr = "dynamic result = await ";
           String type = getTypeStr(method.returnType.subType[0]);
           String subType1 = getTypeStr(method.returnType.subType[0].subType[0]);
           String subType2 = getTypeStr(method.returnType.subType[0].subType[1]);
 
           exp =
-          "\t\t$type _b = _a.map((key, value) => MapEntry(key as $subType1, value as $subType2));\n\t\treturn _b;\n";
+          "\t\t$type _b = ${createPasrseCode(
+              method.returnType.subType[0])};\n\t\treturn _b;\n";
         } else {
           returnStr = "return ";
         }
@@ -371,13 +393,18 @@ _genFlutterParse(String flutterPath, String packageName,
     //     }
     classBean.methods.forEach((method) {
       String argsStr = "";
+      String extra = "";
       method.args.asMap().forEach((index, arg) {
+        //	Map<dynamic, dynamic> a = (args[0] as Map);
+        // 			Map<String,int> result = a.map((key, value) => MapEntry(key as String, value as int));
+        extra += "\t\targs[$index] =  ${createPasrseCode(
+            arg, paramsName: "args[$index]")};\n";
         argsStr += "args[$index], ";
       });
 
       methodContent +=
           "\t\tif(\"${classBean.classInfo.name}.${method
-              .name}\" == \"\$cls.\$method\") {\n" +
+              .name}\" == \"\$cls.\$method\") {\n" + extra +
               "\t\t\treturn instance.${method.name}($argsStr);\n" +
               "\t\t}\n";
     });
