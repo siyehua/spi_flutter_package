@@ -92,6 +92,7 @@ void _gentManager(String flutterPath, String packageName,
       .replaceAll("static const _package = \"123567\";",
       "static const _package = \"${packageName}\";")
       .replaceAll("//replace", _implStr);
+  newContent = "\nimport 'dart:typed_data';\n" + newContent;
   Directory dir = Directory(flutterSavePath);
   if (!dir.existsSync()) {
     dir.createSync(recursive: true);
@@ -303,7 +304,7 @@ _genFlutterImpl(String flutterPath, String packageName,
           "\t\t$type _b = ${createPasrseCode(
               method.returnType.subType[0])};\n\t\treturn _b;\n";
         } else {
-          returnStr = "return ";
+          returnStr = "return await ";
         }
       }
 
@@ -314,9 +315,7 @@ _genFlutterImpl(String flutterPath, String packageName,
           exp;
 
       methodStr += "\t@override\n" +
-          "\t$returnTypeStr ${method.name}($argsStr) ${exp.isEmpty
-              ? ""
-              : "async "}{\n" +
+          "\t$returnTypeStr ${method.name}($argsStr) async{\n" +
           methodContent +
           "\t}\n";
     });
@@ -330,7 +329,8 @@ _genFlutterImpl(String flutterPath, String packageName,
     "\t\tadd(${classBean.classInfo.name}, ${classBean.classInfo
         .name}Impl());\n";
     String importStr = "import '../channel_manager.dart';\n" +
-        "import '../../../flutter2native/$classPath';\n";
+        "import '../../../flutter2native/$classPath';\n" +
+        "import 'dart:typed_data';\n";
     String allContent = importStr +
         "class ${classBean.classInfo.name}Impl  implements ${classBean.classInfo
             .name}, PackageTag{\n" +
@@ -414,7 +414,8 @@ _genFlutterParse(String flutterPath, String packageName,
       "\tdynamic parse(instance, String cls, String method, [dynamic args]) {\n" +
           methodContent +
           "\t}\n";
-  String allContent = "extension  IParse on Object{\n" + methodStr + "}\n";
+  String allContent = "import 'dart:typed_data';\n" +
+      "extension  IParse on Object{\n" + methodStr + "}\n";
   _channelImport += "import 'parse/object_parse.dart';\n";
   Directory dir = Directory(flutterSavePath + "/parse");
   if (!dir.existsSync()) {

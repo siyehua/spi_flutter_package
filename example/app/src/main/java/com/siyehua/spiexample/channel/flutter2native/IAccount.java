@@ -8,6 +8,7 @@ public interface IAccount {
  	void login( @Nullable String name,  @NotNull String password,  @NotNull Result<String> callback);
 	void getToken( @NotNull Result<String> callback);
 	void logout();
+	void getAge( @NotNull Result<Long> callback);
 	void getList( @NotNull Result<ArrayList<String>> callback);
 	void getMap( @NotNull Result<HashMap<ArrayList<String>, Long>> callback);
 	void setMap( @Nullable HashMap<Long, Boolean> a);

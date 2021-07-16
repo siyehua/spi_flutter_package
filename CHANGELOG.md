@@ -61,3 +61,7 @@
 ## 0.5.0
 
 * feat: support List or Map params
+
+## 0.5.1
+
+Fix: some package not import

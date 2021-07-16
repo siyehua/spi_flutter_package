@@ -5,6 +5,8 @@ abstract class IAccount {
 
   void logout();
 
+  Future<int> getAge();
+
   Future<List<String>?> getList();
 
   Future<Map<List<String>?, int>> getMap();

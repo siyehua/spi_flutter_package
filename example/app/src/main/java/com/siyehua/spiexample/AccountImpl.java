@@ -14,6 +14,11 @@ import java.util.List;
 
 public class AccountImpl implements IAccount {
     @Override
+    public void getAge(@NotNull ChannelManager.Result<Long> callback) {
+        callback.success(100L);
+    }
+
+    @Override
     public void login(String name, String password, ChannelManager.Result<String> callback) {
         new Thread() {
             @Override
@@ -58,7 +63,7 @@ public class AccountImpl implements IAccount {
         key1.add("key1");
         ArrayList<String> key2 = new ArrayList<>();
         key2.add("key2");
-        data.put(key1 , 123L);
+        data.put(key1, 123L);
         data.put(key2, 423L);
         callback.success(data);
     }
