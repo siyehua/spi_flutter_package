@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
-
+import com.alibaba.fastjson.JSON;
 import com.siyehua.spiexample.channel.native2flutter.Fps;
 import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
 import com.siyehua.spiexample.channel.native2flutter.Fps2;
@@ -37,7 +37,7 @@ public class ChannelManager {
          * Handles a successful result.
          *
          * @param result The result, possibly null. The result must be an Object type supported by the
-         *               codec. For instance, if you are using {@link StandardMessageCodec} (default), please see
+         *               codec. For instance, if you are using StandardMessageCodec (default), please see
          *               its documentation on what types are supported.
          */
         @UiThread
@@ -49,7 +49,7 @@ public class ChannelManager {
          * @param errorCode    An error code String.
          * @param errorMessage A human-readable error message String, possibly null.
          * @param errorDetails Error details, possibly null. The details must be an Object type
-         *                     supported by the codec. For instance, if you are using {@link StandardMessageCodec}
+         *                     supported by the codec. For instance, if you are using StandardMessageCodec
          *                     (default), please see its documentation on what types are supported.
          */
         @UiThread
@@ -99,7 +99,8 @@ public class ChannelManager {
                         argList.add(new Result() {
                             @Override
                             public void success(@Nullable Object value) {
-                                handler.post(() -> result.success(value));
+                                final Object newValue = customClassToString(value);
+                                handler.post(() -> result.success(newValue));
                             }
 
                             @Override
@@ -120,46 +121,9 @@ public class ChannelManager {
                     if (args[i] == null) {
                         continue;
                     }
-                    if (args[i].getClass() == Integer.class) {
-                        Long tmpArg = ((Integer) args[i]).longValue();
-                        args[i] = tmpArg;
-                    } else if (args[i].getClass() == ArrayList.class) {
-                        ArrayList tmpArg = (ArrayList) args[i];
-                        if (tmpArg.isEmpty()) {
-                            continue;
-                        }
-                        ArrayList newList = new ArrayList();
-                        for (Object item : tmpArg) {
-                            if (item.getClass() == Integer.class) {
-                                //如果是 integer, 则强行转成成 long
-                                Long newValue = ((Integer) item).longValue();
-                                newList.add(newValue);
-                            } else {
-                                newList.add(item);
-                            }
-                        }
-                        //修改成新的 list
-                        args[i] = newList;
-                    } else if (args[i].getClass() == HashMap.class) {
-                        HashMap tmpArg = (HashMap) args[i];
-                        if (tmpArg.isEmpty()) {
-                            continue;
-                        }
-                        HashMap newMap = new HashMap();
-                        for (Object item : tmpArg.keySet()) {
-                            Object key = item;
-                            Object value = tmpArg.get(item);
-                            if (item.getClass() == Integer.class) {
-                                //如果是 integer, 则强行转成成 long
-                                key = ((Integer) item).longValue();
-                            }
-                            if (value != null && value.getClass() == Integer.class) {
-                                value = ((Integer) value).longValue();
-                            }
-                            newMap.put(key, value);
-                        }
-                        args[i] = newMap;
-                    }
+                    Object parseCustom = stringToCustomClass(args[i], ".flutter2native.");
+                    args[i] = parseCustom;
+                    args[i] = intToLong(args[i]);
                 }
                 try {
                     Object invokeResult = method.invoke(targetChanel, args);
@@ -189,12 +153,23 @@ public class ChannelManager {
         return (T) channelImplMap.get(clsName.getName());
     }
 
-    public static <T> void invoke(Class<?> clsName, String method, Object args, @Nullable Result<T> callback) {
-        methodChannel.invokeMethod(clsName + "#" + method, args, new MethodChannel.Result() {
+    public static <T> void invoke(Class<?> clsName, String method, List args, @Nullable Result<T> callback) {
+        ArrayList newList = new ArrayList();
+        for (Object item: args) {
+            newList.add(customClassToString(item));
+        }
+        methodChannel.invokeMethod(clsName + "#" + method, newList, new MethodChannel.Result() {
             @Override
             public void success(@Nullable Object result) {
                 if (callback != null) {
-                    callback.success((T) result);
+                    //noinspection unchecked
+                    T parse = (T) stringToCustomClass(result, ".native2flutter.");
+                    if (parse != null) {
+                        callback.success(parse);
+                    } else {
+                        //noinspection unchecked
+                        callback.success((T) result);
+                    }
                 }
             }
 
@@ -213,6 +188,93 @@ public class ChannelManager {
             }
         });
     }
+  
+
+    @SuppressWarnings({"UnnecessaryLocalVariable", "rawtypes", "unchecked"})
+    private static Object intToLong(Object object) {
+        if (object instanceof Integer) {
+            Long newValue = (Long) ((Integer) object).longValue();
+            return newValue;
+        } else if (object instanceof ArrayList) {
+            ArrayList tmpArg = (ArrayList) object;
+            if (tmpArg.isEmpty()) {
+                return object;
+            }
+            ArrayList newList = new ArrayList();
+            for (Object item : tmpArg) {
+                newList.add(intToLong(item));
+            }
+            return newList;
+        } else if (object instanceof HashMap) {
+            HashMap tmpArg = (HashMap) object;
+            if (tmpArg.isEmpty()) {
+                return object;
+            }
+            HashMap newMap = new HashMap();
+            for (Object item : tmpArg.keySet()) {
+                Object key = intToLong(item);
+                Object value = intToLong(tmpArg.get(item));
+                newMap.put(key, value);
+            }
+            return newMap;
+        } else {
+            return object;
+        }
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
+    private static Object customClassToString(Object data) {
+        if (data != null && data.getClass().getName().startsWith(channelName)) {
+            String customInfo = data.getClass().getSimpleName() + "___custom___" + JSON.toJSONString(data);
+            return customInfo;
+        } else if (data instanceof ArrayList) {
+            ArrayList newList = new ArrayList();
+            for (Object item : (ArrayList) data) {
+                newList.add(customClassToString(item));
+            }
+            return newList;
+        } else if (data instanceof HashMap) {
+            HashMap newMap = new HashMap();
+            for (Object item : ((HashMap) data).keySet()) {
+                Object key = customClassToString(item);
+                Object value = customClassToString(((HashMap) data).get(item));
+                newMap.put(key, value);
+            }
+            return newMap;
+        }
+        Log.e("siyehua-e", data.toString());
+        return data;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static Object stringToCustomClass(Object data, String pre) {
+        try {
+            if (data instanceof String && ((String) data).contains("___custom___")) {
+                String[] customInfo = ((String) data).split("___custom___");
+                Class cls = Class.forName(channelName + pre + customInfo[0]);
+                //noinspection unchecked
+                return JSON.parseObject(customInfo[1], cls);
+            } else if (data instanceof ArrayList) {
+                ArrayList newList = new ArrayList();
+                for (Object item : (ArrayList) data) {
+                    newList.add(stringToCustomClass(item, pre));
+                }
+                return newList;
+            } else if (data instanceof HashMap) {
+                HashMap newMap = new HashMap();
+                for (Object item : ((HashMap) data).keySet()) {
+                    Object key = stringToCustomClass(item, pre);
+                    Object value = stringToCustomClass(((HashMap) data).get(item), pre);
+                    newMap.put(key, value);
+                }
+                return newMap;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
 
     static {
         addChannelImpl(Fps.class, new FpsImpl());addChannelImpl(Fps2.class, new Fps2Impl());

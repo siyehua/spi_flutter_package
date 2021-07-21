@@ -34,6 +34,35 @@ class FpsImpl extends Fps {
   String toString() {
     return 'FpsImpl{point: $point}';
   }
+
+  @override
+  Future<PageInfo> getPage() {
+    return Future.delayed(Duration(seconds: 3)).then((value) {
+      PageInfo info = PageInfo();
+      info.name = "main page";
+      info.id = "123";
+      info.fps = 60;
+      return info;
+    });
+  }
+
+ @override
+  Future<List<PageInfo>> getListCustom(List<InnerClass> a) {
+    print("getListCustom: $a");
+   return Future.delayed(Duration(seconds: 3)).then((value) {
+     PageInfo info = PageInfo();
+     info.name = "main page";
+     info.id = "123";
+     info.fps = 60;
+     return [info];
+   });
+  }
+
+  @override
+  Future<Map<PageInfo, int>> getMapCustom() {
+    // TODO: implement getMapCustom
+    throw UnimplementedError();
+  }
 }
 
 class FpsImpl2 extends Fps2 {
@@ -42,7 +71,6 @@ class FpsImpl2 extends Fps2 {
   FpsImpl2() {
     point = Random().nextInt(10000000);
   }
-
 
   @override
   String toString() {
@@ -80,12 +108,24 @@ void initFlutter() async {
   IAccount account = ChannelManager.getChannel(IAccount);
   var result = await account.login(null, "password");
   print(result);
-  account.logout();
+  var a = InnerClass();
+  a.a = "1334";
+  a.b = 18;
+  var list2 = <InnerClass>[];
+  list2.add(a);
+  list2.add(a);
+  list2.add(a);
+  list2.add(a);
+  List<List<Map<int, String>>> aaa = [];
+  aaa.add([
+    {1: "value", 2: "value2"}
+  ]);
+  account.logout(a, list2, aaa);
   var name = await account.getToken();
   print(name);
   var list = await account.getList();
   print(list);
-  Map<List<String>?, int>  map  =await account.getMap();
+  var map = await account.getMap();
   print(map);
   account.setMap({1: true});
   var allResult = await account.all([

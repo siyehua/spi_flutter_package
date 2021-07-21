@@ -65,3 +65,7 @@
 ## 0.5.1
 
 Fix: some package not import
+
+## 0.6.0
+
+Feat: support custom class

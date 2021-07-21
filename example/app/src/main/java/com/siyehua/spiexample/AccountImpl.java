@@ -2,8 +2,10 @@ package com.siyehua.spiexample;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.siyehua.spiexample.channel.ChannelManager;
 import com.siyehua.spiexample.channel.flutter2native.IAccount;
+import com.siyehua.spiexample.channel.flutter2native.InnerClass;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +44,10 @@ public class AccountImpl implements IAccount {
     }
 
     @Override
-    public void logout() {
-        Log.e("android", "logout method, nothing should call back");
+    public void logout(@NotNull InnerClass abc, @NotNull ArrayList<InnerClass> list, @NotNull ArrayList<ArrayList<HashMap<Long, String>>> aaa) {
+        Log.e("android", "logout method, nothing should call back:" + JSON.toJSONString(abc));
+        Log.e("android", "logout method, nothing should call back:" + JSON.toJSONString(list));
+        Log.e("android", "logout method, nothing should call back:" + JSON.toJSONString(aaa));
     }
 
     @Override
@@ -57,14 +61,17 @@ public class AccountImpl implements IAccount {
     }
 
     @Override
-    public void getMap(@NotNull ChannelManager.Result<HashMap<ArrayList<String>, Long>> callback) {
-        HashMap<ArrayList<String>, Long> data = new HashMap<>();
+    public void getMap(@NotNull ChannelManager.Result<HashMap<ArrayList<String>, InnerClass>> callback) {
+        HashMap<ArrayList<String>, InnerClass> data = new HashMap<>();
         ArrayList<String> key1 = new ArrayList<>();
         key1.add("key1");
         ArrayList<String> key2 = new ArrayList<>();
         key2.add("key2");
-        data.put(key1, 123L);
-        data.put(key2, 423L);
+        InnerClass innerClass = new InnerClass();
+        innerClass.a = "innercalss";
+        innerClass.b = 18L;
+        data.put(key1, innerClass);
+        data.put(key2, innerClass);
         callback.success(data);
     }
 

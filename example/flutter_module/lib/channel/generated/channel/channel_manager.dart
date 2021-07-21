@@ -4,7 +4,9 @@ import 'dart:collection';
 
 import 'package:flutter/services.dart';
 import '../../flutter2native/account.dart';
-import 'impl/iaccount_impl.dart';
+import 'impl/i_account_impl.dart';
+import '../../flutter2native/account.dart';
+import 'impl/test_pre_class_name_impl.dart';
 import 'parse/object_parse.dart';
 
 
@@ -37,6 +39,7 @@ class ChannelManager {
   
   static void init() {
     		add(IAccount, IAccountImpl());
+		add(TestPreClassName, TestPreClassNameImpl());
 
 
     _platform.setMethodCallHandler((MethodCall call) async {

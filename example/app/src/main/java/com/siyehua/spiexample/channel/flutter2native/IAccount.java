@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public interface IAccount {
  	void login( @Nullable String name,  @NotNull String password,  @NotNull Result<String> callback);
 	void getToken( @NotNull Result<String> callback);
-	void logout();
+	void logout( @NotNull InnerClass abc,  @NotNull ArrayList<InnerClass> list,  @NotNull ArrayList<ArrayList<HashMap<Long, String>>> aaa);
 	void getAge( @NotNull Result<Long> callback);
 	void getList( @NotNull Result<ArrayList<String>> callback);
-	void getMap( @NotNull Result<HashMap<ArrayList<String>, Long>> callback);
+	void getMap( @NotNull Result<HashMap<ArrayList<String>, InnerClass>> callback);
 	void setMap( @Nullable HashMap<Long, Boolean> a);
 	void all( @Nullable ArrayList<Long> a,  @NotNull HashMap<String, Long> b,  @Nullable Long c,  @NotNull Result<HashMap<Long, Boolean>> callback);
  

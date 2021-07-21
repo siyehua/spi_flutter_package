@@ -5,9 +5,9 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.Nullable;
  import  com.siyehua.spiexample.channel.flutter2native.*;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
-public interface Fps2 {
- 	void getPageName( @NotNull HashMap<String, Long> t,  @NotNull String t2,  @NotNull Result<String> callback);
-	void getFps( @NotNull String t,  @NotNull Long a,  @NotNull Result<Double> callback);
-	void add23();
- 
+public class PageInfo {
+	 public  @NotNull String name ;
+	 public  @NotNull String id ;
+	 public  @NotNull Double fps  = 0.0;
+  
 }
