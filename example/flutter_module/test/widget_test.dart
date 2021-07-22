@@ -15,7 +15,7 @@ void main() async {
   String flutterPath = "./lib/channel";//需要转换的 dart 目录
   String packageName = "com.siyehua.spiexample.channel";//java 包名
   String androidSavePath = "../app/src/main/java";//需要保存的 java 路径
-  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath);
+  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: true);
 }
 // void main(){
 //   String json = """

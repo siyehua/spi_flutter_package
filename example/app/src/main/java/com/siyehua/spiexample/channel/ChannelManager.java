@@ -242,7 +242,6 @@ public class ChannelManager {
             }
             return newMap;
         }
-        Log.e("siyehua-e", data.toString());
         return data;
     }
 

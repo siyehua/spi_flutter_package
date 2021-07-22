@@ -1,19 +1,20 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:platforms_source_gen/bean/property_parse.dart';
+import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
-import 'package:platforms_source_gen/property_parse.dart';
 import 'package:platforms_source_gen/android_gen.dart';
+import 'package:platforms_source_gen/type_utils.dart';
 import './auto_gen_class_json.dart';
 import './dart_channel_manager.dart';
 import './java_channel_manager.dart';
 
-void main() async {
-  String flutterPath = "./lib/example";
-  String packageName = "com.siyehua.platforms_channel_plugin.channel";
-  String androidSavePath = "./android/src/main/kotlin";
-  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath);
-}
+// void main() async {
+//   String flutterPath = "./lib/example";
+//   String packageName = "com.siyehua.platforms_channel_plugin.channel";
+//   String androidSavePath = "./android/src/main/kotlin";
+//   await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: false);
+// }
 
 String createParseCode(Property property, {String paramsName = ""}) {
   var isEmpty = property.canBeNull ? "?" : "";
@@ -25,16 +26,20 @@ String createParseCode(Property property, {String paramsName = ""}) {
     // (result as Map).map((e) => e as MapEntry(
     //     test(property.subType[0], e), test(property.subType[1], e))).toList();
     return " ($first as Map$isEmpty)$isEmpty.map((key, value) =>  MapEntry(${createParseCode(property.subType[0], paramsName: "key")},${createParseCode(property.subType[1], paramsName: "value")}))";
-  } else if (isBaseType(property)) {
-    return " $first as ${property.type.split(".").last}$isEmpty ";
+  } else if (TypeUtils.isBaseType(property)) {
+    return " $first as ${TypeUtils.getPropertyNameStr(property)}$isEmpty ";
   } else {
     //custom class
-    return "${property.type.split(".").last}.fromJson(jsonDecode($first.split(\"___custom___\")[1]))";
+    return "${TypeUtils.getPropertyNameStr(property)}.fromJson(jsonDecode($first.split(\"___custom___\")[1]))";
   }
 }
 
+bool nullSafeSupport = true;
+
 Future<void> spiFlutterPackageStart(
-    String flutterPath, String packageName, String androidSavePath) async {
+    String flutterPath, String packageName, String androidSavePath,
+    {bool nullSafe = true}) async {
+  nullSafeSupport = nullSafe;
   await _flutter2Native(flutterPath, packageName, androidSavePath);
   await _native2flutter(flutterPath, packageName, androidSavePath);
   _gentManager(flutterPath, packageName, androidSavePath);
@@ -53,7 +58,7 @@ Future<void> _flutter2Native(
           "/" +
           packageName.replaceAll(".", "/") //your android file save path
       );
-  await autoCreateJsonParse(list, directory.path);
+  await autoCreateJsonParse(list, directory.path, nullSafeSupport);
   list.forEach((element) {
     element.methods.removeWhere((element) => element.name == "toJson");
   });
@@ -80,7 +85,7 @@ Future<void> _native2flutter(
     _genFlutterParse(flutterPath, packageName, []);
     return;
   }
-  await autoCreateJsonParse(list, directory.path);
+  await autoCreateJsonParse(list, directory.path, nullSafeSupport);
   list.forEach((element) {
     element.methods.removeWhere((element) => element.name == "toJson");
   });
@@ -106,11 +111,10 @@ void _gentManager(
     dir.createSync(recursive: true);
   }
   File file = File(flutterSavePath + "/channel_manager.dart");
-  file.writeAsStringSync(newContent);
-  if (!file.existsSync()) {
-//if not create use dart io, use shell
-    _savePath(newContent, file.path);
+  if (!nullSafeSupport) {
+    newContent = GenFileEdit.removeDartNullSafe(newContent);
   }
+  file.writeAsStringSync(newContent);
 
   //create android manager
   // File file2 = File("./tool/ChannelManager_java");
@@ -124,11 +128,10 @@ void _gentManager(
   androidSavePath += "/" + packageName.replaceAll(".", "/");
   File androidFile = File(androidSavePath + "/ChannelManager.java");
   androidFile.createSync(recursive: true);
-  androidFile.writeAsStringSync(newContent2);
-  if (!androidFile.existsSync()) {
-//if not create use dart io, use shell
-    _savePath(newContent2, androidFile.path);
+  if (!nullSafeSupport) {
+    newContent2 = GenFileEdit.removeJavaNullSafe(newContent2);
   }
+  androidFile.writeAsStringSync(newContent2);
 }
 
 void _genJavaCode(
@@ -144,7 +147,6 @@ void _genJavaCode(
       reg = "flutter2native";
     }
     if (classBean.imports.every((element) {
-
       return element.contains(reg);
     })) {
       newImport.add("import  ${packageName.replaceAll(type, "")}.$reg.*;\n");
@@ -171,7 +173,7 @@ void _genJavaCode(
   platforms_source_gent_start(
       packageName, //your android's  java class package name
       savePath, //your android file save path
-      list);
+      list, nullSafe: nullSafeSupport);
 }
 
 ////////////////////_gentJavaImpl/////////////////////////////////
@@ -250,16 +252,15 @@ void _gentJavaImpl(
         "public class ${classBean.classInfo.name}Impl  implements ${classBean.classInfo.name}{\n" +
         methodStr +
         "}\n";
+    if (!nullSafeSupport) {
+      allContent = GenFileEdit.removeJavaNullSafe(allContent);
+    }
     Directory dir = Directory(savePath);
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }
     File impFile = File(dir.path + "/${classBean.classInfo.name}Impl.java");
     impFile.writeAsStringSync(allContent);
-    if (!impFile.existsSync()) {
-//if not create use dart io, use shell
-      _savePath(allContent, impFile.path);
-    }
   });
 }
 
@@ -356,21 +357,20 @@ _genFlutterImpl(
         methodStr +
         "\t@override\n\tString package = \"$packageName\";\n" +
         "}\n";
+    if (!nullSafeSupport) {
+      allContent = GenFileEdit.removeDartNullSafe(allContent);
+    }
     Directory dir = Directory(flutterSavePath + "/impl");
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }
     File impFile = File(dir.path + "/${filePreName}_impl.dart");
     impFile.writeAsStringSync(allContent);
-    if (!impFile.existsSync()) {
-      //if not create use dart io, use shell
-      _savePath(allContent, impFile.path);
-    }
   });
 }
 
 String getTypeStr(Property property) {
-  String type = property.type.split(".").last;
+  String type = TypeUtils.getPropertyNameStr(property);
   if (property.subType.isNotEmpty) {
     type += "<";
     property.subType.forEach((element) {
@@ -392,13 +392,13 @@ String _parseMethodArgs(Property arg) {
   if (arg.canBeNull) {
     question = "?";
   }
-  if (isBaseType(arg)) {
+  if (TypeUtils.isBaseType(arg)) {
     return arg.name;
-  } else if (isListType(arg)) {
+  } else if (TypeUtils.isListType(arg)) {
     // list.map((e) => "InnerClass___custom___" + jsonEncode(abc.toJson())).toList()
     arg.subType[0].name = "e";
     return "${arg.name}$question.map((e) => ${_parseMethodArgs(arg.subType[0])}).toList()";
-  } else if (isMapType(arg)) {
+  } else if (TypeUtils.isMapType(arg)) {
     arg.subType[0].name = "k";
     arg.subType[1].name = "v";
     return "${arg.name}$question.map((k,v) => MapEntry(${_parseMethodArgs(arg.subType[0])}, ${_parseMethodArgs(arg.subType[1])}))";
@@ -406,7 +406,7 @@ String _parseMethodArgs(Property arg) {
     //custom class
     //"InnerClass___custom___"+jsonEncode(abc.toJson())
     String formatStr =
-        "\"${getPropertyNameStr(arg)}___custom___\" + jsonEncode(${arg.name}.toJson())";
+        "\"${TypeUtils.getPropertyNameStr(arg)}___custom___\" + jsonEncode(${arg.name}.toJson())";
     return formatStr;
   }
 }
@@ -479,6 +479,9 @@ _genFlutterParse(
           "extension  IParse on Object{\n" +
           methodStr +
           "}\n";
+  if (!nullSafeSupport) {
+    allContent = GenFileEdit.removeDartNullSafe(allContent);
+  }
   _channelImport += "import 'parse/object_parse.dart';\n";
   Directory dir = Directory(flutterSavePath + "/parse");
   if (!dir.existsSync()) {
@@ -486,16 +489,4 @@ _genFlutterParse(
   }
   File impFile = File(dir.path + "/object_parse.dart");
   impFile.writeAsStringSync(allContent);
-  if (!impFile.existsSync()) {
-//if not create use dart io, use shell
-    _savePath(allContent, impFile.path);
-  }
-}
-
-void _savePath(String content, String path) {
-  ProcessResult a = Process.runSync('bash',
-      ['-c', "echo -e '${content.replaceAll("'", "\'\"\'\"\'")}' > $path"],
-      runInShell: true);
-  print(
-      "file: $path \n create result: ${a.exitCode}\n err: ${a.stderr}\n out: ${a.stdout}");
 }

@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:platforms_source_gen/android_gen.dart';
+import 'package:platforms_source_gen/bean/property_parse.dart';
+import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
-import 'package:platforms_source_gen/property_parse.dart';
+import 'package:platforms_source_gen/type_utils.dart';
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
 Future<void> autoCreateJsonParse(
-    List<GenClassBean> genClasses, String sourcePath) async {
+    List<GenClassBean> genClasses, String sourcePath, bool nullSafe) async {
   var fileInsertCount = <String, int>{};
   genClasses.where((value) => value.classInfo.type == 0).where((value) {
     bool hasToJsonMethod =
@@ -25,6 +26,9 @@ Future<void> autoCreateJsonParse(
     String content = _createDefaultConstructor(classInfo) + "\n";
     content += _createFromJsonMethod(classInfo) + "\n";
     content += _createToJsonMethod(classInfo) + "\n";
+    if (!nullSafe) {
+      content = GenFileEdit.removeDartNullSafe(content);
+    }
     RegExp regExp = RegExp("\n");
     List<String> newContentList = File(classPath).readAsLinesSync();
     int newLineCount = fileInsertCount[classPath]!;
@@ -61,7 +65,10 @@ String _createToJsonMethod(GenClassBean classInfo) {
       propertyStr += ";";
     }
   });
-  return """Map<String, dynamic> toJson() {
+  return """
+        /// Note: this method create by SPI, if change Class property or method,
+        /// please remove it. it will be carted by SPI again.
+        Map<String, dynamic> toJson() {
             final Map<String, dynamic> data = Map<String, dynamic>();
             $propertyStr
             return data;
@@ -75,11 +82,11 @@ String _getJsonStr(Property property, {String propertyName = ""}) {
     question = "?";
   }
   if (property.name.isEmpty) {
-    if (isBaseType(property)) {
+    if (TypeUtils.isBaseType(property)) {
       return propertyName;
-    } else if (isListType(property)) {
+    } else if (TypeUtils.isListType(property)) {
       return "$propertyName$question.map((v) => ${_getJsonStr(property.subType[0], propertyName: 'v')}).toList()";
-    } else if (isMapType(property)) {
+    } else if (TypeUtils.isMapType(property)) {
       return "$propertyName$question.map((k, v) => MapEntry(${_getJsonStr(property.subType[0], propertyName: 'k')}"
           ", ${_getJsonStr(property.subType[1], propertyName: 'v')}))";
     } else {
@@ -87,11 +94,11 @@ String _getJsonStr(Property property, {String propertyName = ""}) {
     }
   }
 
-  if (isBaseType(property)) {
+  if (TypeUtils.isBaseType(property)) {
     return "data['${property.name}'] = this.${property.name}";
-  } else if (isListType(property)) {
+  } else if (TypeUtils.isListType(property)) {
     return "data['${property.name}'] = this.${property.name}$question.map((v) => ${_getJsonStr(property.subType[0], propertyName: "v")}).toList()";
-  } else if (isMapType(property)) {
+  } else if (TypeUtils.isMapType(property)) {
     return "data['${property.name}'] = this.${property.name}$question.map((k, v) => MapEntry(${_getJsonStr(property.subType[0], propertyName: "k")}"
         ", ${_getJsonStr(property.subType[1], propertyName: "v")}))";
   } else {
@@ -100,7 +107,9 @@ String _getJsonStr(Property property, {String propertyName = ""}) {
 }
 
 String _createDefaultConstructor(GenClassBean classInfo) {
-  return "${classInfo.classInfo.name}();";
+  return "/// Note: this method create by SPI, if change Class property or method,\n"
+      "/// please remove it. it will be carted by SPI again.\n"
+      "${classInfo.classInfo.name}();";
 }
 
 String _createFromJsonMethod(GenClassBean classInfo) {
@@ -128,6 +137,8 @@ String _createFromJsonMethod(GenClassBean classInfo) {
   });
 
   String allContent =
+      "/// Note: this method create by SPI, if change Class property or method,\n"
+      "/// please remove it. it will be carted by SPI again.\n"
       "${classInfo.classInfo.name}.fromJson(Map<String, dynamic> json) {$propertyStr}";
 
   return allContent;
@@ -135,20 +146,20 @@ String _createFromJsonMethod(GenClassBean classInfo) {
 
 String getParseStr(Property property, {String propertyName = ""}) {
   if (property.name.isEmpty) {
-    return "${getPropertyNameStr(property)}.fromJson(json['${property.name}'])";
+    return "${TypeUtils.getPropertyNameStr(property)}.fromJson(json['${property.name}'])";
   }
   String shouldAddNullCover = "";
   if (property.canBeNull) {
     shouldAddNullCover = "!";
   }
-  if (isListType(property)) {
+  if (TypeUtils.isListType(property)) {
     return """if (json['${property.name}'] != null) {
               ${property.name} =[];
               json['${property.name}'].forEach((v) {
               ${property.name}$shouldAddNullCover.add(${createParseCode(property.subType[0], paramsName: "v")});
               });
             }""";
-  } else if (isMapType(property)) {
+  } else if (TypeUtils.isMapType(property)) {
     //        i2!.update(k as String?, (value) =>(v as int),ifAbsent: ()=> (v as int));
     return """if (json['${property.name}'] != null) {
               ${property.name} ={};
@@ -158,31 +169,9 @@ String getParseStr(Property property, {String propertyName = ""}) {
               , ifAbsent: ()=> ${createParseCode(property.subType[1], paramsName: "v")});
               });
             }""";
-  } else if (isBaseType(property)) {
+  } else if (TypeUtils.isBaseType(property)) {
     return "${property.name} = json['${property.name}']";
   } else {
-    return "${property.name} = ${getPropertyNameStr(property)}.fromJson(json['${property.name}'])";
+    return "${property.name} = ${TypeUtils.getPropertyNameStr(property)}.fromJson(json['${property.name}'])";
   }
-}
-
-String getPropertyNameStr(Property property) {
-  return property.type.split(".").last;
-}
-
-bool isListType(Property property) {
-  return property.type == "dart.core.List";
-}
-
-bool isMapType(Property property) {
-  return property.type == "dart.core.Map";
-}
-
-bool isBaseType(Property property) {
-  if (isListType(property)) {
-    return false;
-  }
-  if (isMapType(property)) {
-    return false;
-  }
-  return JavaCreate.typeMap.containsKey(property.type);
 }

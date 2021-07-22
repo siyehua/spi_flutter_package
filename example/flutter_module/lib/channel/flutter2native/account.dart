@@ -5,7 +5,8 @@ abstract class IAccount {
 
   Future<String?> getToken();
 
-  void logout(InnerClass abc, List<InnerClass> list,List<List<Map<int,String>>> aaa);
+  void logout(
+      InnerClass abc, List<InnerClass> list, List<List<Map<int, String>>> aaa);
 
   Future<int> getAge();
 
@@ -23,8 +24,12 @@ abstract class TestPreClassName {
 }
 
 class MyClass {
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   MyClass();
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   MyClass.fromJson(Map<String, dynamic> json) {
     if (json['aaa'] != null) {
       aaa = [];
@@ -61,19 +66,19 @@ class MyClass {
     if (json['j'] != null) {
       j = [];
       json['j'].forEach((v) {
-        j!.add(v as InnerClass);
+        j!.add(InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
     if (json['j1'] != null) {
       j1 = [];
       json['j1'].forEach((v) {
-        j1.add(v as InnerClass);
+        j1.add(InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
     if (json['j2'] != null) {
       j2 = [];
       json['j2'].forEach((v) {
-        j2!.add(v as InnerClass);
+        j2!.add(InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
     if (json['i'] != null) {
@@ -97,26 +102,37 @@ class MyClass {
     if (json['i3'] != null) {
       i3 = {};
       json['i3'].forEach((k, v) {
-        i3!.update(k as InnerClass, (value) => v as int,
+        i3!.update(InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])),
+            (value) => v as int,
             ifAbsent: () => v as int);
       });
     }
     if (json['i4'] != null) {
       i4 = {};
       json['i4'].forEach((k, v) {
-        i4!.update(k as InnerClass, (value) => v as InnerClass?,
-            ifAbsent: () => v as InnerClass?);
+        i4!.update(
+            InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])),
+            (value) =>
+                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])),
+            ifAbsent: () =>
+                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
     if (json['i5'] != null) {
       i5 = {};
       json['i5'].forEach((k, v) {
-        i5!.update(k as InnerClass?, (value) => v as InnerClass,
-            ifAbsent: () => v as InnerClass);
+        i5!.update(
+            InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])),
+            (value) =>
+                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])),
+            ifAbsent: () =>
+                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
   }
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['aaa'] = this
@@ -171,13 +187,19 @@ class MyClass {
 }
 
 class InnerClass {
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   InnerClass();
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   InnerClass.fromJson(Map<String, dynamic> json) {
     a = json['a'];
     b = json['b'];
   }
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['a'] = this.a;
@@ -187,14 +209,19 @@ class InnerClass {
 
   String? a;
   int? b;
-
 }
 
 class Route {
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   Route();
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   Route.fromJson(Map<String, dynamic> json) {}
 
+  /// Note: this method create by SPI, if change Class property or method,
+  /// please remove it. it will be carted by SPI again.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
 

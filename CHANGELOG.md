@@ -69,3 +69,7 @@ Fix: some package not import
 ## 0.6.0
 
 Feat: support custom class
+
+## 0.6.1
+
+Feat: null safe is option
