@@ -24,9 +24,9 @@ class IAccountImpl  implements IAccount, PackageTag{
 		return await  ChannelManager.invoke(package, _clsType.toString(), "getAge", );
 	}
 	@override
-	Future<List<String>?> getList() async{
+	Future<List<String>?> getList(InnerClass? abc, ) async{
 		Type _clsType = IAccount;
-		dynamic result = await  ChannelManager.invoke(package, _clsType.toString(), "getList", );
+		dynamic result = await  ChannelManager.invoke(package, _clsType.toString(), "getList", ["InnerClass___custom___" + jsonEncode(abc?.toJson())]);
 		List<String>? _b = (result as List?)?.map((result) =>  result as String ).toList();
 		return _b;
 	}

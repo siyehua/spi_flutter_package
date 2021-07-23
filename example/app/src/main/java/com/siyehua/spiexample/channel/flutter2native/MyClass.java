@@ -5,6 +5,7 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.Nullable;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
 public class MyClass {
+	 public  @Nullable InnerClass abc ;
 	 public  @Nullable ArrayList<HashMap<HashMap<ArrayList<String>, Long>, ArrayList<Long>>> aaa ;
 	 public  @Nullable Long a ;
 	 public  @NotNull Long b  = 0L;

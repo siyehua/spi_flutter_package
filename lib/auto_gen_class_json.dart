@@ -67,7 +67,7 @@ String _createToJsonMethod(GenClassBean classInfo) {
   });
   return """
         /// Note: this method create by SPI, if change Class property or method,
-        /// please remove it. it will be carted by SPI again.
+        /// please remove it. it will be created by SPI again.
         Map<String, dynamic> toJson() {
             final Map<String, dynamic> data = Map<String, dynamic>();
             $propertyStr
@@ -102,13 +102,13 @@ String _getJsonStr(Property property, {String propertyName = ""}) {
     return "data['${property.name}'] = this.${property.name}$question.map((k, v) => MapEntry(${_getJsonStr(property.subType[0], propertyName: "k")}"
         ", ${_getJsonStr(property.subType[1], propertyName: "v")}))";
   } else {
-    return "data['${property.name}'] = ${property.name}.toJson()";
+    return "data['${property.name}'] = ${property.name}$question.toJson()";
   }
 }
 
 String _createDefaultConstructor(GenClassBean classInfo) {
   return "/// Note: this method create by SPI, if change Class property or method,\n"
-      "/// please remove it. it will be carted by SPI again.\n"
+      "/// please remove it. it will be created by SPI again.\n"
       "${classInfo.classInfo.name}();";
 }
 
@@ -138,7 +138,7 @@ String _createFromJsonMethod(GenClassBean classInfo) {
 
   String allContent =
       "/// Note: this method create by SPI, if change Class property or method,\n"
-      "/// please remove it. it will be carted by SPI again.\n"
+      "/// please remove it. it will be created by SPI again.\n"
       "${classInfo.classInfo.name}.fromJson(Map<String, dynamic> json) {$propertyStr}";
 
   return allContent;

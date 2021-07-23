@@ -8,6 +8,7 @@ import com.siyehua.spiexample.channel.flutter2native.IAccount;
 import com.siyehua.spiexample.channel.flutter2native.InnerClass;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class AccountImpl implements IAccount {
     }
 
     @Override
-    public void getList(ChannelManager.Result<ArrayList<String>> callback) {
+    public void getList(@Nullable InnerClass abc, @NotNull ChannelManager.Result<ArrayList<String>> callback) {
         ArrayList<String> data = new ArrayList<>();
         data.add("user");
         data.add("name");

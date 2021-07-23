@@ -9,9 +9,9 @@ abstract class Fps {
 
   Future<PageInfo> getPage();
 
-  Future<List<PageInfo>> getListCustom(List<InnerClass>  a);
+  Future<List<PageInfo>> getListCustom(List<InnerClass> a);
 
-  Future<Map<PageInfo,int>> getMapCustom();
+  Future<Map<PageInfo, int>> getMapCustom();
 }
 
 class PageInfo {

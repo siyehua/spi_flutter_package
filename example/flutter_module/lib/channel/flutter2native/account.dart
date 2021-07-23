@@ -10,7 +10,7 @@ abstract class IAccount {
 
   Future<int> getAge();
 
-  Future<List<String>?> getList();
+  Future<List<String>?> getList(InnerClass? abc);
 
   Future<Map<List<String>?, InnerClass>> getMap();
 
@@ -31,6 +31,7 @@ class MyClass {
   /// Note: this method create by SPI, if change Class property or method,
   /// please remove it. it will be carted by SPI again.
   MyClass.fromJson(Map<String, dynamic> json) {
+    abc = InnerClass.fromJson(json['abc']);
     if (json['aaa'] != null) {
       aaa = [];
       json['aaa'].forEach((v) {
@@ -135,6 +136,7 @@ class MyClass {
   /// please remove it. it will be carted by SPI again.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['abc'] = abc?.toJson();
     data['aaa'] = this
         .aaa
         ?.map((v) => v.map((k, v) => MapEntry(
@@ -160,6 +162,7 @@ class MyClass {
     return data;
   }
 
+  InnerClass? abc;
   List<Map<Map<List<String?>?, int>, List<int>?>>? aaa;
 
   int? a;

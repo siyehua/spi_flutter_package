@@ -123,7 +123,7 @@ void initFlutter() async {
   account.logout(a, list2, aaa);
   var name = await account.getToken();
   print(name);
-  var list = await account.getList();
+  var list = await account.getList(null);
   print(list);
   var map = await account.getMap();
   print(map);

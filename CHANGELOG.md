@@ -73,3 +73,7 @@ Feat: support custom class
 ## 0.6.1
 
 Feat: null safe is option
+
+## 0.6.2
+
+Fix: Custom class not add "?" in nullSafe

@@ -406,7 +406,7 @@ String _parseMethodArgs(Property arg) {
     //custom class
     //"InnerClass___custom___"+jsonEncode(abc.toJson())
     String formatStr =
-        "\"${TypeUtils.getPropertyNameStr(arg)}___custom___\" + jsonEncode(${arg.name}.toJson())";
+        "\"${TypeUtils.getPropertyNameStr(arg)}___custom___\" + jsonEncode(${arg.name}$question.toJson())";
     return formatStr;
   }
 }
