@@ -36,13 +36,19 @@ String createParseCode(Property property, {String paramsName = ""}) {
 
 bool nullSafeSupport = true;
 
+/// [nullSafe] support null safe
+/// [androidCustomDoc] it will add it ChannelManager file in android's file.
 Future<void> spiFlutterPackageStart(
-    String flutterPath, String packageName, String androidSavePath,
-    {bool nullSafe = true}) async {
+  String flutterPath,
+  String packageName,
+  String androidSavePath, {
+  bool nullSafe = true,
+  String androidCustomDoc = "",
+}) async {
   nullSafeSupport = nullSafe;
   await _flutter2Native(flutterPath, packageName, androidSavePath);
   await _native2flutter(flutterPath, packageName, androidSavePath);
-  _gentManager(flutterPath, packageName, androidSavePath);
+  _gentManager(flutterPath, packageName, androidSavePath, androidCustomDoc:androidCustomDoc);
 }
 
 Future<void> _flutter2Native(
@@ -96,7 +102,11 @@ Future<void> _native2flutter(
 }
 
 void _gentManager(
-    String flutterPath, String packageName, String androidSavePath) {
+  String flutterPath,
+  String packageName,
+  String androidSavePath, {
+  String androidCustomDoc = "",
+}) {
   //create flutter manager
   String flutterSavePath = flutterPath + "/generated/channel";
   // File file = File("./tool/ChannelManager_dart");
@@ -121,6 +131,7 @@ void _gentManager(
   String newContent2 = javaStr
       .replaceAll("package tool",
           "package " + packageName.replaceAll(".flutter2native", ""))
+      .replaceAll("custom doc should replace", androidCustomDoc)
       .replaceAll("import java.lang.reflect.Type;", _javaChannelImport)
       .replaceAll("//generated add native2flutter impl in this", _javaImplStr)
       .replaceAll("private static final String channelName = \"123456\";",
@@ -173,7 +184,8 @@ void _genJavaCode(
   platforms_source_gent_start(
       packageName, //your android's  java class package name
       savePath, //your android file save path
-      list, nullSafe: nullSafeSupport);
+      list,
+      nullSafe: nullSafeSupport);
 }
 
 ////////////////////_gentJavaImpl/////////////////////////////////

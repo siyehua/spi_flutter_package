@@ -28,7 +28,19 @@ public class MainActivity2 extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
-        ChannelManager.init(flutterEngine.getDartExecutor());
+        ChannelManager.init(flutterEngine.getDartExecutor(), new ChannelManager.JsonParse() {
+            @Nullable
+            @Override
+            public String toJSONString(@Nullable Object object) {
+                return JSON.toJSONString(object);
+            }
+
+            @Nullable
+            @Override
+            public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+                return JSON.parseObject(text, clazz);
+            }
+        });
         ChannelManager.addChannelImpl(IAccount.class, new AccountImpl());
         native2Flutter();
     }

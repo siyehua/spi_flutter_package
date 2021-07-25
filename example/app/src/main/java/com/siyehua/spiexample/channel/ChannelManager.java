@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
-import com.alibaba.fastjson.JSON;
+
 import com.siyehua.spiexample.channel.native2flutter.Fps;
 import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
 import com.siyehua.spiexample.channel.native2flutter.Fps2;
@@ -22,9 +22,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.security.auth.callback.UnsupportedCallbackException;
+
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 
+/**
+ * <br>
+ * ChannelManager manager all changer interfaces.<br>
+ * add interface impl, use {@link #addChannelImpl(Class, Object)}},<br>
+ * get interface impl, use {@link #getChannel(Class)}.<br>
+ * more info, see {@link 'https://pub.dev/packages/spi_flutter_package'}
+ */
 public class ChannelManager {
     private interface ErrorCode {
         String NoFoundChannel = "400";//can't found channel
@@ -62,12 +71,39 @@ public class ChannelManager {
         void notImplemented();
     }
 
+    /**
+     * json parse
+     */
+    public interface JsonParse {
+        /**
+         * passe object to json
+         *
+         * @param object object
+         * @return json str
+         */
+        @Nullable
+        public String toJSONString(@Nullable Object object);
+
+        /**
+         * parse json str to obj
+         *
+         * @param text  json
+         * @param clazz obj class
+         * @param <T>   class type
+         * @return obj
+         */
+        @Nullable
+        public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
+    }
+
     private static final String channelName = "com.siyehua.spiexample.channel";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());
+    private static JsonParse jsonParse;//json parse
 
-    public static void init(@NonNull final BinaryMessenger messenger) {
+    public static void init(@NonNull final BinaryMessenger messenger, @NonNull JsonParse jsonParse) {
+        ChannelManager.jsonParse = jsonParse;
         MethodChannel methodChannel = new MethodChannel(messenger, channelName);
         ChannelManager.methodChannel = methodChannel;
         methodChannel.setMethodCallHandler((call, result) -> {
@@ -130,7 +166,7 @@ public class ChannelManager {
                     if (should) {
                         result.success(invokeResult);
                     }
-                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     result.error(ErrorCode.CanNotMatchArgs, targetChanel.getClass().getSimpleName()
                             + " invoke method: " + callMethod
                             + " argument:" + Arrays.toString(method.getParameterTypes())
@@ -155,7 +191,7 @@ public class ChannelManager {
 
     public static <T> void invoke(Class<?> clsName, String method, List args, @Nullable Result<T> callback) {
         ArrayList newList = new ArrayList();
-        for (Object item: args) {
+        for (Object item : args) {
             newList.add(customClassToString(item));
         }
         methodChannel.invokeMethod(clsName + "#" + method, newList, new MethodChannel.Result() {
@@ -188,7 +224,7 @@ public class ChannelManager {
             }
         });
     }
-  
+
 
     @SuppressWarnings({"UnnecessaryLocalVariable", "rawtypes", "unchecked"})
     private static Object intToLong(Object object) {
@@ -225,7 +261,7 @@ public class ChannelManager {
     @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     private static Object customClassToString(Object data) {
         if (data != null && data.getClass().getName().startsWith(channelName)) {
-            String customInfo = data.getClass().getSimpleName() + "___custom___" + JSON.toJSONString(data);
+            String customInfo = data.getClass().getSimpleName() + "___custom___" + jsonParse.toJSONString(data);
             return customInfo;
         } else if (data instanceof ArrayList) {
             ArrayList newList = new ArrayList();
@@ -252,7 +288,7 @@ public class ChannelManager {
                 String[] customInfo = ((String) data).split("___custom___");
                 Class cls = Class.forName(channelName + pre + customInfo[0]);
                 //noinspection unchecked
-                return JSON.parseObject(customInfo[1], cls);
+                return jsonParse.parseObject(customInfo[1], cls);
             } else if (data instanceof ArrayList) {
                 ArrayList newList = new ArrayList();
                 for (Object item : (ArrayList) data) {
@@ -276,7 +312,8 @@ public class ChannelManager {
 
 
     static {
-        addChannelImpl(Fps.class, new FpsImpl());addChannelImpl(Fps2.class, new Fps2Impl());
+        addChannelImpl(Fps.class, new FpsImpl());
+        addChannelImpl(Fps2.class, new Fps2Impl());
     }
 
 }

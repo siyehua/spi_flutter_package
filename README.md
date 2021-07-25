@@ -45,11 +45,11 @@ more code: `example`
 ```dart
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
-void main() {
+void main() async {
   String flutterPath = "./lib/channel";//your flutter project channel dir in 1 step.
   String packageName = "com.siyehua.spiexample.channel";//your android code package name
   String androidSavePath = "../app/src/main/java";//your android project project sourcecode path
-  spi_flutter_package_start(flutterPath, packageName, androidSavePath);
+  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: false);
 }
 ```
 
@@ -86,7 +86,24 @@ public class AccountImpl implements IAccount {
 
 ```java
 //1. init(only first)
-ChannelManager.init(flutterEngine.getDartExecutor());
+
+```java
+ChannelManager.init(flutterEngine.getDartExecutor(), new ChannelManager.JsonParse() {
+    @Nullable
+    @Override
+    public String toJSONString(@Nullable Object object) {
+        //your json parse
+        return JSON.toJSONString(object);
+    }
+
+    @Nullable
+    @Override
+    public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+        //your json parse
+        return JSON.parseObject(text, clazz);
+    }
+});
+```
 
 //2. add your impl class in  ChannelManager
 ChannelManager.addChannelImpl(IAccount.class, new AccountImpl());

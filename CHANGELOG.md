@@ -77,3 +77,7 @@ Feat: null safe is option
 ## 0.6.2
 
 Fix: Custom class not add "?" in nullSafe
+
+## 0.6.3
+
+Feat: support custom json parse

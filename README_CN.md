@@ -54,11 +54,11 @@ abstract class IAccount{
 ```dart
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
-void main() {
-  String flutterPath = "./lib/channel";//这个就是步骤 1 中 的新建的 flutter 通信协议目录
-  String packageName = "com.siyehua.spiexample.channel";//这个是将要自动生成的 Android 代码的包名
-  String androidSavePath = "../app/src/main/java";//这个是 Android 的代码路径
-  spi_flutter_package_start(flutterPath, packageName, androidSavePath);
+void main() async {
+  String flutterPath = "./lib/channel";//your flutter project channel dir in 1 step.
+  String packageName = "com.siyehua.spiexample.channel";//your android code package name
+  String androidSavePath = "../app/src/main/java";//your android project project sourcecode path
+  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: false);
 }
 ```
 
@@ -94,7 +94,24 @@ public class AccountImpl implements IAccount {
 
 ```java
 //1. 初始化(仅需一次)
-ChannelManager.init(flutterEngine.getDartExecutor());
+
+```java
+ChannelManager.init(flutterEngine.getDartExecutor(), new ChannelManager.JsonParse() {
+    @Nullable
+    @Override
+    public String toJSONString(@Nullable Object object) {
+        //your json parse
+        return JSON.toJSONString(object);
+    }
+
+    @Nullable
+    @Override
+    public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+        //your json parse
+        return JSON.parseObject(text, clazz);
+    }
+});
+```
 
 //2. 将上面实现的类加入到 ChannelManager 中, 以便 flutter 能够调用到
 ChannelManager.addChannelImpl(IAccount.class, new AccountImpl());
