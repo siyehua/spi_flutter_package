@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.security.auth.callback.UnsupportedCallbackException;
-
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -314,6 +312,7 @@ public class ChannelManager {
     static {
         addChannelImpl(Fps.class, new FpsImpl());
         addChannelImpl(Fps2.class, new Fps2Impl());
+
     }
 
 }

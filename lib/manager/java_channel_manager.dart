@@ -306,7 +306,7 @@ public class ChannelManager {
 
 
     static {
-        //generated add native2flutter impl in this
+//generated add native2flutter impl in this
     }
 
 }

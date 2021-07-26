@@ -4,8 +4,10 @@ import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 import 'package:platforms_source_gen/type_utils.dart';
-import 'package:spi_flutter_package/spi_flutter_package.dart';
+import 'package:spi_flutter_package/utils/flutter_file_utils.dart';
 
+/// add json method to dart source code
+/// note : if class change, should delete auto create code.
 Future<void> autoCreateJsonParse(
     List<GenClassBean> genClasses, String sourcePath, bool nullSafe) async {
   var fileInsertCount = <String, int>{};
@@ -156,7 +158,7 @@ String getParseStr(Property property, {String propertyName = ""}) {
     return """if (json['${property.name}'] != null) {
               ${property.name} =[];
               json['${property.name}'].forEach((v) {
-              ${property.name}$shouldAddNullCover.add(${createParseCode(property.subType[0], paramsName: "v")});
+              ${property.name}$shouldAddNullCover.add(${FlutterFileUtils.createParseCode(property.subType[0], paramsName: "v")});
               });
             }""";
   } else if (TypeUtils.isMapType(property)) {
@@ -164,9 +166,9 @@ String getParseStr(Property property, {String propertyName = ""}) {
     return """if (json['${property.name}'] != null) {
               ${property.name} ={};
               json['${property.name}'].forEach((k, v) {
-              ${property.name}$shouldAddNullCover.update(${createParseCode(property.subType[0], paramsName: "k")}
-              , (value) => ${createParseCode(property.subType[1], paramsName: "v")}
-              , ifAbsent: ()=> ${createParseCode(property.subType[1], paramsName: "v")});
+              ${property.name}$shouldAddNullCover.update(${FlutterFileUtils.createParseCode(property.subType[0], paramsName: "k")}
+              , (value) => ${FlutterFileUtils.createParseCode(property.subType[1], paramsName: "v")}
+              , ifAbsent: ()=> ${FlutterFileUtils.createParseCode(property.subType[1], paramsName: "v")});
               });
             }""";
   } else if (TypeUtils.isBaseType(property)) {
