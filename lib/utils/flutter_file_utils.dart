@@ -1,13 +1,15 @@
 import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/type_utils.dart';
 
+import '../auto_gen_class_json.dart';
+
 class FlutterFileUtils {
   static String parseMethodArgs(Property arg) {
     String question = "";
     if (arg.canBeNull) {
       question = "?";
     }
-    if (TypeUtils.isBaseType(arg)) {
+    if (TypeUtils.isBaseType(arg) || isObject(arg)) {
       return arg.name;
     } else if (TypeUtils.isListType(arg)) {
       // list.map((e) => "InnerClass___custom___" + jsonEncode(abc.toJson())).toList()
@@ -39,7 +41,7 @@ class FlutterFileUtils {
       // (result as Map).map((e) => e as MapEntry(
       //     test(property.subType[0], e), test(property.subType[1], e))).toList();
       return " ($first as Map$isEmpty)$isEmpty.map((key, value) =>  MapEntry(${createParseCode(property.subType[0], paramsName: "key")},${createParseCode(property.subType[1], paramsName: "value")}))";
-    } else if (TypeUtils.isBaseType(property)) {
+    } else if (TypeUtils.isBaseType(property) || isObject(property)) {
       return " $first as ${TypeUtils.getPropertyNameStr(property)}$isEmpty ";
     } else {
       //custom class

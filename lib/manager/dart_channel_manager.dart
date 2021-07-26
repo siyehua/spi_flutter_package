@@ -33,7 +33,7 @@ class ChannelManager {
   }
   
   static void init() {
-    //replace
+//replace
 
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
@@ -43,7 +43,8 @@ class ChannelManager {
           .replaceAll(_package + ".native2flutter.", "");
       dynamic targetChanel = _channelImplMap[cls];
       if (targetChanel != null) {
-        return (targetChanel as Object).parse(targetChanel, cls, callMethod, call.arguments);
+        return (targetChanel as Object)
+            .parse(targetChanel, cls, callMethod, call.arguments);      
       } else {
         return _ErrorCode.NoFoundChannel.toString();
         // result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass
@@ -62,5 +63,4 @@ class ChannelManager {
     return _channelImplMap[clsName.toString()];
   }
 }
-
 ''';

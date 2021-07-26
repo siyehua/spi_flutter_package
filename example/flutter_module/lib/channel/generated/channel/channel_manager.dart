@@ -38,7 +38,7 @@ class ChannelManager {
   }
   
   static void init() {
-    		add(IAccount, IAccountImpl());
+		add(IAccount, IAccountImpl());
 		add(TestPreClassName, TestPreClassNameImpl());
 
 
@@ -50,7 +50,8 @@ class ChannelManager {
           .replaceAll(_package + ".native2flutter.", "");
       dynamic targetChanel = _channelImplMap[cls];
       if (targetChanel != null) {
-        return (targetChanel as Object).parse(targetChanel, cls, callMethod, call.arguments);
+        return (targetChanel as Object)
+            .parse(targetChanel, cls, callMethod, call.arguments);      
       } else {
         return _ErrorCode.NoFoundChannel.toString();
         // result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass
@@ -69,4 +70,3 @@ class ChannelManager {
     return _channelImplMap[clsName.toString()];
   }
 }
-

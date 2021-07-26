@@ -106,7 +106,7 @@ void initFlutter() async {
   ChannelManager.add(Fps2, FpsImpl2());
 
   IAccount account = ChannelManager.getChannel(IAccount);
-  var result = await account.login(null, "password");
+  var result = await account.login(null, 2);
   print(result);
   var a = InnerClass();
   a.a = "1334";

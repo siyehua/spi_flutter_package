@@ -22,7 +22,7 @@ public class AccountImpl implements IAccount {
     }
 
     @Override
-    public void login(String name, String password, ChannelManager.Result<String> callback) {
+    public void login(@Nullable String name, @NotNull Object password, @NotNull ChannelManager.Result<String> callback) {
         new Thread() {
             @Override
             public void run() {

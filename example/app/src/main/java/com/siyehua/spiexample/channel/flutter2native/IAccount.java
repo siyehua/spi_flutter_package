@@ -5,7 +5,7 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.Nullable;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
 public interface IAccount {
- 	void login( @Nullable String name,  @NotNull String password,  @NotNull Result<String> callback);
+ 	void login( @Nullable String name,  @NotNull Object password,  @NotNull Result<String> callback);
 	void getToken( @NotNull Result<String> callback);
 	void logout( @NotNull InnerClass abc,  @NotNull ArrayList<InnerClass> list,  @NotNull ArrayList<ArrayList<HashMap<Long, String>>> aaa);
 	void getAge( @NotNull Result<Long> callback);

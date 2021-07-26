@@ -78,13 +78,17 @@ String _createToJsonMethod(GenClassBean classInfo) {
         """;
 }
 
+bool isObject(Property property) {
+  return property.type == "dart.core.Object";
+}
+
 String _getJsonStr(Property property, {String propertyName = ""}) {
   String question = "";
   if (property.canBeNull) {
     question = "?";
   }
   if (property.name.isEmpty) {
-    if (TypeUtils.isBaseType(property)) {
+    if (TypeUtils.isBaseType(property) || isObject(property)) {
       return propertyName;
     } else if (TypeUtils.isListType(property)) {
       return "$propertyName$question.map((v) => ${_getJsonStr(property.subType[0], propertyName: 'v')}).toList()";
@@ -96,7 +100,7 @@ String _getJsonStr(Property property, {String propertyName = ""}) {
     }
   }
 
-  if (TypeUtils.isBaseType(property)) {
+  if (TypeUtils.isBaseType(property) || isObject(property)) {
     return "data['${property.name}'] = this.${property.name}";
   } else if (TypeUtils.isListType(property)) {
     return "data['${property.name}'] = this.${property.name}$question.map((v) => ${_getJsonStr(property.subType[0], propertyName: "v")}).toList()";
@@ -171,7 +175,7 @@ String getParseStr(Property property, {String propertyName = ""}) {
               , ifAbsent: ()=> ${FlutterFileUtils.createParseCode(property.subType[1], paramsName: "v")});
               });
             }""";
-  } else if (TypeUtils.isBaseType(property)) {
+  } else if (TypeUtils.isBaseType(property) || isObject(property)) {
     return "${property.name} = json['${property.name}']";
   } else {
     return "${property.name} = ${TypeUtils.getPropertyNameStr(property)}.fromJson(json['${property.name}'])";

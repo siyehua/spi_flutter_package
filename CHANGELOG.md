@@ -81,3 +81,7 @@ Fix: Custom class not add "?" in nullSafe
 ## 0.6.3
 
 Feat: support custom json parse
+
+## 0.6.4
+
+Feat: support object

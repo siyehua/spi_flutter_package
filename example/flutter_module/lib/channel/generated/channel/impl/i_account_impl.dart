@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 class IAccountImpl  implements IAccount, PackageTag{
 	@override
-	Future<String?> login(String? name, String password, ) async{
+	Future<String?> login(String? name, Object password, ) async{
 		Type _clsType = IAccount;
 		return await  ChannelManager.invoke(package, _clsType.toString(), "login", [name, password]);
 	}

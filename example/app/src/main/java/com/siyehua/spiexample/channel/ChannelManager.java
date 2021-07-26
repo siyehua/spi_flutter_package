@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
-
 /**
  * <br>
  * ChannelManager manager all changer interfaces.<br>
@@ -75,7 +74,6 @@ public class ChannelManager {
     public interface JsonParse {
         /**
          * passe object to json
-         *
          * @param object object
          * @return json str
          */
@@ -84,10 +82,9 @@ public class ChannelManager {
 
         /**
          * parse json str to obj
-         *
-         * @param text  json
+         * @param text json
          * @param clazz obj class
-         * @param <T>   class type
+         * @param <T> class type
          * @return obj
          */
         @Nullable
@@ -100,7 +97,7 @@ public class ChannelManager {
     private static final Handler handler = new Handler(Looper.getMainLooper());
     private static JsonParse jsonParse;//json parse
 
-    public static void init(@NonNull final BinaryMessenger messenger, @NonNull JsonParse jsonParse) {
+    public static void init(@NonNull final BinaryMessenger messenger, @NonNull  JsonParse jsonParse) {
         ChannelManager.jsonParse = jsonParse;
         MethodChannel methodChannel = new MethodChannel(messenger, channelName);
         ChannelManager.methodChannel = methodChannel;
@@ -222,7 +219,7 @@ public class ChannelManager {
             }
         });
     }
-
+  
 
     @SuppressWarnings({"UnnecessaryLocalVariable", "rawtypes", "unchecked"})
     private static Object intToLong(Object object) {
@@ -310,8 +307,8 @@ public class ChannelManager {
 
 
     static {
-        addChannelImpl(Fps.class, new FpsImpl());
-        addChannelImpl(Fps2.class, new Fps2Impl());
+		addChannelImpl(Fps.class, new FpsImpl());
+		addChannelImpl(Fps2.class, new Fps2Impl());
 
     }
 
