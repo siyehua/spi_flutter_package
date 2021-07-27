@@ -7,6 +7,7 @@ import 'auto_gen_class_json.dart';
 import 'manager/manager_creater.dart';
 import 'utils/flutter_file_utils.dart';
 import 'utils/android_file_utils.dart';
+import 'utils/ios_file_utils.dart';
 
 Future<void> flutter2Native(
   String flutterPath,
@@ -41,7 +42,8 @@ Future<void> flutter2Native(
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
-  //todo
+  ObjcFileUtils.genObjcCode(
+      list, "MQQFlutterGen_", androidSavePath, ".flutter2native");
 }
 
 void _genFlutterImpl(

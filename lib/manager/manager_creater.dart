@@ -4,6 +4,7 @@ import 'package:platforms_source_gen/gen_file_edit.dart';
 
 import 'dart_channel_manager.dart';
 import 'java_channel_manager.dart';
+import 'objc_channel_manager.dart';
 
 class ManagerUtils {
   static String dartManagerImport = "import 'package:flutter/services.dart';\n";
@@ -62,5 +63,7 @@ class ManagerUtils {
     androidFile.writeAsStringSync(newContent2);
 
     //todo create ios manager
+    String objcHeaderString = objectiveCInterfaceString;
+    String objcImplementationString = objectiveCImplementationString;
   }
 }
