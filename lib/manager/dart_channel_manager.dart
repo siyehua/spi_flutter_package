@@ -19,6 +19,11 @@ abstract class _ErrorCode {
   static String CanNotMatchArgs = "402"; //can not match method's args
 }
 
+/// custom doc should replace
+/// ChannelManager manager all changer interfaces.<br>
+/// add interface impl, use [add] method,<br>
+/// get interface impl, use [getChannel].<br>
+/// more info, see {@link 'https://pub.dev/packages/spi_flutter_package'}
 class ChannelManager {
   static const _package = "123567";
   static const _platform = const MethodChannel(_package);

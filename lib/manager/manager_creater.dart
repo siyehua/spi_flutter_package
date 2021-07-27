@@ -17,6 +17,7 @@ class ManagerUtils {
     String packageName,
     String androidSavePath, {
     String androidCustomDoc = "",
+    String flutterCustomDoc = "",
     bool nullSafeSupport = true,
   }) {
     //create flutter manager
@@ -25,6 +26,7 @@ class ManagerUtils {
     String newContent = dartStr
         .replaceAll("import 'package:flutter/services.dart';",
             ManagerUtils.dartManagerImport)
+        .replaceAll("custom doc should replace", flutterCustomDoc)
         .replaceAll("static const _package = \"123567\";",
             "static const _package = \"$packageName\";")
         .replaceAll("//replace", ManagerUtils.dartImplStr);

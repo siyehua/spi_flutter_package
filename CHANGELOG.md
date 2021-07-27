@@ -85,3 +85,7 @@ Feat: support custom json parse
 ## 0.6.4
 
 Feat: support object
+
+## 0.6.5
+
+Feat: support custom class

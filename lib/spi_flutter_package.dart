@@ -17,6 +17,7 @@ Future<void> spiFlutterPackageStart(
   String androidSavePath, {
   bool nullSafe = true,
   String androidCustomDoc = "",
+  String flutterCustomDoc = "",
 }) async {
   await flutter2Native(flutterPath, packageName, androidSavePath, nullSafe);
   await native2flutter(flutterPath, packageName, androidSavePath, nullSafe);
