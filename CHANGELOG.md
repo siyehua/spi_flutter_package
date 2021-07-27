@@ -88,4 +88,8 @@ Feat: support object
 
 ## 0.6.5
 
-Feat: support custom class
+Feat: support custom flutter doc
+
+## 0.6.6
+
+Feat: no property will not create json parse code

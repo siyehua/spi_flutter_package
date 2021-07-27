@@ -23,7 +23,8 @@ abstract class _ErrorCode {
   static String NoFoundMethod = "401"; //can't found method
   static String CanNotMatchArgs = "402"; //can not match method's args
 }
-/// custom doc should replace
+
+/// 
 /// ChannelManager manager all changer interfaces.<br>
 /// add interface impl, use [add] method,<br>
 /// get interface impl, use [getChannel].<br>
