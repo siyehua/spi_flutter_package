@@ -88,6 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                 [implementation performSelector:NSSelectorFromString(callMethod) withObject:call.arguments];
+            } else {
+                result(FlutterMethodNotImplemented);
             }
 #pragma clang diagnostic pop
         }
