@@ -89,3 +89,7 @@ Feat: support object
 ## 0.6.5
 
 Feat: support custom class
+
+## 0.6.6
+
+Feat: Support iOS Objectiv-C

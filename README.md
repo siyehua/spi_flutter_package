@@ -178,4 +178,3 @@ in flutter project, the code will save in `flutterPath`/generated :
 ## support: [platforms_source_gen](https://pub.dev/packages/platforms_source_gen)
 ## all method must return  `Future` or `void`
 because Flutter Platform Channel must return `Future`
-## It is not currently support iOS, welcome commit it in github.
