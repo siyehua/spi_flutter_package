@@ -19,7 +19,8 @@ class ObjcFileUtils {
         String content = entity.readAsStringSync();
         content = content
             .replaceAll("${projectPrefix}Result<", "void(^)(")
-            .replaceAll("> *)callback", "))callback");
+            .replaceAll("> *)callback", "))callback")
+            .replaceAll("MQQFlutterGen_Object *", "id");
         entity.writeAsStringSync(content, flush: true);
       }
     });
