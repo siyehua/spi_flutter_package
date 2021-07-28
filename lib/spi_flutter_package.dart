@@ -14,13 +14,18 @@ import 'native2flutter_parse.dart';
 Future<void> spiFlutterPackageStart(
   String flutterPath,
   String packageName,
-  String androidSavePath, {
+  String androidSavePath,
+  String iosProjectPrefix,
+  String iosSavePath, {
   bool nullSafe = true,
   String androidCustomDoc = "",
   String flutterCustomDoc = "",
 }) async {
-  await flutter2Native(flutterPath, packageName, androidSavePath, nullSafe);
-  await native2flutter(flutterPath, packageName, androidSavePath, nullSafe);
-  ManagerUtils.gentManager(flutterPath, packageName, androidSavePath,
+  await flutter2Native(flutterPath, packageName, androidSavePath,
+      iosProjectPrefix, iosSavePath, nullSafe);
+  await native2flutter(flutterPath, packageName, androidSavePath,
+      iosProjectPrefix, iosSavePath, nullSafe);
+  ManagerUtils.gentManager(
+      flutterPath, packageName, androidSavePath, iosProjectPrefix, iosSavePath,
       androidCustomDoc: androidCustomDoc, nullSafeSupport: nullSafe);
 }
