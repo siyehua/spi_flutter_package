@@ -7,6 +7,7 @@ import 'package:platforms_source_gen/platforms_source_gen.dart';
 import 'manager/manager_creater.dart';
 import 'utils/android_file_utils.dart';
 import 'utils/flutter_file_utils.dart';
+import 'utils/ios_file_utils.dart';
 import 'auto_gen_class_json.dart';
 import 'spi_flutter_package.dart';
 
@@ -14,6 +15,8 @@ Future<void> native2flutter(
   String flutterPath,
   String packageName,
   String androidSavePath,
+  String iosPrefix,
+  String iosSavePath,
   bool nullSafeSupport,
 ) async {
   Directory directory = Directory(flutterPath + "/native2flutter");
@@ -49,9 +52,8 @@ Future<void> native2flutter(
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
-  //todo
-  //create object c protocol
-  //create object c impl
+  ObjcFileUtils.genObjcCode(list, iosPrefix, iosSavePath, ".native2flutter");
+  ObjcFileUtils.gentObjcImpl(list, iosPrefix, iosSavePath);
 }
 
 void _genFlutterParse(

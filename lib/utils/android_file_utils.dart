@@ -30,6 +30,18 @@ class JavaFileUtils {
       if (!classBean.imports.contains(tmpImport)) {
         classBean.imports.add(tmpImport);
       }
+
+      classBean.methods
+          .where((method) => method.returnType.type == "dart.async.Future")
+          .forEach((method) {
+        Property property = Property();
+        property.type = "ChannelManager.Result";
+        property.name = "callback";
+        property.subType = method.returnType.subType;
+        method.args.add(property);
+        method.returnType.type = "void";
+        method.returnType.subType = [];
+      });
     });
     platforms_source_gent_start(
         packageName, //your android's  java class package name

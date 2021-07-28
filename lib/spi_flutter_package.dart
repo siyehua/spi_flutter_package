@@ -23,7 +23,8 @@ Future<void> spiFlutterPackageStart(
 }) async {
   await flutter2Native(flutterPath, packageName, androidSavePath,
       iosProjectPrefix, iosSavePath, nullSafe);
-  await native2flutter(flutterPath, packageName, androidSavePath, nullSafe);
+  await native2flutter(flutterPath, packageName, androidSavePath,
+      iosProjectPrefix, iosSavePath, nullSafe);
   ManagerUtils.gentManager(
       flutterPath, packageName, androidSavePath, iosProjectPrefix, iosSavePath,
       androidCustomDoc: androidCustomDoc, nullSafeSupport: nullSafe);
