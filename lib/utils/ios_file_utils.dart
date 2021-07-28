@@ -1,5 +1,6 @@
 import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
+import 'dart:io';
 
 class ObjcFileUtils {
   static void genObjcCode(
@@ -10,26 +11,18 @@ class ObjcFileUtils {
     bool nullSafeSupport = true,
   }) {
     savePath += "/" + (projectPrefix + type).replaceAll(".", "/");
-    list.forEach((classBean) {
-      String reg = "";
-      if (type.contains("flutter2native")) {
-        reg = "native2flutter";
-      } else {
-        reg = "flutter2native";
-      }
-      // classBean.methods
-      //     .where((method) => method.returnType.type == "dart.async.Future")
-      //     .forEach((method) {
-      //   Property property = Property();
-      //   property.type = "ChannelManager.Result";
-      //   property.name = "callback";
-      //   property.subType = method.returnType.subType;
-      //   method.args.add(property);
-      //   method.returnType.type = "void";
-      //   method.returnType.subType = [];
-      // });
-    });
     platforms_source_start_gen_objc(projectPrefix, savePath, list,
         nullSafe: nullSafeSupport);
+    List<FileSystemEntity> generatedFile = Directory(savePath).listSync();
+    generatedFile.forEach((entity) {
+      if (entity is File) {
+        String content = entity.readAsStringSync();
+        content = content
+            .replaceAll("${projectPrefix}Result<", "void(^)(")
+            .replaceAll("> *)__callback", "))callback")
+            .replaceAll("__", "");
+        entity.writeAsStringSync(content, flush: true);
+      }
+    });
   }
 }
