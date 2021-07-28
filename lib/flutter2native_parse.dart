@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 
@@ -35,6 +36,20 @@ Future<void> flutter2Native(
 
   _genFlutterImpl(flutterPath, packageName, list, nullSafeSupport);
 
+  // convert future type to completion call back
+  list.forEach((classBean) {
+    classBean.methods
+        .where((method) => method.returnType.type == "dart.async.Future")
+        .forEach((method) {
+      Property property = Property();
+      property.type = "ChannelManager.Result";
+      property.name = "__callback";
+      property.subType = method.returnType.subType;
+      method.args.add(property);
+      method.returnType.type = "void";
+      method.returnType.subType = [];
+    });
+  });
   ////////////////////////android//////////////////////////
   ////////////////////////android//////////////////////////
   ////////////////////////android//////////////////////////
