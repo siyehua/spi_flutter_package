@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
+import 'package:platforms_source_gen/type_utils.dart';
 
 import 'auto_gen_class_json.dart';
 import 'manager/manager_creater.dart';
@@ -91,14 +92,20 @@ void _genFlutterImpl(
         //     Map<dynamic, dynamic> a = await ChannelManager.invoke(package, clsType.toString(), "a22222222",);
         //     Map<String, bool> b = a.map((key, value) => MapEntry(key as String, value as bool));
         //     return b;
-        if (method.returnType.subType[0].type == "dart.core.List") {
+        if (TypeUtils.isListType(method.returnType.subType[0])) {
           //list
           returnStr = "dynamic result = await ";
           String type =
               FlutterFileUtils.getTypeStr(method.returnType.subType[0]);
           exp =
               "\t\t$type _b = ${FlutterFileUtils.createParseCode(method.returnType.subType[0])};\n\t\treturn _b;\n";
-        } else if (method.returnType.subType[0].type == "dart.core.Map") {
+        } else if (TypeUtils.isMapType(method.returnType.subType[0])) {
+          returnStr = "dynamic result = await ";
+          String type =
+              FlutterFileUtils.getTypeStr(method.returnType.subType[0]);
+          exp =
+              "\t\t$type _b = ${FlutterFileUtils.createParseCode(method.returnType.subType[0])};\n\t\treturn _b;\n";
+        } else if (!TypeUtils.isBaseType(method.returnType.subType[0])) {
           returnStr = "dynamic result = await ";
           String type =
               FlutterFileUtils.getTypeStr(method.returnType.subType[0]);

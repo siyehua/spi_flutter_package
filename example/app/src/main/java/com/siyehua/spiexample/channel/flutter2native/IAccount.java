@@ -9,6 +9,7 @@ public interface IAccount {
 	void getToken( @NotNull Result<String> callback);
 	void logout( @NotNull InnerClass abc,  @NotNull ArrayList<InnerClass> list,  @NotNull ArrayList<ArrayList<HashMap<Long, String>>> aaa);
 	void getAge( @NotNull Result<Long> callback);
+	void getAge2( @NotNull Result<InnerClass> callback);
 	void getList( @Nullable InnerClass abc,  @NotNull Result<ArrayList<String>> callback);
 	void getMap( @NotNull Result<HashMap<ArrayList<String>, InnerClass>> callback);
 	void setMap( @Nullable HashMap<Long, Boolean> a);

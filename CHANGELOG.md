@@ -97,3 +97,7 @@ Feat: no property will not create json parse code
 ## 0.6.7
 
 Fix: null safe bug
+
+## 0.6.7
+
+Fix: custom class return type parse error

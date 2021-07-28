@@ -9,6 +9,8 @@ abstract class IAccount {
 
   Future<int> getAge();
 
+  Future<InnerClass> getAge2();
+
   Future<List<String>?> getList(InnerClass? abc);
 
   Future<Map<List<String>?, InnerClass>> getMap();
