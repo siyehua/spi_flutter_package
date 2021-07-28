@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 
@@ -40,13 +39,15 @@ Future<void> flutter2Native(
   ////////////////////////android//////////////////////////
   ////////////////////////android//////////////////////////
   JavaFileUtils.genJavaCode(
-      list, packageName, androidSavePath, ".flutter2native");
+      list, packageName, androidSavePath, ".flutter2native",
+      nullSafeSupport: nullSafeSupport);
 
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ObjcFileUtils.genObjcCode(
-      list, iosProjectPrefix, iosSavePath, ".flutter2native");
+      list, iosProjectPrefix, iosSavePath, ".flutter2native",
+      nullSafeSupport: nullSafeSupport);
 }
 
 void _genFlutterImpl(

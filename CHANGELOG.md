@@ -93,3 +93,7 @@ Feat: support custom flutter doc
 ## 0.6.6
 
 Feat: no property will not create json parse code
+
+## 0.6.7
+
+Fix: null safe bug
