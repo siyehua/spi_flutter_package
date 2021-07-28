@@ -13,6 +13,8 @@ Future<void> flutter2Native(
   String flutterPath,
   String packageName,
   String androidSavePath,
+  String iosProjectPrefix,
+  String iosSavePath,
   bool nullSafeSupport,
 ) async {
   Directory directory = Directory(flutterPath + "/flutter2native");
@@ -43,7 +45,7 @@ Future<void> flutter2Native(
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ObjcFileUtils.genObjcCode(
-      list, "MQQFlutterGen_", androidSavePath, ".flutter2native");
+      list, iosProjectPrefix, iosSavePath, ".flutter2native");
 }
 
 void _genFlutterImpl(

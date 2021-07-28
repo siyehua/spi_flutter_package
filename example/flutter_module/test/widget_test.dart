@@ -12,10 +12,14 @@ import 'package:flutter_module/channel/flutter2native/account.dart';
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
 void main() async {
-  String flutterPath = "./lib/channel";//需要转换的 dart 目录
-  String packageName = "com.siyehua.spiexample.channel";//java 包名
-  String androidSavePath = "../app/src/main/java";//需要保存的 java 路径
-  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: true);
+  String flutterPath = "./lib/channel"; //需要转换的 dart 目录
+  String packageName = "com.siyehua.spiexample.channel"; //java 包名
+  String androidSavePath = "../app/src/main/java"; //需要保存的 java 路径
+  String iosPrefix = "MQQFlutterGen_";
+  String iosSavePath = "../ios";
+  await spiFlutterPackageStart(
+      flutterPath, packageName, androidSavePath, iosPrefix, iosSavePath,
+      nullSafe: true);
 }
 // void main(){
 //   String json = """

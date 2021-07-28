@@ -4,7 +4,7 @@ String objcChannelInterfaceString = '''
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MQQFlutterChannelManager : NSObject
+@interface #{projectPrefix}ChannelManager : NSObject
 
 /// initialize channel manager
 /// @param engine the flutter engine
@@ -24,18 +24,18 @@ NS_ASSUME_NONNULL_END
 ''';
 
 String objcChannelImplementationString = '''
-#import "MQQFlutterChannelManager.h"
+#import "FlutterChannelManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MQQFlutterChannelManager ()
+@interface #{projectPrefix}ChannelManager ()
 
 @property (nonatomic, copy) NSString *channelName;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, id> *methodImplementations;
 
 @end
 
-@implementation MQQFlutterChannelManager
+@implementation #{projectPrefix}ChannelManager
 
 - (instancetype)init
 {

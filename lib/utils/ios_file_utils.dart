@@ -17,18 +17,19 @@ class ObjcFileUtils {
       } else {
         reg = "flutter2native";
       }
-      classBean.methods
-          .where((method) => method.returnType.type == "dart.async.Future")
-          .forEach((method) {
-        Property property = Property();
-        property.type = "ChannelManager.Result";
-        property.name = "callback";
-        property.subType = method.returnType.subType;
-        method.args.add(property);
-        method.returnType.type = "void";
-        method.returnType.subType = [];
-      });
+      // classBean.methods
+      //     .where((method) => method.returnType.type == "dart.async.Future")
+      //     .forEach((method) {
+      //   Property property = Property();
+      //   property.type = "ChannelManager.Result";
+      //   property.name = "callback";
+      //   property.subType = method.returnType.subType;
+      //   method.args.add(property);
+      //   method.returnType.type = "void";
+      //   method.returnType.subType = [];
+      // });
     });
-    genIOSCode("MQQFlutterGen_", savePath, list, nullSafe: nullSafeSupport);
+    platforms_source_start_gen_objc(projectPrefix, savePath, list,
+        nullSafe: nullSafeSupport);
   }
 }
