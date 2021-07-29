@@ -16,7 +16,7 @@ void main() async {
   String packageName = "com.siyehua.spiexample.channel"; //java 包名
   String androidSavePath = "../app/src/main/java"; //需要保存的 java 路径
   String iosPrefix = "MQQFlutterGen_";
-  String iosSavePath = "../ios";
+  String iosSavePath = "../../ios/Classes";
   await spiFlutterPackageStart(
       flutterPath, packageName, androidSavePath, iosPrefix, iosSavePath,
       nullSafe: true);
