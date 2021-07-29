@@ -1,5 +1,3 @@
-
-
 String dartStr = '''
 import 'dart:collection';
 
@@ -58,10 +56,10 @@ class ChannelManager {
     });
   }
 
-  static Future<T?> invoke<T>(String packageName, String clsName, String method,
+  static Future<T?> invoke<T>(String packageName, String clsName, String method, String argNames,
       [dynamic arguments]) {
     return _platform.invokeMethod(
-        packageName + "." + clsName + "#" + method, arguments);
+        packageName + "." + clsName + "#" + method + "#" + argNames, arguments);
   }
 
   static T getChannel<T>(Type clsName) {
