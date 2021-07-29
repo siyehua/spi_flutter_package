@@ -93,3 +93,8 @@ Feat: support custom class
 ## 0.6.6
 
 Feat: Support iOS Objectiv-C
+
+## 0.6.7
+
+Feat: Add iOS Demo
+Feat: Support iOS flutter2native channel communication
