@@ -1,4 +1,5 @@
 #import "MQQFlutterGen_ChannelManager.h"
+#import <MJExtension/MJExtension.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,22 +42,61 @@ NS_ASSUME_NONNULL_BEGIN
     self.methodChannel = [FlutterMethodChannel methodChannelWithName:self.channelName binaryMessenger:messenger];
     [self.methodChannel setMethodCallHandler:^(FlutterMethodCall * _Nonnull call, FlutterResult  _Nonnull result) {
         NSArray *methodSubstring = [call.method componentsSeparatedByString:@"#"];
-        if (methodSubstring.count < 2) {
+        if (methodSubstring.count < 3) {
+            result(FlutterMethodNotImplemented);
             return;
         }
         NSString *callClassString = methodSubstring[0];
         NSString *callClass = [NSString stringWithFormat:@"MQQFlutterGen_%@", [callClassString componentsSeparatedByString:@"."].lastObject];
         NSString *callMethod = methodSubstring[1];
+        NSArray *arguments = [methodSubstring[2] componentsSeparatedByString:@","];
+        // assemble method name with arguments name
+        for (NSString *argument in arguments) {
+            if ([argument isEqualToString:arguments.firstObject]) {
+                callMethod = [callMethod stringByAppendingString:@":"];
+            } else {
+                callMethod = [callMethod stringByAppendingFormat:@"%@:", argument];
+            }
+        }
         if (callClass.length > 0) {
             id implementation = weakSelf.methodImplementations[callClass];
             if (implementation && [implementation respondsToSelector:NSSelectorFromString(callMethod)]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                [implementation performSelector:NSSelectorFromString(callMethod) withObject:call.arguments];
+                // generate method invocation
+                SEL selector = NSSelectorFromString(callMethod);
+                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[implementation methodSignatureForSelector:selector]];
+                [invocation setSelector:selector];
+                [invocation setTarget:implementation];
+                [call.arguments enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    id arg = obj;
+                    if ([obj isKindOfClass:[NSString class]]) {
+                        NSString *string = (NSString *)obj;
+                        if ([string containsString:@"___custom___"]) {    // generate custom class initilize
+                            NSString *className = [NSString stringWithFormat:@"MQQFlutterGen_%@", [string substringToIndex:[string rangeOfString:@"___custom___"].location]];
+                            NSInteger propertiesBegin = [string rangeOfString:@"{"].location;
+                            Class customClass = NSClassFromString(className);
+                            arg = [customClass new];
+                            if (propertiesBegin != NSNotFound) {
+                                NSString *properties = [string substringWithRange:NSMakeRange(propertiesBegin, string.length - propertiesBegin)];
+                                NSData *data = [properties dataUsingEncoding:NSUTF8StringEncoding];
+                                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                for (NSString *key in json.allKeys) {
+                                    [arg setValue:json[key] forKey:key];    // perform setter method
+                                }
+                            }
+                        }
+                    }
+                    [invocation setArgument:&(arg) atIndex:idx + 2];
+                    [invocation retainArguments];
+                }];
+                void(^completion)(id _Nullable object) = ^(id _Nullable object) {
+                    object = [self _convertCustomClass:object];
+                    result(object);
+                };
+                [invocation setArgument:&(completion) atIndex:arguments.count + 1];
+                [invocation invoke];
             } else {
-                 result(FlutterMethodNotImplemented);
+                result(FlutterMethodNotImplemented);
             }
-#pragma clang diagnostic pop
         }
 
     }];
@@ -74,6 +114,31 @@ NS_ASSUME_NONNULL_BEGIN
             completion(result);
         }
     }];
+}
+
+#pragma mark - Private Methods
+
+- (id)_convertCustomClass:(id)object
+{
+    if ([object isKindOfClass:[NSArray class]]) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (id value in (NSArray *)object) {
+            [array addObject:[self _convertCustomClass:value]];
+        }
+        return array;
+    } else if ([object isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [((NSDictionary *)object) enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            dict[[self _convertCustomClass:key]] = [self _convertCustomClass:obj];
+        }];
+        return dict;
+    } else if ([NSStringFromClass([object class]) hasPrefix:@"MQQFlutterGen_"]) {
+        // custom class
+        NSString *className = [NSStringFromClass([object class]) stringByReplacingOccurrencesOfString:@"MQQFlutterGen_" withString:@""];
+        NSString *properties = ((NSObject *)object).mj_JSONString;
+        return [NSString stringWithFormat:@"%@___custom___%@", className, properties];
+    }
+    return object;
 }
 
 @end
