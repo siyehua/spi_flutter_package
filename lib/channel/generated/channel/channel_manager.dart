@@ -1,7 +1,10 @@
-String dartStr = '''
+
+import 'dart:typed_data';
 import 'dart:collection';
 
 import 'package:flutter/services.dart';
+import 'parse/object_parse.dart';
+
 
 abstract class PackageTag {
   String package = "";
@@ -17,13 +20,13 @@ abstract class _ErrorCode {
   static String CanNotMatchArgs = "402"; //can not match method's args
 }
 
-/// custom doc should replace
+/// 
 /// ChannelManager manager all changer interfaces.<br>
 /// add interface impl, use [add] method,<br>
 /// get interface impl, use [getChannel].<br>
 /// more info, see {@link 'https://pub.dev/packages/spi_flutter_package'}
 class ChannelManager {
-  static const _package = "123567";
+  static const _package = "com.siyehua.spiexample.channel";
   static const _platform = const MethodChannel(_package);
   static final _channelImplMap = new HashMap<String, dynamic>();
 
@@ -36,7 +39,7 @@ class ChannelManager {
   }
   
   static void init() {
-//replace
+
 
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
@@ -56,14 +59,13 @@ class ChannelManager {
     });
   }
 
-  static Future<T?> invoke<T>(String packageName, String clsName, String method, String argNames,
+  static Future<T?> invoke<T>(String packageName, String clsName, String method,
       [dynamic arguments]) {
     return _platform.invokeMethod(
-        packageName + "." + clsName + "#" + method + "#" + argNames, arguments);
+        packageName + "." + clsName + "#" + method, arguments);
   }
 
   static T getChannel<T>(Type clsName) {
     return _channelImplMap[clsName.toString()];
   }
 }
-''';

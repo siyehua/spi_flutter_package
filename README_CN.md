@@ -185,4 +185,3 @@ ChannelManager.addChannelImpl(IAccount.class, new AccountImpl());
 ## 支持的类型和属性, 详见: [platforms_source_gen](https://pub.dev/packages/platforms_source_gen)
 ## 所有的 dart 通信协议都必须返回 Future 或 void
 因为 Flutter 的 Channel 本身返回必须是 Future ,异步的
-## 目前暂时不支持 iOS, 后续将补充, 欢迎大家往 github 补充
