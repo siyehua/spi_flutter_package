@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_END
           String methodContent =
               "\tNSMutableArray *args = [NSMutableArray array];\n" +
                   argNames +
-                  "\t[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:${method.name} args:args completion:${hasCallback ? 'callback' : 'nil'}];\n";
+                  "\t[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@\"${method.name}\" args:args completion:${hasCallback ? 'callback' : 'nil'}];\n";
           implementationString +=
               "${ObjectiveCCreate.method([method]).replaceAll(";", "")} {\n" +
                   methodContent +
