@@ -13,17 +13,7 @@ class ObjcFileUtils {
     savePath += "/" + (projectPrefix + type).replaceAll(".", "/");
     platforms_source_start_gen_objc(projectPrefix, savePath, list,
         nullSafe: nullSafeSupport);
-    List<FileSystemEntity> generatedFile = Directory(savePath).listSync();
-    generatedFile.forEach((entity) {
-      if (entity is File) {
-        String content = entity.readAsStringSync();
-        content = content
-            .replaceAll("${projectPrefix}Result<", "void(^)(")
-            .replaceAll("> *)callback", "))callback")
-            .replaceAll("MQQFlutterGen_Object *", "id");
-        entity.writeAsStringSync(content, flush: true);
-      }
-    });
+    convertResultType(savePath, projectPrefix);
   }
 
   static void gentObjcImpl(
@@ -99,6 +89,21 @@ NS_ASSUME_NONNULL_END
         File impFile = File(dir.path + "/$className.m");
         headerFile.writeAsStringSync(interfaceString);
         impFile.writeAsStringSync(allContent);
+      }
+    });
+    convertResultType(savePath, projectPrefix);
+  }
+
+  static void convertResultType(String savePath, String projectPrefix) {
+    List<FileSystemEntity> generatedFile = Directory(savePath).listSync();
+    generatedFile.forEach((entity) {
+      if (entity is File) {
+        String content = entity.readAsStringSync();
+        content = content
+            .replaceAll("${projectPrefix}Result<", "void(^)(")
+            .replaceAll("> *)callback", "))callback")
+            .replaceAll("#import \"MQQFlutterGen_Result.h\"", "");
+        entity.writeAsStringSync(content, flush: true);
       }
     });
   }
