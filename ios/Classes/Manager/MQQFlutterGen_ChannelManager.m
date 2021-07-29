@@ -1,45 +1,9 @@
-String objcChannelInterfaceString = '''
-#import <Foundation/Foundation.h>
-#import <Flutter/Flutter.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface #{projectPrefix}ChannelManager : NSObject
-
-+ (instancetype)sharedManager;
-
-@property (nonatomic, strong, readonly) FlutterMethodChannel *methodChannel;
-
-/// initialize channel manager
-/// @param messenger The binary messenger.
-- (void)initializeWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger;
-
-/// add an native implementation for a dart generated protocol
-/// dart code with abstract methods will generated into a objc protocol
-/// native implementation should conform to the generated protocol and implment
-/// those abstract method.
-/// @param implementation the native implementation class instance.
-/// @param name the generated protocol name.
-- (void)addMethodImplementation:(id)implementation withName:(NSString *)name;
-
-/// Invoke a dart method
-/// @param method the method's name
-/// @param args the method's arguments
-/// @param completion the method's completion result
-- (void)invokeMethod:(NSString *)method args:(nullable NSArray *)args completion:(nullable void(^)(__nullable id result))completion;
-
-@end
-
-NS_ASSUME_NONNULL_END
-''';
-
-String objcChannelImplementationString = '''
-#import "#{projectPrefix}ChannelManager.h"
+#import "MQQFlutterGen_ChannelManager.h"
 #import <MJExtension/MJExtension.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface #{projectPrefix}ChannelManager ()
+@interface MQQFlutterGen_ChannelManager ()
 
 @property (nonatomic, copy) NSString *channelName;
 @property (nonatomic, strong, nullable) FlutterMethodChannel *methodChannel;
@@ -47,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation #{projectPrefix}ChannelManager
+@implementation MQQFlutterGen_ChannelManager
 
 + (instancetype)sharedManager
 {
-    static #{projectPrefix}ChannelManager *manager;
+    static MQQFlutterGen_ChannelManager *manager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         manager = [[self alloc] init];
@@ -83,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         NSString *callClassString = methodSubstring[0];
-        NSString *callClass = [NSString stringWithFormat:@"#{projectPrefix}%@", [callClassString componentsSeparatedByString:@"."].lastObject];
+        NSString *callClass = [NSString stringWithFormat:@"MQQFlutterGen_%@", [callClassString componentsSeparatedByString:@"."].lastObject];
         NSString *callMethod = methodSubstring[1];
         NSArray *arguments = [methodSubstring[2] componentsSeparatedByString:@","];
         // assemble method name with arguments name
@@ -107,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
                     if ([obj isKindOfClass:[NSString class]]) {
                         NSString *string = (NSString *)obj;
                         if ([string containsString:@"___custom___"]) {    // generate custom class initilize
-                            NSString *className = [NSString stringWithFormat:@"#{projectPrefix}%@", [string substringToIndex:[string rangeOfString:@"___custom___"].location]];
+                            NSString *className = [NSString stringWithFormat:@"MQQFlutterGen_%@", [string substringToIndex:[string rangeOfString:@"___custom___"].location]];
                             NSInteger propertiesBegin = [string rangeOfString:@"{"].location;
                             Class customClass = NSClassFromString(className);
                             arg = [customClass new];
@@ -180,33 +144,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-''';
-
-String objcChannelPluginInterfaceString = '''
-#import <Flutter/Flutter.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface SPIFlutterChannelPlugin : NSObject<FlutterPlugin>
-
-@end
-
-NS_ASSUME_NONNULL_END
-''';
-
-String objcChannelPluginImplementString = '''
-#import "SPIFlutterChannelPlugin.h"
-#import "#{projectPrefix}ChannelManager.h"
-
-NS_ASSUME_NONNULL_BEGIN
-
-@implementation SPIFlutterChannelPlugin
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    [[#{projectPrefix}ChannelManager sharedManager] initializeWithBinaryMessenger:[registrar messenger]];
-}
-
-@end
-
-NS_ASSUME_NONNULL_END
-''';

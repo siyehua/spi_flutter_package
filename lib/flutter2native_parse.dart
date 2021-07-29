@@ -69,10 +69,12 @@ void _genFlutterImpl(
     //impl interface
     String methodStr = "";
     classBean.methods.forEach((method) {
-      List<String> argNames = [];
+      List<String> arguments = [];
+      List<String> argumentsName = [];
       String argsStr = "";
       method.args.forEach((arg) {
-        argNames.add(FlutterFileUtils.parseMethodArgs(arg));
+        argumentsName.add(arg.name);
+        arguments.add(FlutterFileUtils.parseMethodArgs(arg));
         argsStr += "${FlutterFileUtils.getTypeStr(arg)} ${arg.name}, ";
       });
 
@@ -114,10 +116,16 @@ void _genFlutterImpl(
         } else {
           returnStr = "return await ";
         }
+        argumentsName.add("callback");
       }
 
+      String argNames = argumentsName
+          .toString()
+          .replaceAll("[", "")
+          .replaceAll("]", "")
+          .replaceAll(" ", "");
       String methodContent = "\t\tType _clsType = ${classBean.classInfo.name};\n" +
-          "\t\t$returnStr ChannelManager.invoke(package, _clsType.toString(), \"${method.name}\", ${argNames.isEmpty ? "" : argNames.toString()});\n" +
+          "\t\t$returnStr ChannelManager.invoke(package, _clsType.toString(), \"${method.name}\", \"$argNames\", ${arguments.isEmpty ? "" : arguments.toString()});\n" +
           exp;
 
       methodStr += "\t@override\n" +
