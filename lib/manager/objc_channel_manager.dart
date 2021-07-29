@@ -8,11 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedManager;
 
-@property (nonatomic, strong, nullable) FlutterMethodChannel *methodChannel;
+@property (nonatomic, strong, readonly) FlutterMethodChannel *methodChannel;
 
 /// initialize channel manager
-/// @param engine the flutter engine
-- (void)initializeWithFlutterEngine:(FlutterEngine *)engine;
+/// @param messenger The binary messenger.
+- (void)initializeWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger;
 
 /// add an native implementation for a dart generated protocol
 /// dart code with abstract methods will generated into a objc protocol
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_END
 ''';
 
 String objcChannelImplementationString = '''
-#import "FlutterChannelManager.h"
+#import "#{projectPrefix}ChannelManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -71,16 +71,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Public Methods
 
-- (void)initializeWithFlutterEngine:(FlutterEngine *)engine
+- (void)initializeWithBinaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger
 {
     __weak typeof(self) weakSelf = self;
-    self.methodChannel = [FlutterMethodChannel methodChannelWithName:self.channelName binaryMessenger:engine.binaryMessenger];
+    self.methodChannel = [FlutterMethodChannel methodChannelWithName:self.channelName binaryMessenger:messenger];
     [self.methodChannel setMethodCallHandler:^(FlutterMethodCall * _Nonnull call, FlutterResult  _Nonnull result) {
         NSArray *methodSubstring = [call.method componentsSeparatedByString:@"#"];
         if (methodSubstring.count < 2) {
+            result(FlutterMethodNotImplemented);
             return;
         }
-        NSString *callClass = methodSubstring[0];
+        NSString *callClassString = methodSubstring[0];
+        NSString *callClass = [NSString stringWithFormat:@"#{projectPrefix}%@", [callClassString componentsSeparatedByString:@"."].lastObject];
         NSString *callMethod = methodSubstring[1];
         if (callClass.length > 0) {
             id implementation = weakSelf.methodImplementations[callClass];
@@ -88,10 +90,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                 [implementation performSelector:NSSelectorFromString(callMethod) withObject:call.arguments];
+#pragma clang diagnostic pop
             } else {
                 result(FlutterMethodNotImplemented);
             }
-#pragma clang diagnostic pop
         }
 
     }];
@@ -109,6 +111,35 @@ NS_ASSUME_NONNULL_BEGIN
             completion(result);
         }
     }];
+}
+
+@end
+
+NS_ASSUME_NONNULL_END
+''';
+
+String objcChannelPluginInterfaceString = '''
+#import <Flutter/Flutter.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface SPIFlutterChannelPlugin : NSObject<FlutterPlugin>
+
+@end
+
+NS_ASSUME_NONNULL_END
+''';
+
+String objcChannelPluginImplementString = '''
+#import "SPIFlutterChannelPlugin.h"
+#import "#{projectPrefix}ChannelManager.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@implementation SPIFlutterChannelPlugin
+
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    [[#{projectPrefix}ChannelManager sharedManager] initializeWithBinaryMessenger:[registrar messenger]];
 }
 
 @end
