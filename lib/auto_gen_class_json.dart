@@ -11,7 +11,11 @@ import 'package:spi_flutter_package/utils/flutter_file_utils.dart';
 Future<void> autoCreateJsonParse(
     List<GenClassBean> genClasses, String sourcePath, bool nullSafe) async {
   var fileInsertCount = <String, int>{};
-  genClasses.where((value) => value.classInfo.type == 0).where((value) {
+  genClasses
+      .where((value) => value.classInfo.type == 0)
+      .where((element) =>
+          element.properties.where((element) => !element.isStatic).isNotEmpty)
+      .where((value) {
     bool hasToJsonMethod =
         value.methods.where((element) => element.name == "toJson").isEmpty;
     print("filter: ${value.classInfo.name} $hasToJsonMethod");

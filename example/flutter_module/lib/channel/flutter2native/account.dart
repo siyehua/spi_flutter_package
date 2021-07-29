@@ -9,6 +9,8 @@ abstract class IAccount {
 
   Future<int> getAge();
 
+  Future<InnerClass> getAge2();
+
   Future<List<String>?> getList(InnerClass? abc);
 
   Future<Map<List<String>?, InnerClass>> getMap();
@@ -193,22 +195,6 @@ class InnerClass {
 }
 
 class Route {
-  /// Note: this method create by SPI, if change Class property or method,
-  /// please remove it. it will be carted by SPI again.
-  Route();
-
-  /// Note: this method create by SPI, if change Class property or method,
-  /// please remove it. it will be carted by SPI again.
-  Route.fromJson(Map<String, dynamic> json) {}
-
-  /// Note: this method create by SPI, if change Class property or method,
-  /// please remove it. it will be carted by SPI again.
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-
-    return data;
-  }
-
   static const String main_page = "/main/page";
   static const String mine_main = "/mine/main";
   static const int int_value = 123;

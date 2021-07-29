@@ -88,13 +88,21 @@ Feat: support object
 
 ## 0.6.5
 
-Feat: support custom class
+Feat: support custom flutter doc
 
 ## 0.6.6
 
-Feat: Support iOS Objectiv-C
+Feat: no property will not create json parse code
 
 ## 0.6.7
+
+Fix: null safe bug
+
+## 0.6.8
+
+Fix: custom class return type parse error
+
+## 0.6.9
 
 Feat: Add iOS Demo
 Feat: Support iOS flutter2native channel communication
