@@ -80,3 +80,4 @@ build/
 # Ignore Gradle build output directory
 build
 bin/channels/.gradle
+/ios

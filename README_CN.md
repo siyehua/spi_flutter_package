@@ -181,6 +181,14 @@ ChannelManager.addChannelImpl(IAccount.class, new AccountImpl());
 
 **注意: 自动生成的代码不建议修改, 每次工具执行的时候, 都会覆盖掉修改**
 
+# 混淆配置
+注意：如果你开启了混淆，请在 `proguard-rules.pro` 文件中添加：
+
+```
+# in example, the package name is "com.siyehua.spiexample.channel"
+-keep class {your android package name}.** {*;}
+```
+
 # 注意事项
 ## 支持的类型和属性, 详见: [platforms_source_gen](https://pub.dev/packages/platforms_source_gen)
 ## 所有的 dart 通信协议都必须返回 Future 或 void

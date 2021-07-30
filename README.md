@@ -174,6 +174,14 @@ in flutter project, the code will save in `flutterPath`/generated :
 
 **Note: auto create code should not be edited**
 
+# Proguard
+Note: if you open proguard, please add code in `proguard-rules.pro` file:
+
+```
+# in example, the package name is "com.siyehua.spiexample.channel"
+-keep class {your android package name}.** {*;}
+```
+
 # Other
 ## support: [platforms_source_gen](https://pub.dev/packages/platforms_source_gen)
 ## all method must return  `Future` or `void`
