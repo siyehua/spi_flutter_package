@@ -35,7 +35,13 @@ NS_ASSUME_NONNULL_END
 
 String objcChannelImplementationString = '''
 #import "#{projectPrefix}ChannelManager.h"
+
+#if defined(__has_include) && __has_include("MJExtension.h")
+#import "MJExtension.h"
+#else
 #import <MJExtension/MJExtension.h>
+#endif
+
 
 NS_ASSUME_NONNULL_BEGIN
 
