@@ -14,6 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 	return self;
 }
 
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+	MQQFlutterGen_Route *value = [[self.class allocWithZone:zone] init];
+	value.main_page = _main_page;
+	value.mine_main = _mine_main;
+	value.int_value = _int_value;
+	return value;
+}
 
 @end
 NS_ASSUME_NONNULL_END

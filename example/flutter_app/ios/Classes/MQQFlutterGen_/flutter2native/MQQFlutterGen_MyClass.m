@@ -20,6 +20,29 @@ NS_ASSUME_NONNULL_BEGIN
 	return self;
 }
 
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+	MQQFlutterGen_MyClass *value = [[self.class allocWithZone:zone] init];
+	value.abc = _abc;
+	value.aaa = _aaa;
+	value.a = _a;
+	value.b = _b;
+	value.c = _c;
+	value.d = _d;
+	value.g = _g;
+	value.g1 = _g1;
+	value.g2 = _g2;
+	value.j = _j;
+	value.j1 = _j1;
+	value.j2 = _j2;
+	value.i = _i;
+	value.i1 = _i1;
+	value.i2 = _i2;
+	value.i3 = _i3;
+	value.i4 = _i4;
+	value.i5 = _i5;
+	return value;
+}
 
 @end
 NS_ASSUME_NONNULL_END

@@ -12,6 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 	return self;
 }
 
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+	MQQFlutterGen_PageInfo *value = [[self.class allocWithZone:zone] init];
+	value.name = _name;
+	value.id = _id;
+	value.fps = _fps;
+	return value;
+}
 
 @end
 NS_ASSUME_NONNULL_END

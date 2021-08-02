@@ -72,33 +72,23 @@ NS_ASSUME_NONNULL_BEGIN
                 [invocation setSelector:selector];
                 [invocation setTarget:implementation];
                 [call.arguments enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    id arg = obj;
-                    if ([obj isKindOfClass:[NSString class]]) {
-                        NSString *string = (NSString *)obj;
-                        if ([string containsString:@"___custom___"]) {    // generate custom class initilize
-                            NSString *className = [NSString stringWithFormat:@"MQQFlutterGen_%@", [string substringToIndex:[string rangeOfString:@"___custom___"].location]];
-                            NSInteger propertiesBegin = [string rangeOfString:@"{"].location;
-                            Class customClass = NSClassFromString(className);
-                            arg = [customClass new];
-                            if (propertiesBegin != NSNotFound) {
-                                NSString *properties = [string substringWithRange:NSMakeRange(propertiesBegin, string.length - propertiesBegin)];
-                                NSData *data = [properties dataUsingEncoding:NSUTF8StringEncoding];
-                                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                for (NSString *key in json.allKeys) {
-                                    [arg setValue:json[key] forKey:key];    // perform setter method
-                                }
-                            }
-                        }
-                    }
+                    id arg = [weakSelf _convertObjectToCustomObjectIfNeeded:obj];
                     [invocation setArgument:&(arg) atIndex:idx + 2];
                     [invocation retainArguments];
                 }];
-                void(^completion)(id _Nullable object) = ^(id _Nullable object) {
-                    object = [self _convertCustomClass:object];
-                    result(object);
-                };
-                [invocation setArgument:&(completion) atIndex:arguments.count + 1];
+                BOOL hasCallback = [arguments containsObject:@"callback"];
+                if (hasCallback) {
+                    void(^completion)(id _Nullable object) = ^(id _Nullable object) {
+                        object = [weakSelf _convertCustomClassToStringIfNeeded:object];
+                        result(object);
+                    };
+                    [invocation setArgument:&(completion) atIndex:arguments.count + 1];
+                    [invocation retainArguments];
+                }
                 [invocation invoke];
+                if (!hasCallback) {
+                    result(@YES);
+                }
             } else {
                 result(FlutterMethodNotImplemented);
             }
@@ -123,18 +113,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private Methods
 
-- (id)_convertCustomClass:(id)object
+- (id)_convertCustomClassToStringIfNeeded:(id)object
 {
     if ([object isKindOfClass:[NSArray class]]) {
         NSMutableArray *array = [NSMutableArray array];
         for (id value in (NSArray *)object) {
-            [array addObject:[self _convertCustomClass:value]];
+            [array addObject:[self _convertCustomClassToStringIfNeeded:value]];
         }
         return array;
     } else if ([object isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         [((NSDictionary *)object) enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            dict[[self _convertCustomClass:key]] = [self _convertCustomClass:obj];
+            dict[[self _convertCustomClassToStringIfNeeded:key]] = [self _convertCustomClassToStringIfNeeded:obj];
         }];
         return dict;
     } else if ([NSStringFromClass([object class]) hasPrefix:@"MQQFlutterGen_"]) {
@@ -145,6 +135,44 @@ NS_ASSUME_NONNULL_BEGIN
     }
     return object;
 }
+
+- (id)_convertObjectToCustomObjectIfNeeded:(id)object
+{
+    id arg = object;
+    if ([object isKindOfClass:[NSString class]]) {
+        NSString *string = (NSString *)object;
+        // custom class in flutter will convert into string like: '___custom___"className"{"properties"}'
+        if ([string containsString:@"___custom___"]) {
+            NSString *className = [NSString stringWithFormat:@"MQQFlutterGen_%@", [string substringToIndex:[string rangeOfString:@"___custom___"].location]];
+            NSInteger propertiesBegin = [string rangeOfString:@"{"].location;
+            Class customClass = NSClassFromString(className);
+            arg = [customClass new];
+            if (propertiesBegin != NSNotFound) {
+                // get properties
+                NSString *properties = [string substringWithRange:NSMakeRange(propertiesBegin, string.length - propertiesBegin)];
+                NSData *data = [properties dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                for (NSString *key in json.allKeys) {
+                    [arg setValue:json[key] forKey:key];    // perform setter method
+                }
+            }
+        }
+    } else if ([object isKindOfClass:[NSArray class]]) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (id value in (NSArray *)object) {
+            [array addObject:[self _convertObjectToCustomObjectIfNeeded:value]];
+        }
+        return array;
+    } else if ([object isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [(NSDictionary *)object enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            dict[[self _convertObjectToCustomObjectIfNeeded:key]] = [self _convertObjectToCustomObjectIfNeeded:obj];
+        }];
+        return dict;
+    }
+    return arg;
+}
+
 
 @end
 

@@ -13,15 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void )login:(nullable NSString *)name password:(id )password callback:(void(^)(NSString * _Nullable))callback
 {
+    NSLog(@"call login, name: %@, password: %@", name, password);
     dispatch_async(dispatch_get_main_queue(), ^{
-        callback([NSString stringWithFormat:@"name: %@, password: %@", name, password]);
+        callback([NSString stringWithFormat:@"login callback, name: %@, password: %@", name, password]);
     });
 }
 
 - (void )getToken:(void(^)(NSString * _Nullable))callback
 {
+    NSLog(@"call get token");
     dispatch_async(dispatch_get_main_queue(), ^{
-        callback(@"call get toekn");
+        callback(@"get token callback");
     });
 }
 
@@ -46,8 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void )getList:(nullable MQQFlutterGen_InnerClass *)abc callback:(void(^)(NSArray<NSString *> * _Nullable))callback
 {
-    NSLog(@"call get list");
-    callback(@[[NSString stringWithFormat:@"abc: %@", abc]]);
+    NSLog(@"call get list, abc: %@", abc);
+    callback(@[[NSString stringWithFormat:@"get list call back, abc: %@", abc]]);
 }
 
 - (void )getMap:(void(^)(NSDictionary<NSArray<NSString *> *, MQQFlutterGen_InnerClass *> *))callback
@@ -65,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void )all:(nullable NSArray<NSNumber *> *)a b:(NSDictionary<NSString *, NSNumber *> *)b c:(int )c callback:(void(^)(NSDictionary<NSNumber *, NSNumber *> *))callback
 {
-    NSLog(@"call all");
+    NSLog(@"call all, a: %@, b: %@, c: %d", a, b, c);
     callback(@{@1: @YES});
 }
 
