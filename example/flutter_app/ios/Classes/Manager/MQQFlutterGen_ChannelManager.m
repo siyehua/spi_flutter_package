@@ -113,10 +113,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private Methods
 
-/// convert custom class into string
-/// custom class can not pass through method channel without messages codec
-/// so we convert custom class into string, then dart side will convert it back to class
-/// this method will later be replaced by messages codec
+/// Convert custom class into string.
+/// Custom class can not pass through method channel without messages codec,
+/// so we convert custom class into string, then dart side will convert it back to class,
+/// this method will later be replaced by messages codec.
 /// @param object The object needs to convert
 - (id)_convertCustomClassToStringIfNeeded:(id)object
 {
@@ -141,10 +141,10 @@ NS_ASSUME_NONNULL_BEGIN
     return object;
 }
 
-/// convert a String into custom class
-/// custom class can not pass through method channel without messages codec
-/// so dart side convert custom class into string, then native side will convert it back to class
-/// this method will later be replaced by messages codec
+/// Convert a String into custom class
+/// custom class can not pass through method channel without messages codec,
+/// so dart side convert custom class into string, then native side will convert it back to class,
+/// this method will later be replaced by messages codec.
 /// @param object The object needs to convert
 - (id)_convertObjectToCustomObjectIfNeeded:(id)object
 {

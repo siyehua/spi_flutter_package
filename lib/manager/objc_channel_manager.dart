@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self = [super init];
     if (self) {
-        self.channelName = @"com.siyehua.spiexample.channel";
+        self.channelName = @"com.example.channelname";
         self.methodImplementations = [NSMutableDictionary dictionary];
     }
     return self;
