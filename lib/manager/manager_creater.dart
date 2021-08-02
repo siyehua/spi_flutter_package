@@ -75,27 +75,14 @@ class ManagerUtils {
       String objcImplementationString = objcChannelImplementationString
           .replaceAll("#{projectPrefix}", projectPrefix)
           .replaceAll("com.example.channelname", packageName);
-      String channelPluginHeaderString = objcChannelPluginInterfaceString;
-      String channelPluginImplementationString =
-          objcChannelPluginImplementString.replaceAll(
-              "#{projectPrefix}", projectPrefix);
       File objcHeaderFile =
           File(iosSavePath + "/Manager/${projectPrefix}ChannelManager.h");
       File objcImplementFile =
           File(iosSavePath + "/Manager/${projectPrefix}ChannelManager.m");
-      File channelPluginHeaderFile =
-          File(iosSavePath + "/SPIFlutterChannelPlugin.h");
-      File channelPluginImplementationFile =
-          File(iosSavePath + "/SPIFlutterChannelPlugin.m");
       objcHeaderFile.createSync(recursive: true);
       objcHeaderFile.writeAsStringSync(objcHeaderString);
       objcImplementFile.createSync(recursive: true);
       objcImplementFile.writeAsStringSync(objcImplementationString);
-      channelPluginHeaderFile.createSync(recursive: true);
-      channelPluginHeaderFile.writeAsStringSync(channelPluginHeaderString);
-      channelPluginImplementationFile.createSync(recursive: true);
-      channelPluginImplementationFile
-          .writeAsStringSync(channelPluginImplementationString);
     }
   }
 }
