@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MQQFlutterGen_InnerClass : NSObject
+@interface MQQFlutterGen_InnerClass : NSObject <NSCopying>
 
 @property (nonatomic, strong, nullable) NSString *a;
 @property (nonatomic, assign) int b;

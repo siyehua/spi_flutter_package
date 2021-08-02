@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MQQFlutterGen_MyClass : NSObject
+@interface MQQFlutterGen_MyClass : NSObject <NSCopying>
 
 @property (nonatomic, strong, nullable) MQQFlutterGen_InnerClass *abc;
 @property (nonatomic, strong, nullable) NSArray<NSDictionary<NSDictionary<NSArray<NSString *> *, NSNumber *> *, NSArray<NSNumber *> *> *> *aaa;

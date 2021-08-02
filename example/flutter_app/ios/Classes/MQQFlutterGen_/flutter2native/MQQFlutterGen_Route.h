@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MQQFlutterGen_Route : NSObject
+@interface MQQFlutterGen_Route : NSObject <NSCopying>
 
 @property (nonatomic, strong) NSString *main_page;
 @property (nonatomic, strong) NSString *mine_main;
