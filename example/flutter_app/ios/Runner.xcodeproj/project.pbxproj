@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		761BABC626B3EA4800157A1F /* SPIFlutterChannelPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABAE26B3EA4800157A1F /* SPIFlutterChannelPlugin.m */; };
 		761BABC726B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABB026B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m */; };
 		761BABC826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABB826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m */; };
 		761BABC926B3EA4800157A1F /* MQQFlutterGen_Route.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABBB26B3EA4800157A1F /* MQQFlutterGen_Route.m */; };
@@ -52,10 +51,8 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		761BABAE26B3EA4800157A1F /* SPIFlutterChannelPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPIFlutterChannelPlugin.m; sourceTree = "<group>"; };
 		761BABB026B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_ChannelManager.m; sourceTree = "<group>"; };
 		761BABB126B3EA4800157A1F /* MQQFlutterGen_ChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_ChannelManager.h; sourceTree = "<group>"; };
-		761BABB226B3EA4800157A1F /* SPIFlutterChannelPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPIFlutterChannelPlugin.h; sourceTree = "<group>"; };
 		761BABB526B3EA4800157A1F /* MQQFlutterGen_TestPreClassName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_TestPreClassName.h; sourceTree = "<group>"; };
 		761BABB626B3EA4800157A1F /* MQQFlutterGen_Route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_Route.h; sourceTree = "<group>"; };
 		761BABB726B3EA4800157A1F /* MQQFlutterGen_IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_IAccount.h; sourceTree = "<group>"; };
@@ -122,8 +119,6 @@
 		761BABAD26B3EA4800157A1F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				761BABB226B3EA4800157A1F /* SPIFlutterChannelPlugin.h */,
-				761BABAE26B3EA4800157A1F /* SPIFlutterChannelPlugin.m */,
 				761BABAF26B3EA4800157A1F /* Manager */,
 				761BABB326B3EA4800157A1F /* MQQFlutterGen_ */,
 			);
@@ -392,7 +387,6 @@
 				761BABE526B3EA5F00157A1F /* MJPropertyType.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				761BABC926B3EA4800157A1F /* MQQFlutterGen_Route.m in Sources */,
-				761BABC626B3EA4800157A1F /* SPIFlutterChannelPlugin.m in Sources */,
 				761BABCA26B3EA4800157A1F /* MQQFlutterGen_MyClass.m in Sources */,
 				761BABC726B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m in Sources */,
 				761BABF426B3EC8600157A1F /* MQQAccountImp.m in Sources */,

@@ -149,6 +149,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Private Methods
 
+/// Convert custom class into string.
+/// Custom class can not pass through method channel without messages codec,
+/// so we convert custom class into string, then dart side will convert it back to class,
+/// this method will later be replaced by messages codec.
+/// @param object The object needs to convert
 - (id)_convertCustomClassToStringIfNeeded:(id)object
 {
     if ([object isKindOfClass:[NSArray class]]) {
@@ -172,6 +177,11 @@ NS_ASSUME_NONNULL_BEGIN
     return object;
 }
 
+/// Convert a String into custom class
+/// custom class can not pass through method channel without messages codec,
+/// so dart side convert custom class into string, then native side will convert it back to class,
+/// this method will later be replaced by messages codec.
+/// @param object The object needs to convert
 - (id)_convertObjectToCustomObjectIfNeeded:(id)object
 {
     id arg = object;
@@ -209,35 +219,6 @@ NS_ASSUME_NONNULL_BEGIN
     return arg;
 }
 
-
-@end
-
-NS_ASSUME_NONNULL_END
-''';
-
-String objcChannelPluginInterfaceString = '''
-#import <Flutter/Flutter.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface SPIFlutterChannelPlugin : NSObject<FlutterPlugin>
-
-@end
-
-NS_ASSUME_NONNULL_END
-''';
-
-String objcChannelPluginImplementString = '''
-#import "SPIFlutterChannelPlugin.h"
-#import "#{projectPrefix}ChannelManager.h"
-
-NS_ASSUME_NONNULL_BEGIN
-
-@implementation SPIFlutterChannelPlugin
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    [[#{projectPrefix}ChannelManager sharedManager] initializeWithBinaryMessenger:[registrar messenger]];
-}
 
 @end
 
