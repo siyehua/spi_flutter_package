@@ -106,3 +106,7 @@ Fix: custom class return type parse error
 
 Feat: Add iOS Demo
 Feat: Support iOS flutter2native channel communication
+
+## 0.7.0
+
+Fix: iOS channel manager's channel name incorrect problem
