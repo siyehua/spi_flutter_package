@@ -110,3 +110,7 @@ Feat: Support iOS flutter2native channel communication
 ## 0.7.0
 
 Fix: iOS channel manager's channel name incorrect problem
+
+## 0.7.1
+
+Update: Add nullsafe for ios channel manager.
