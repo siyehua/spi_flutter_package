@@ -23,11 +23,7 @@ Future<void> flutter2Native(
     return;
   }
   List<GenClassBean> list = await platforms_source_gen_init(
-      flutterPath + "/flutter2native", //you dart file path
-      packageName + ".flutter2native", //your android's  java class package name
-      androidSavePath +
-          "/" +
-          packageName.replaceAll(".", "/") //your android file save path
+      flutterPath + "/flutter2native" //you dart file path
       );
   await autoCreateJsonParse(list, directory.path, nullSafeSupport);
   list.forEach((element) {
