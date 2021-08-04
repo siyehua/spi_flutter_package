@@ -10,8 +10,15 @@ import 'objc_channel_manager.dart';
 class JavaInfo {
   String javaManagerImport = "";
   String javaImplStr = "";
+  String channelName = "";
 
-  JavaInfo(this.javaManagerImport, this.javaImplStr);
+  JavaInfo();
+
+  JavaInfo.create({
+    this.javaManagerImport = "",
+    this.javaImplStr = "",
+    this.channelName = "",
+  });
 }
 
 class ManagerUtils {
@@ -58,25 +65,26 @@ class ManagerUtils {
       if (!javaSaveList.containsKey(androidConfig.savePath)) {
         javaSaveList[androidConfig.savePath] = [];
       }
-      print("java savepath: $javaSaveList");
+      // print("java savepath: $javaSaveList");
       javaSaveList.forEach((filePath, value) {
         String importStr = "";
         String javaImplStr = "";
+        String channelName = androidConfig.channelName;
         value.forEach((element) {
+          if (element.channelName.isNotEmpty) {
+            channelName = element.channelName;
+          }
           importStr += element.javaManagerImport;
           javaImplStr += element.javaImplStr;
         });
         String newContent2 = javaStr
-            .replaceAll(
-                "package tool",
-                "package " +
-                    androidConfig.channelName.replaceAll(".flutter2native", ""))
+            .replaceAll("package tool", "package ${androidConfig.packageName}")
             .replaceAll("custom doc should replace", androidConfig.customDoc)
             .replaceAll("import java.lang.reflect.Type;", importStr)
             .replaceAll(
                 "//generated add native2flutter impl in this", javaImplStr)
             .replaceAll("private static final String channelName = \"123456\";",
-                "private static final String channelName = \"${androidConfig.channelName}\";");
+                "private static final String channelName = \"$channelName\";");
 
         File androidFile = File(filePath + "/ChannelManager.java");
         androidFile.createSync(recursive: true);

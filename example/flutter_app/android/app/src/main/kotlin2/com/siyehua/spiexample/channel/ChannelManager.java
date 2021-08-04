@@ -87,7 +87,7 @@ public class ChannelManager {
         public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
     }
 
-    private static final String channelName = "com.siyehua.spiexample.channel";
+    private static final String channelName = "com.siyehua.example.chanel.name2";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());

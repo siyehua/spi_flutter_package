@@ -52,16 +52,20 @@ Future<void> flutter2Native(
             element.savePath = lines[index]?.split("=")[1].trim() ?? "";
             element.savePath +=
                 "/" + androidConfig.packageName.replaceAll(".", "/");
-            String path = element.savePath;
-            var list = ManagerUtils.javaSaveList[path];
-            if (list == null) {
-              list = [];
-              ManagerUtils.javaSaveList[path] = list;
-            }
-            list.add(JavaInfo("", ""));
             element.savePath += "/flutter2native";
+          } else if (lines[index]?.contains("channelName") == true) {
+            element.channelName = lines[index]?.split("=")[1].trim() ?? "";
           }
           //channel name
+        } else {
+          String path = element.savePath.replaceAll("/flutter2native", "");
+          var list = ManagerUtils.javaSaveList[path];
+          if (list == null) {
+            list = [];
+            ManagerUtils.javaSaveList[path] = list;
+          }
+          list.add(JavaInfo.create(channelName: element.channelName));
+          break;
         }
       }
     });

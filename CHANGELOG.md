@@ -118,3 +118,7 @@ Update: Add nullsafe for ios channel manager.
 ## 0.7.2
 
 Feat: support option android save
+
+## 0.7.3
+
+Feat: add custom channel name

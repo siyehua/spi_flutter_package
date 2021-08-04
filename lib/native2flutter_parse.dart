@@ -225,10 +225,13 @@ void _gentJavaImpl(
       list = [];
       ManagerUtils.javaSaveList[path] = list;
     }
-    list.add(JavaInfo(
-        "import $packageName.${classBean.classInfo.name};\n"
+    //todo
+    list.add(JavaInfo.create(
+        javaManagerImport: "import $packageName.${classBean.classInfo.name};\n"
             "import $packageName.${classBean.classInfo.name}Impl;\n",
-        "\t\taddChannelImpl(${classBean.classInfo.name}.class, new ${classBean.classInfo.name}Impl());\n"));
+        javaImplStr:
+            "\t\taddChannelImpl(${classBean.classInfo.name}.class, new ${classBean.classInfo.name}Impl());\n",
+        channelName: ""));
 
     String importStr =
         "import ${packageName.replaceAll(".native2flutter", "")}.ChannelManager;\n" +
