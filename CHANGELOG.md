@@ -114,3 +114,7 @@ Fix: iOS channel manager's channel name incorrect problem
 ## 0.7.1
 
 Update: Add nullsafe for ios channel manager.
+
+## 0.7.2
+
+Feat: support option android save

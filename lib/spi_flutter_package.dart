@@ -1,3 +1,6 @@
+export 'file_config.dart';
+
+import 'file_config.dart';
 import 'flutter2native_parse.dart';
 import 'manager/manager_creater.dart';
 import 'native2flutter_parse.dart';
@@ -9,23 +12,50 @@ import 'native2flutter_parse.dart';
 //   await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: false);
 // }
 
-/// [nullSafe] support null safe
-/// [androidCustomDoc] it will add it ChannelManager file in android's file.
 Future<void> spiFlutterPackageStart(
-  String flutterPath,
-  String packageName,
-  String androidSavePath,
-  String iosProjectPrefix,
-  String iosSavePath, {
+  List<PlatformConfig> platformConfigs, {
   bool nullSafe = true,
-  String androidCustomDoc = "",
-  String flutterCustomDoc = "",
 }) async {
-  await flutter2Native(flutterPath, packageName, androidSavePath,
-      iosProjectPrefix, iosSavePath, nullSafe);
-  await native2flutter(flutterPath, packageName, androidSavePath,
-      iosProjectPrefix, iosSavePath, nullSafe);
-  ManagerUtils.gentManager(
-      flutterPath, packageName, androidSavePath, iosProjectPrefix, iosSavePath,
-      androidCustomDoc: androidCustomDoc, nullSafeSupport: nullSafe);
+  FlutterPlatformConfig flutterConfig = platformConfigs
+      .where((element) => element is FlutterPlatformConfig)
+      .first as FlutterPlatformConfig;
+
+  AndroidPlatformConfig? androidConfig;
+  platformConfigs
+      .where((element) => element is AndroidPlatformConfig)
+      .forEach((element) {
+    androidConfig = element as AndroidPlatformConfig;
+  });
+  if (androidConfig != null) {
+    assert(
+        androidConfig!.savePath.isNotEmpty, "you should set android save path");
+    if (androidConfig!.channelName.isEmpty) {
+      androidConfig!.channelName = flutterConfig.channelName;
+    }
+    if (androidConfig!.packageName.isEmpty) {
+      androidConfig!.packageName = flutterConfig.channelName;
+    }
+  }
+
+  IosPlatformConfig? iosConfig;
+  platformConfigs
+      .where((element) => element is IosPlatformConfig)
+      .forEach((element) {
+    iosConfig = element as IosPlatformConfig;
+  });
+  if (iosConfig != null) {
+    assert(iosConfig!.savePath.isNotEmpty, "you should set ios save path");
+    assert(iosConfig!.iosProjectPrefix.isNotEmpty,
+        "you should set ios iosProjectPrefix");
+    if (iosConfig!.channelName.isEmpty) {
+      iosConfig!.channelName = flutterConfig.channelName;
+    }
+  }
+
+  await flutter2Native(flutterConfig, nullSafe,
+      androidConfig: androidConfig, iosConfig: iosConfig);
+  await native2flutter(flutterConfig, nullSafe,
+      androidConfig: androidConfig, iosConfig: iosConfig);
+  await ManagerUtils.gentManager(flutterConfig, nullSafe,
+      androidConfig: androidConfig, iosConfig: iosConfig);
 }

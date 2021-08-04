@@ -1,7 +1,4 @@
-
-
-String javaStr = '''
-package tool;
+package com.siyehua.spiexample.channel;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -11,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
-import java.lang.reflect.Type;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 /**
- * custom doc should replace<br>
+ * <br>
  * ChannelManager manager all changer interfaces.<br>
  * add interface impl, use {@link #addChannelImpl(Class, Object)}},<br>
  * get interface impl, use {@link #getChannel(Class)}.<br>
@@ -90,7 +87,7 @@ public class ChannelManager {
         public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
     }
 
-    private static final String channelName = "123456";
+    private static final String channelName = "com.siyehua.spiexample.channel";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -308,9 +305,8 @@ public class ChannelManager {
 
 
     static {
-//generated add native2flutter impl in this
+
     }
 
 }
 
-''';

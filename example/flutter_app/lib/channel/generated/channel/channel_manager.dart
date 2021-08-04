@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'dart:collection';
 
 import 'package:flutter/services.dart';
+import '../../flutter2native/other_busniess.dart';
+import 'impl/i_photo_impl.dart';
 import '../../flutter2native/account.dart';
 import 'impl/i_account_impl.dart';
 import '../../flutter2native/account.dart';
@@ -43,6 +45,7 @@ class ChannelManager {
   }
   
   static void init() {
+		add(IPhoto, IPhotoImpl());
 		add(IAccount, IAccountImpl());
 		add(TestPreClassName, TestPreClassNameImpl());
 

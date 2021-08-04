@@ -4,6 +4,7 @@ import 'package:platforms_source_gen/android_gen.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 
+import 'file_config.dart';
 import 'manager/manager_creater.dart';
 import 'utils/android_file_utils.dart';
 import 'utils/flutter_file_utils.dart';
@@ -12,27 +13,24 @@ import 'auto_gen_class_json.dart';
 import 'spi_flutter_package.dart';
 
 Future<void> native2flutter(
-  String flutterPath,
-  String packageName,
-  String androidSavePath,
-  String iosPrefix,
-  String iosSavePath,
-  bool nullSafeSupport,
-) async {
-  Directory directory = Directory(flutterPath + "/native2flutter");
+  FlutterPlatformConfig flutterConfig,
+  bool nullSafeSupport, {
+  AndroidPlatformConfig? androidConfig,
+  IosPlatformConfig? iosConfig,
+}) async {
+  Directory directory =
+      Directory(flutterConfig.sourceCodePath + "/native2flutter");
   if (!directory.existsSync()) {
-    _genFlutterParse(flutterPath, packageName, [], nullSafeSupport);
+    _genFlutterParse(flutterConfig.sourceCodePath, flutterConfig.channelName,
+        [], nullSafeSupport);
     return;
   }
   List<GenClassBean> list = await platforms_source_gen_init(
-      flutterPath + "/native2flutter", //you dart file path
-      packageName + ".native2flutter", //your android's  java class package name
-      androidSavePath +
-          "/" +
-          packageName.replaceAll(".", "/") //your android file save path
-      );
+    flutterConfig.sourceCodePath + "/native2flutter", //you dart file path
+  );
   if (list.isEmpty) {
-    _genFlutterParse(flutterPath, packageName, [], nullSafeSupport);
+    _genFlutterParse(flutterConfig.sourceCodePath, flutterConfig.channelName,
+        [], nullSafeSupport);
     return;
   }
   await autoCreateJsonParse(list, directory.path, nullSafeSupport);
@@ -40,20 +38,48 @@ Future<void> native2flutter(
     element.methods.removeWhere((element) => element.name == "toJson");
   });
 
-  _genFlutterParse(flutterPath, packageName, list, nullSafeSupport);
+  _genFlutterParse(flutterConfig.sourceCodePath, flutterConfig.channelName,
+      list, nullSafeSupport);
 
   ////////////////////////android//////////////////////////
   ////////////////////////android//////////////////////////
   ////////////////////////android//////////////////////////
-  JavaFileUtils.genJavaCode(
-      list, packageName, androidSavePath, ".native2flutter");
-  _gentJavaImpl(list, packageName, androidSavePath, nullSafeSupport);
+  if (androidConfig != null) {
+    list.forEach((element) {
+      //set custom save path
+      String classPath = element.path.split(":")[1];
+      classPath = "./lib" + classPath.substring(classPath.indexOf("/"));
+      Map<int, String> lines = File(classPath).readAsLinesSync().asMap();
+      for (int index in lines.keys) {
+        if (index == 0) {
+          if (lines[index]?.contains("FileConfig") != true) {
+            break;
+          }
+        } else if (lines[index]?.startsWith("//") == true) {
+          if (lines[index]?.contains("androidSavePath") == true) {
+            element.savePath = lines[index]?.split("=")[1].trim() ?? "";
+            element.savePath +=
+                "/" + androidConfig.packageName.replaceAll(".", "/");
+          }
+          //channel name
+        }
+      }
+    });
+    JavaFileUtils.genJavaCode(list, androidConfig.packageName,
+        androidConfig.savePath, ".native2flutter");
+    _gentJavaImpl(list, androidConfig.packageName, androidConfig.savePath,
+        nullSafeSupport);
+  }
 
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
-  ObjcFileUtils.genObjcCode(list, iosPrefix, iosSavePath, ".native2flutter");
-  ObjcFileUtils.gentObjcImpl(list, iosPrefix, iosSavePath);
+  if (iosConfig != null) {
+    ObjcFileUtils.genObjcCode(list, iosConfig.iosProjectPrefix,
+        iosConfig.savePath, ".native2flutter");
+    ObjcFileUtils.gentObjcImpl(
+        list, iosConfig.iosProjectPrefix, iosConfig.savePath);
+  }
 }
 
 void _genFlutterParse(
@@ -188,12 +214,21 @@ void _gentJavaImpl(
     });
     // import com.siyehua.spiexample.channel.native2flutter.Fps;
     // import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
-    ManagerUtils.javaManagerImport +=
-        "import $packageName.${classBean.classInfo.name};\n";
-    ManagerUtils.javaManagerImport +=
-        "import $packageName.${classBean.classInfo.name}Impl;\n";
-    ManagerUtils.javaImplStr +=
-        "\t\taddChannelImpl(${classBean.classInfo.name}.class, new ${classBean.classInfo.name}Impl());\n";
+    var finalSavePath = savePath;
+    if (classBean.savePath.isNotEmpty) {
+      finalSavePath = classBean.savePath;
+    }
+    String path = finalSavePath.replaceAll("/native2flutter", "");
+
+    var list = ManagerUtils.javaSaveList[path];
+    if (list == null) {
+      list = [];
+      ManagerUtils.javaSaveList[path] = list;
+    }
+    list.add(JavaInfo(
+        "import $packageName.${classBean.classInfo.name};\n"
+            "import $packageName.${classBean.classInfo.name}Impl;\n",
+        "\t\taddChannelImpl(${classBean.classInfo.name}.class, new ${classBean.classInfo.name}Impl());\n"));
 
     String importStr =
         "import ${packageName.replaceAll(".native2flutter", "")}.ChannelManager;\n" +
@@ -212,7 +247,7 @@ void _gentJavaImpl(
     if (!nullSafeSupport) {
       allContent = GenFileEdit.removeJavaNullSafe(allContent);
     }
-    Directory dir = Directory(savePath);
+    Directory dir = Directory(finalSavePath);
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }

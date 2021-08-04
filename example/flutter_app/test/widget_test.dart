@@ -5,15 +5,21 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:spi_flutter_package/file_config.dart';
 import 'package:spi_flutter_package/spi_flutter_package.dart';
 
 void main() async {
-  String flutterPath = "./lib/channel"; //需要转换的 dart 目录
-  String packageName = "com.siyehua.spiexample.channel"; //java 包名
-  String androidSavePath = "./android/app/src/main/kotlin"; //需要保存的 java 路径
-  String iosPrefix = "MQQFlutterGen_";
-  String iosSavePath = "./ios/Classes";
-  await spiFlutterPackageStart(
-      flutterPath, packageName, androidSavePath, iosPrefix, iosSavePath,
-      nullSafe: true);
+  await spiFlutterPackageStart([
+    FlutterPlatformConfig()
+      ..sourceCodePath = "./lib/channel" //flutter source code
+      ..channelName = "com.siyehua.spiexample.channel" //channel name
+    ,
+    AndroidPlatformConfig()
+      ..savePath = "./android/app/src/main/kotlin" //android save path
+    ,
+    IosPlatformConfig()
+      ..iosProjectPrefix = "MQQFlutterGen_" //iOS pre
+      ..savePath = "./ios/Classes" //iOS save path
+    ,
+  ], nullSafe: true);
 }

@@ -161,7 +161,9 @@ public class ChannelManager {
                     if (should) {
                         result.success(invokeResult);
                     }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                } catch (InvocationTargetException e) {
+                    result.error("Invoke Error", e.getMessage(), Log.getStackTraceString(e.getTargetException()));
+                } catch (IllegalAccessException | IllegalArgumentException e) {
                     result.error(ErrorCode.CanNotMatchArgs, targetChanel.getClass().getSimpleName()
                             + " invoke method: " + callMethod
                             + " argument:" + Arrays.toString(method.getParameterTypes())

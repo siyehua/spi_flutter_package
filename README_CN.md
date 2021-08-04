@@ -53,12 +53,22 @@ abstract class IAccount{
 
 ```dart
 import 'package:spi_flutter_package/spi_flutter_package.dart';
+import 'package:spi_flutter_package/file_config.dart';
 
 void main() async {
-  String flutterPath = "./lib/channel";//your flutter project channel dir in 1 step.
-  String packageName = "com.siyehua.spiexample.channel";//your android code package name
-  String androidSavePath = "../app/src/main/java";//your android project project sourcecode path
-  await spiFlutterPackageStart(flutterPath, packageName, androidSavePath, nullSafe: false);
+  await spiFlutterPackageStart([
+    FlutterPlatformConfig()
+      ..sourceCodePath = "./lib/channel" //flutter source code
+      ..channelName = "com.siyehua.spiexample.channel" //channel name
+    ,
+    AndroidPlatformConfig()
+      ..savePath = "./android/app/src/main/kotlin" //android save path
+    ,
+    IosPlatformConfig()
+      ..iosProjectPrefix = "MQQFlutterGen_" //iOS pre
+      ..savePath = "./ios/Classes" //iOS save path
+    ,
+  ], nullSafe: true);
 }
 ```
 
