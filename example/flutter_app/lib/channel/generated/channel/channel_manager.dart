@@ -26,40 +26,49 @@ abstract class _ErrorCode {
   static String CanNotMatchArgs = "402"; //can not match method's args
 }
 
-/// 
+///
 /// ChannelManager manager all changer interfaces.<br>
 /// add interface impl, use [add] method,<br>
 /// get interface impl, use [getChannel].<br>
 /// more info, see {@link 'https://pub.dev/packages/spi_flutter_package'}
 class ChannelManager {
-  static const _package = "com.siyehua.spiexample.channel";
-  static const _platform = const MethodChannel(_package);
+  static final _packages = <String>[];
+  static final _platforms = <MethodChannel>[];
   static final _channelImplMap = new HashMap<String, dynamic>();
 
   static void add(Type type, dynamic impl) {
     _channelImplMap[type.toString()] = impl;
   }
-  
-  static void remove(Type type){
+
+  static void remove(Type type) {
     _channelImplMap.remove(type);
   }
-  
+
   static void init() {
-		add(IPhoto, IPhotoImpl());
-		add(IAccount, IAccountImpl());
-		add(TestPreClassName, TestPreClassNameImpl());
+    add(IPhoto, IPhotoImpl());
+    add(IAccount, IAccountImpl());
+    add(TestPreClassName, TestPreClassNameImpl());
+
+		_packages.add('com.siyehua.example.otherChannelName');
+		_packages.add('com.siyehua.spiexample.channel');
 
 
+    _packages.forEach((channelName) {
+      var methodChannel = MethodChannel(channelName);
+      _platforms.add(methodChannel);
+      _addListener(methodChannel, channelName);
+    });
+  }
+
+  static void _addListener(MethodChannel _platform, String _package) {
     _platform.setMethodCallHandler((MethodCall call) async {
       String callClass = call.method.split("#")[0];
       String callMethod = call.method.split("#")[1];
-      String cls = callClass
-          .replaceAll("interface ", "")
-          .replaceAll(_package + ".native2flutter.", "");
+      String cls = callClass.split(".").last;
       dynamic targetChanel = _channelImplMap[cls];
       if (targetChanel != null) {
         return (targetChanel as Object)
-            .parse(targetChanel, cls, callMethod, call.arguments);      
+            .parse(targetChanel, cls, callMethod, call.arguments);
       } else {
         return _ErrorCode.NoFoundChannel.toString();
         // result.error(ErrorCode.NoFoundChannel, "can't found channel: " + callClass
@@ -68,9 +77,11 @@ class ChannelManager {
     });
   }
 
-  static Future<T?> invoke<T>(String packageName, String clsName, String method, String argNames,
+  static Future<T?> invoke<T>(String channelName, String packageName,
+      String clsName, String method, String argNames,
       [dynamic arguments]) {
-    return _platform.invokeMethod(
+    int index = _packages.indexOf(channelName);
+    return _platforms[index].invokeMethod(
         packageName + "." + clsName + "#" + method + "#" + argNames, arguments);
   }
 

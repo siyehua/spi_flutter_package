@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPage" args:args completion:callback];
 }
 
-- (void )getListCustom:(NSArray<MQQFlutterGen_InnerClass *> *)a callback:(void(^)(NSArray<MQQFlutterGen_PageInfo *> *))callback
+- (void )getListCustom:(NSArray<NSNumber *> *)a callback:(void(^)(NSArray<MQQFlutterGen_PageInfo *> *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:a];

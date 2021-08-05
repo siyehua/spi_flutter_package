@@ -3,7 +3,6 @@ import java.util.ArrayList;
  import java.util.HashMap;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
- import  com.siyehua.spiexample.channel.flutter2native.*;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
 public interface Fps2 {
  	void getPageName( @NotNull HashMap<String, Long> t,  @NotNull String t2,  @NotNull Result<String> callback);

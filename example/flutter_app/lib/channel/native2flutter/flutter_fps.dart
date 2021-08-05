@@ -1,5 +1,3 @@
-import '../flutter2native/account.dart';
-
 abstract class Fps {
   Future<String> getPageName(int a);
 
@@ -9,7 +7,7 @@ abstract class Fps {
 
   Future<PageInfo> getPage();
 
-  Future<List<PageInfo>> getListCustom(List<InnerClass> a);
+  Future<List<PageInfo>> getListCustom(List<int> a);
 
   Future<Map<PageInfo, int>> getMapCustom();
 }

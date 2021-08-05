@@ -122,3 +122,7 @@ Feat: support option android save
 ## 0.7.3
 
 Feat: add custom channel name
+
+## 0.7.4
+
+Feat: option package name

@@ -3,7 +3,6 @@ import java.util.ArrayList;
  import java.util.HashMap;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
- import  com.siyehua.spiexample.channel.flutter2native.*;
  import com.siyehua.spiexample.channel.ChannelManager.Result;
 public class PageInfo {
 	 public  @NotNull String name ;

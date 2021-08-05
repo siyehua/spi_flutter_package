@@ -11,6 +11,10 @@ import 'utils/flutter_file_utils.dart';
 import 'utils/android_file_utils.dart';
 import 'utils/ios_file_utils.dart';
 
+class Flutter2Native {
+  static final List<FileConfig> fileConfigs = [];
+}
+
 Future<void> flutter2Native(
   FlutterPlatformConfig flutterConfig,
   bool nullSafeSupport, {
@@ -29,50 +33,66 @@ Future<void> flutter2Native(
   list.forEach((element) {
     element.methods.removeWhere((element) => element.name == "toJson");
   });
-
-  _genFlutterImpl(flutterConfig.sourceCodePath, flutterConfig.channelName, list,
-      nullSafeSupport);
-
-  ////////////////////////android//////////////////////////
-  ////////////////////////android//////////////////////////
-  ////////////////////////android//////////////////////////
-  if (androidConfig != null) {
-    list.forEach((element) {
-      //set custom save path
-      String classPath = element.path.split(":")[1];
-      classPath = "./lib" + classPath.substring(classPath.indexOf("/"));
-      Map<int, String> lines = File(classPath).readAsLinesSync().asMap();
-      for (int index in lines.keys) {
-        if (index == 0) {
-          if (lines[index]?.contains("FileConfig") != true) {
-            break;
-          }
-        } else if (lines[index]?.startsWith("//") == true) {
-          if (lines[index]?.contains("androidSavePath") == true) {
-            element.savePath = lines[index]?.split("=")[1].trim() ?? "";
-            element.savePath +=
-                "/" + androidConfig.packageName.replaceAll(".", "/");
-            element.savePath += "/flutter2native";
-          } else if (lines[index]?.contains("channelName") == true) {
-            element.channelName = lines[index]?.split("=")[1].trim() ?? "";
-          }
-          //channel name
-        } else {
-          String path = element.savePath.replaceAll("/flutter2native", "");
-          var list = ManagerUtils.javaSaveList[path];
-          if (list == null) {
-            list = [];
-            ManagerUtils.javaSaveList[path] = list;
-          }
-          list.add(JavaInfo.create(channelName: element.channelName));
+  list.forEach((element) {
+    var fileConfig = FileConfig.copy(flutterConfig, androidConfig, iosConfig);
+    //set custom save path
+    String classPath = element.path.split(":")[1];
+    classPath = "./lib" + classPath.substring(classPath.indexOf("/"));
+    Map<int, String> lines = File(classPath).readAsLinesSync().asMap();
+    for (int index in lines.keys) {
+      if (index == 0) {
+        if (lines[index]?.contains("FileConfig") != true) {
+          Flutter2Native.fileConfigs.add(fileConfig);
           break;
         }
+      } else if (lines[index]?.startsWith("//") == true) {
+        if (lines[index]?.contains("androidSavePath") == true) {
+          String savePath = lines[index]?.split("=")[1].trim() ?? "";
+          fileConfig.flutterPlatformConfig.savePath = savePath;
+          fileConfig.androidPlatformConfig?.savePath = savePath;
+          // fileConfig.iosPlatformConfig?.savePath = savePath;
+        } else if (lines[index]?.contains("channelName") == true) {
+          String channelName = lines[index]?.split("=")[1].trim() ?? "";
+          fileConfig.flutterPlatformConfig.channelName = channelName;
+          fileConfig.androidPlatformConfig?.channelName = channelName;
+          // fileConfig.iosPlatformConfig?.channelName = channelName;
+        } else if (lines[index]?.contains("packageName") == true) {
+          String packageName = lines[index]?.split("=")[1].trim() ?? "";
+          fileConfig.androidPlatformConfig?.packageName = packageName;
+        }
+      } else {
+        Flutter2Native.fileConfigs.add(fileConfig);
+        break;
       }
-    });
-    JavaFileUtils.genJavaCode(list, androidConfig.packageName,
-        androidConfig.savePath, ".flutter2native",
-        nullSafeSupport: nullSafeSupport);
-  }
+    }
+  });
+
+  Flutter2Native.fileConfigs.asMap().forEach((index, config) {
+    //if not set packageName, the packageName = channelName
+    String packageName = config.flutterPlatformConfig.channelName;
+    if (config.androidPlatformConfig?.packageName.isNotEmpty == true) {
+      packageName = config.androidPlatformConfig!.packageName;
+    }
+    _genFlutterImpl(
+      [list[index]],
+      config.flutterPlatformConfig.sourceCodePath,
+      packageName,
+      config.flutterPlatformConfig.channelName,
+      nullSafeSupport,
+    );
+
+    ////////////////////////android//////////////////////////
+    ////////////////////////android//////////////////////////
+    ////////////////////////android//////////////////////////
+    if (androidConfig != null) {
+      JavaFileUtils.genJavaCode(
+          [list[index]],
+          config.androidPlatformConfig!.packageName,
+          config.androidPlatformConfig!.savePath,
+          ".flutter2native",
+          nullSafeSupport: nullSafeSupport);
+    }
+  });
 
   ////////////////////////ios//////////////////////////
   ////////////////////////ios//////////////////////////
@@ -85,9 +105,10 @@ Future<void> flutter2Native(
 }
 
 void _genFlutterImpl(
+  List<GenClassBean> list,
   String flutterPath,
   String packageName,
-  List<GenClassBean> list,
+  String channelName,
   bool nullSafeSupport,
 ) {
   String flutterSavePath = flutterPath + "/generated/channel";
@@ -158,7 +179,7 @@ void _genFlutterImpl(
           .replaceAll("]", "")
           .replaceAll(" ", "");
       String methodContent = "\t\tType _clsType = ${classBean.classInfo.name};\n" +
-          "\t\t$returnStr ChannelManager.invoke(package, _clsType.toString(), \"${method.name}\", \"$argNames\", ${arguments.isEmpty ? "" : arguments.toString()});\n" +
+          "\t\t$returnStr ChannelManager.invoke('$channelName', package, _clsType.toString(), \"${method.name}\", \"$argNames\", ${arguments.isEmpty ? "" : arguments.toString()});\n" +
           exp;
 
       methodStr += "\t@override\n" +

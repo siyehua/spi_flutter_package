@@ -32,7 +32,7 @@ public class FpsImpl  implements Fps{
 		ChannelManager.invoke(this.getClass().getInterfaces()[0], "getPage", args, callback);
 	}
 	@Override
-	public void getListCustom( @NotNull ArrayList<InnerClass> a,  @NotNull Result<ArrayList<PageInfo>> callback) {
+	public void getListCustom( @NotNull ArrayList<Long> a,  @NotNull Result<ArrayList<PageInfo>> callback) {
 		List args = new ArrayList();
 		args.add(a);
 		ChannelManager.invoke(this.getClass().getInterfaces()[0], "getListCustom", args, callback);

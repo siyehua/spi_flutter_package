@@ -1,31 +1,29 @@
 import 'dart:io';
 
 import 'package:platforms_source_gen/gen_file_edit.dart';
+import 'package:spi_flutter_package/flutter2native_parse.dart';
 
 import '../file_config.dart';
 import 'dart_channel_manager.dart';
 import 'java_channel_manager.dart';
 import 'objc_channel_manager.dart';
 
-class JavaInfo {
-  String javaManagerImport = "";
-  String javaImplStr = "";
+class ManagerInfo {
+  String key() => savePath + channelName;
+
+  String savePath = "";
   String channelName = "";
 
-  JavaInfo();
-
-  JavaInfo.create({
-    this.javaManagerImport = "",
-    this.javaImplStr = "",
-    this.channelName = "",
-  });
+  //android
+  String javaManagerImport = "";
+  String javaImplStr = "";
+  String packageName = "";
 }
 
 class ManagerUtils {
+  static Map<String, ManagerInfo> managerInfo = {};
   static String dartManagerImport = "import 'package:flutter/services.dart';\n";
   static String dartImplStr = "";
-
-  static Map<String, List<JavaInfo>> javaSaveList = {};
 
   static Future<void> gentManager(
     FlutterPlatformConfig flutterConfig,
@@ -33,18 +31,22 @@ class ManagerUtils {
     AndroidPlatformConfig? androidConfig,
     IosPlatformConfig? iosConfig,
   }) async {
-    //create flutter manager
     {
+      //create flutter manager, the manager has only one file
       String flutterSavePath =
           flutterConfig.sourceCodePath + "/generated/channel";
-      // File file = File("./tool/ChannelManager_dart");
+      String channelStr = "";
+      managerInfo.forEach((key, info) {
+        if (!channelStr.contains(info.channelName)) {
+          //    _packages.add('com.siyehua.example.otherChannelName');
+          channelStr += "\t\t_packages.add('${info.channelName}');\n";
+        }
+      });
       String newContent = dartStr
-          .replaceAll("import 'package:flutter/services.dart';",
-              ManagerUtils.dartManagerImport)
+          .replaceAll("import 'package:flutter/services.dart';", dartManagerImport)
           .replaceAll("custom doc should replace", flutterConfig.customDoc)
-          .replaceAll("static const _package = \"123567\";",
-              "static const _package = \"${flutterConfig.channelName}\";")
-          .replaceAll("//replace", ManagerUtils.dartImplStr);
+          .replaceAll("//_packages.add", channelStr)
+          .replaceAll("//replace", dartImplStr);
       newContent = "\nimport 'dart:typed_data';\n" + newContent;
       Directory dir = Directory(flutterSavePath);
       if (!dir.existsSync()) {
@@ -60,33 +62,21 @@ class ManagerUtils {
     //create android manager
     if (androidConfig != null) {
       // File file2 = File("./tool/ChannelManager_java");
-      androidConfig.savePath +=
-          "/" + androidConfig.channelName.replaceAll(".", "/");
-      if (!javaSaveList.containsKey(androidConfig.savePath)) {
-        javaSaveList[androidConfig.savePath] = [];
-      }
-      // print("java savepath: $javaSaveList");
-      javaSaveList.forEach((filePath, value) {
-        String importStr = "";
-        String javaImplStr = "";
-        String channelName = androidConfig.channelName;
-        value.forEach((element) {
-          if (element.channelName.isNotEmpty) {
-            channelName = element.channelName;
-          }
-          importStr += element.javaManagerImport;
-          javaImplStr += element.javaImplStr;
-        });
+      managerInfo.forEach((key, info) {
         String newContent2 = javaStr
-            .replaceAll("package tool", "package ${androidConfig.packageName}")
+            .replaceAll("package tool", "package ${info.packageName}")
             .replaceAll("custom doc should replace", androidConfig.customDoc)
-            .replaceAll("import java.lang.reflect.Type;", importStr)
             .replaceAll(
-                "//generated add native2flutter impl in this", javaImplStr)
+                "import java.lang.reflect.Type;", info.javaManagerImport)
+            .replaceAll(
+                "//generated add native2flutter impl in this", info.javaImplStr)
             .replaceAll("private static final String channelName = \"123456\";",
-                "private static final String channelName = \"$channelName\";");
+                "private static final String channelName = \"${info.channelName}\";");
 
-        File androidFile = File(filePath + "/ChannelManager.java");
+        File androidFile = File(info.savePath +
+            "/" +
+            info.packageName.replaceAll(".", "/") +
+            "/ChannelManager.java");
         androidFile.createSync(recursive: true);
         if (!nullSafeSupport) {
           newContent2 = GenFileEdit.removeJavaNullSafe(newContent2);

@@ -6,7 +6,7 @@ class TestPreClassNameImpl  implements TestPreClassName, PackageTag{
 	@override
 	void aaa() async{
 		Type _clsType = TestPreClassName;
-		 ChannelManager.invoke(package, _clsType.toString(), "aaa", "", );
+		 ChannelManager.invoke('com.siyehua.spiexample.channel', package, _clsType.toString(), "aaa", "", );
 	}
 	@override
 	String package = "com.siyehua.spiexample.channel.flutter2native";
