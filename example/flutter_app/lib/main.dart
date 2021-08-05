@@ -46,16 +46,16 @@ class FpsImpl extends Fps {
     });
   }
 
- @override
+  @override
   Future<List<PageInfo>> getListCustom(List<InnerClass> a) {
     print("getListCustom: $a");
-   return Future.delayed(Duration(seconds: 3)).then((value) {
-     PageInfo info = PageInfo();
-     info.name = "main page";
-     info.id = "123";
-     info.fps = 60;
-     return [info];
-   });
+    return Future.delayed(Duration(seconds: 3)).then((value) {
+      PageInfo info = PageInfo();
+      info.name = "main page";
+      info.id = "123";
+      info.fps = 60;
+      return [info];
+    });
   }
 
   @override

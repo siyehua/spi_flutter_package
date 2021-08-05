@@ -1,6 +1,6 @@
 name: spi_flutter_package
 description: a dev tools create platform's code when use Platform channel exchange data.
-version: 0.7.1
+version: 0.7.3
 homepage: https://github.com/siyehua/spi_flutter_package
 
 environment:
@@ -11,18 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  platforms_source_gen: ^0.7.1
+  platforms_source_gen: ^0.7.4
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
-  uses-material-design: true
 # To add assets to your package, add an assets section, like this:
 # assets:
 #   - images/a_dot_burr.jpeg

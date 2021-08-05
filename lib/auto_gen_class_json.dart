@@ -4,7 +4,8 @@ import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 import 'package:platforms_source_gen/type_utils.dart';
-import 'package:spi_flutter_package/utils/flutter_file_utils.dart';
+
+import 'utils/flutter_file_utils.dart';
 
 /// add json method to dart source code
 /// note : if class change, should delete auto create code.
@@ -18,7 +19,6 @@ Future<void> autoCreateJsonParse(
       .where((value) {
     bool hasToJsonMethod =
         value.methods.where((element) => element.name == "toJson").isEmpty;
-    print("filter: ${value.classInfo.name} $hasToJsonMethod");
     return hasToJsonMethod;
   }).forEach((classInfo) {
     // print("filter result: ${classInfo.classInfo.name}");

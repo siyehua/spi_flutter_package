@@ -1,13 +1,5 @@
 #import <Foundation/Foundation.h>
+#define MQQFlutterGen_main_page	@"/main/page"
+#define MQQFlutterGen_mine_main	@"/mine/main"
+#define MQQFlutterGen_int_value	123
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface MQQFlutterGen_Route : NSObject <NSCopying>
-
-@property (nonatomic, strong) NSString *main_page;
-@property (nonatomic, strong) NSString *mine_main;
-@property (nonatomic, assign) int int_value;
-
-
-@end
-NS_ASSUME_NONNULL_END
