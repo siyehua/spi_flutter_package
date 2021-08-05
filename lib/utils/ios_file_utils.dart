@@ -18,7 +18,7 @@ class ObjcFileUtils {
 
   static void gentObjcImpl(
       List<GenClassBean> list, String projectPrefix, String savePath) {
-    savePath += "/" + projectPrefix.replaceAll(".", "/");
+    savePath += "/" + projectPrefix + "/native2flutter";
 
     list
         .where((classBean) => classBean.classInfo.type == 1)

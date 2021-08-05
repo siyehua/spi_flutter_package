@@ -11,11 +11,8 @@
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		761BABC726B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABB026B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m */; };
 		761BABC826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABB826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m */; };
-		761BABC926B3EA4800157A1F /* MQQFlutterGen_Route.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABBB26B3EA4800157A1F /* MQQFlutterGen_Route.m */; };
 		761BABCA26B3EA4800157A1F /* MQQFlutterGen_MyClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABBC26B3EA4800157A1F /* MQQFlutterGen_MyClass.m */; };
-		761BABCB26B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABBE26B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.m */; };
 		761BABCC26B3EA4800157A1F /* MQQFlutterGen_PageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABC326B3EA4800157A1F /* MQQFlutterGen_PageInfo.m */; };
-		761BABCD26B3EA4800157A1F /* MQQFlutterGen_FpsImp.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABC426B3EA4800157A1F /* MQQFlutterGen_FpsImp.m */; };
 		761BABE526B3EA5F00157A1F /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABD226B3EA5F00157A1F /* MJPropertyType.m */; };
 		761BABE626B3EA5F00157A1F /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABD526B3EA5F00157A1F /* NSObject+MJKeyValue.m */; };
 		761BABE726B3EA5F00157A1F /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABD626B3EA5F00157A1F /* MJProperty.m */; };
@@ -29,6 +26,8 @@
 		761BABF426B3EC8600157A1F /* MQQAccountImp.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABF326B3EC8600157A1F /* MQQAccountImp.m */; };
 		761BABF726B3EF6300157A1F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABF626B3EF6300157A1F /* AppDelegate.m */; };
 		761BABFB26B3F07000157A1F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 761BABFA26B3F07000157A1F /* main.m */; };
+		76B6BB0526BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B6BB0126BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.m */; };
+		76B6BB0626BB8E900013CBDB /* MQQFlutterGen_FpsImp.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B6BB0326BB8E900013CBDB /* MQQFlutterGen_FpsImp.m */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -59,16 +58,11 @@
 		761BABB826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_InnerClass.m; sourceTree = "<group>"; };
 		761BABB926B3EA4800157A1F /* MQQFlutterGen_MyClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_MyClass.h; sourceTree = "<group>"; };
 		761BABBA26B3EA4800157A1F /* MQQFlutterGen_InnerClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_InnerClass.h; sourceTree = "<group>"; };
-		761BABBB26B3EA4800157A1F /* MQQFlutterGen_Route.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_Route.m; sourceTree = "<group>"; };
 		761BABBC26B3EA4800157A1F /* MQQFlutterGen_MyClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_MyClass.m; sourceTree = "<group>"; };
-		761BABBD26B3EA4800157A1F /* MQQFlutterGen_FpsImp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_FpsImp.h; sourceTree = "<group>"; };
-		761BABBE26B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_Fps2Imp.m; sourceTree = "<group>"; };
 		761BABC026B3EA4800157A1F /* MQQFlutterGen_Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_Fps.h; sourceTree = "<group>"; };
 		761BABC126B3EA4800157A1F /* MQQFlutterGen_Fps2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_Fps2.h; sourceTree = "<group>"; };
 		761BABC226B3EA4800157A1F /* MQQFlutterGen_PageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_PageInfo.h; sourceTree = "<group>"; };
 		761BABC326B3EA4800157A1F /* MQQFlutterGen_PageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_PageInfo.m; sourceTree = "<group>"; };
-		761BABC426B3EA4800157A1F /* MQQFlutterGen_FpsImp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_FpsImp.m; sourceTree = "<group>"; };
-		761BABC526B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_Fps2Imp.h; sourceTree = "<group>"; };
 		761BABCF26B3EA5F00157A1F /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
 		761BABD026B3EA5F00157A1F /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
 		761BABD126B3EA5F00157A1F /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
@@ -95,6 +89,10 @@
 		761BABF526B3EF6300157A1F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		761BABF626B3EF6300157A1F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		761BABFA26B3F07000157A1F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		76B6BB0126BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_Fps2Imp.m; sourceTree = "<group>"; };
+		76B6BB0226BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_Fps2Imp.h; sourceTree = "<group>"; };
+		76B6BB0326BB8E900013CBDB /* MQQFlutterGen_FpsImp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQQFlutterGen_FpsImp.m; sourceTree = "<group>"; };
+		76B6BB0426BB8E900013CBDB /* MQQFlutterGen_FpsImp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQQFlutterGen_FpsImp.h; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -138,11 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				761BABB426B3EA4800157A1F /* flutter2native */,
-				761BABBD26B3EA4800157A1F /* MQQFlutterGen_FpsImp.h */,
-				761BABBE26B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.m */,
 				761BABBF26B3EA4800157A1F /* native2flutter */,
-				761BABC426B3EA4800157A1F /* MQQFlutterGen_FpsImp.m */,
-				761BABC526B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.h */,
 			);
 			path = MQQFlutterGen_;
 			sourceTree = "<group>";
@@ -156,7 +150,6 @@
 				761BABB826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m */,
 				761BABB926B3EA4800157A1F /* MQQFlutterGen_MyClass.h */,
 				761BABBA26B3EA4800157A1F /* MQQFlutterGen_InnerClass.h */,
-				761BABBB26B3EA4800157A1F /* MQQFlutterGen_Route.m */,
 				761BABBC26B3EA4800157A1F /* MQQFlutterGen_MyClass.m */,
 			);
 			path = flutter2native;
@@ -165,6 +158,10 @@
 		761BABBF26B3EA4800157A1F /* native2flutter */ = {
 			isa = PBXGroup;
 			children = (
+				76B6BB0226BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.h */,
+				76B6BB0126BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.m */,
+				76B6BB0426BB8E900013CBDB /* MQQFlutterGen_FpsImp.h */,
+				76B6BB0326BB8E900013CBDB /* MQQFlutterGen_FpsImp.m */,
 				761BABC026B3EA4800157A1F /* MQQFlutterGen_Fps.h */,
 				761BABC126B3EA4800157A1F /* MQQFlutterGen_Fps2.h */,
 				761BABC226B3EA4800157A1F /* MQQFlutterGen_PageInfo.h */,
@@ -376,19 +373,18 @@
 				761BABE926B3EA5F00157A1F /* MJExtensionConst.m in Sources */,
 				761BABEF26B3EA5F00157A1F /* MJFoundation.m in Sources */,
 				761BABCC26B3EA4800157A1F /* MQQFlutterGen_PageInfo.m in Sources */,
-				761BABCB26B3EA4800157A1F /* MQQFlutterGen_Fps2Imp.m in Sources */,
 				761BABC826B3EA4800157A1F /* MQQFlutterGen_InnerClass.m in Sources */,
 				761BABEB26B3EA5F00157A1F /* NSObject+MJClass.m in Sources */,
 				761BABE726B3EA5F00157A1F /* MJProperty.m in Sources */,
 				761BABED26B3EA5F00157A1F /* MJPropertyKey.m in Sources */,
 				761BABEC26B3EA5F00157A1F /* NSString+MJExtension.m in Sources */,
 				761BABE626B3EA5F00157A1F /* NSObject+MJKeyValue.m in Sources */,
-				761BABCD26B3EA4800157A1F /* MQQFlutterGen_FpsImp.m in Sources */,
 				761BABE526B3EA5F00157A1F /* MJPropertyType.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
-				761BABC926B3EA4800157A1F /* MQQFlutterGen_Route.m in Sources */,
+				76B6BB0526BB8E900013CBDB /* MQQFlutterGen_Fps2Imp.m in Sources */,
 				761BABCA26B3EA4800157A1F /* MQQFlutterGen_MyClass.m in Sources */,
 				761BABC726B3EA4800157A1F /* MQQFlutterGen_ChannelManager.m in Sources */,
+				76B6BB0626BB8E900013CBDB /* MQQFlutterGen_FpsImp.m in Sources */,
 				761BABF426B3EC8600157A1F /* MQQAccountImp.m in Sources */,
 				761BABFB26B3F07000157A1F /* main.m in Sources */,
 				761BABEA26B3EA5F00157A1F /* NSObject+MJProperty.m in Sources */,
