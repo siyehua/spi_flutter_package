@@ -20,7 +20,7 @@ abstract class IAccount {
   Future<Map<int, bool>> all(List<int>? a, Map<String?, int> b, int? c);
 }
 
-abstract class TestPreClassName {
+abstract class TestPreClassName2 {
   void aaa();
 }
 

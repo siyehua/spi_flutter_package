@@ -16,6 +16,7 @@ void main() async {
     ,
     AndroidPlatformConfig()
       ..savePath = "./android/app/src/main/kotlin" //android save path
+      ..channelName = "com.siyehua.spiexample.channel"
     ,
     IosPlatformConfig()
       ..iosProjectPrefix = "MQQFlutterGen_" //iOS pre

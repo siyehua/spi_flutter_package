@@ -36,9 +36,7 @@ class ChannelManager {
   }
 
   static void init() {
-    add(IPhoto, IPhotoImpl());
-    add(IAccount, IAccountImpl());
-    add(TestPreClassName, TestPreClassNameImpl());
+//replace
 
 //_packages.add
 
