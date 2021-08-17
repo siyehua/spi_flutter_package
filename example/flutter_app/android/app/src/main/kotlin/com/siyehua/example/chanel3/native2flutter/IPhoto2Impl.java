@@ -1,8 +1,7 @@
-package com.siyehua.example.chanel2.native2flutter;
+package com.siyehua.example.chanel3.native2flutter;
 
-import com.siyehua.example.chanel2.ChannelManager;
-import com.siyehua.example.chanel2.ChannelManager.Result;
-import com.siyehua.example.chanel2.flutter2native.*;
+import com.siyehua.example.chanel3.ChannelManager;
+import com.siyehua.example.chanel3.ChannelManager.Result;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;

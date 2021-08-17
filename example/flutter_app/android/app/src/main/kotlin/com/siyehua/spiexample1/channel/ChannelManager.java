@@ -1,4 +1,4 @@
-package com.siyehua.example.chanel2;
+package com.siyehua.spiexample1.channel;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
+import com.siyehua.spiexample1.channel.native2flutter.Fps;
+import com.siyehua.spiexample1.channel.native2flutter.FpsImpl;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2Impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -87,7 +91,7 @@ public class ChannelManager {
         public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
     }
 
-    private static final String channelName = "com.siyehua.example.otherChannelName";
+    private static final String channelName = "com.siyehua.spiexample.channel";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -305,6 +309,8 @@ public class ChannelManager {
 
 
     static {
+		addChannelImpl(Fps.class, new FpsImpl());
+		addChannelImpl(Fps2.class, new Fps2Impl());
 
     }
 

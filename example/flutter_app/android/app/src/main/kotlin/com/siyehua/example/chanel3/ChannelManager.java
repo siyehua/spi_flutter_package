@@ -1,4 +1,4 @@
-package com.siyehua.spiexample.channel;
+package com.siyehua.example.chanel3;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -8,10 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
-import com.siyehua.spiexample.channel.native2flutter.Fps;
-import com.siyehua.spiexample.channel.native2flutter.FpsImpl;
-import com.siyehua.spiexample.channel.native2flutter.Fps2;
-import com.siyehua.spiexample.channel.native2flutter.Fps2Impl;
+import com.siyehua.example.chanel3.native2flutter.IPhoto2;
+import com.siyehua.example.chanel3.native2flutter.IPhoto2Impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -91,7 +89,7 @@ public class ChannelManager {
         public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
     }
 
-    private static final String channelName = "com.siyehua.spiexample.channel";
+    private static final String channelName = "com.siyehua.example23.otherChannelName";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -257,7 +255,7 @@ public class ChannelManager {
 
     @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     private static Object customClassToString(Object data) {
-        if (data != null && data.getClass().getName().startsWith(channelName)) {
+        if (data != null && data.getClass().getName().startsWith(ChannelManager.class.getPackage().getName())) {
             String customInfo = data.getClass().getSimpleName() + "___custom___" + jsonParse.toJSONString(data);
             return customInfo;
         } else if (data instanceof ArrayList) {
@@ -283,7 +281,7 @@ public class ChannelManager {
         try {
             if (data instanceof String && ((String) data).contains("___custom___")) {
                 String[] customInfo = ((String) data).split("___custom___");
-                Class cls = Class.forName(channelName + pre + customInfo[0]);
+                Class cls = Class.forName(ChannelManager.class.getPackage().getName() + pre + customInfo[0]);
                 //noinspection unchecked
                 return jsonParse.parseObject(customInfo[1], cls);
             } else if (data instanceof ArrayList) {
@@ -309,8 +307,7 @@ public class ChannelManager {
 
 
     static {
-		addChannelImpl(Fps.class, new FpsImpl());
-		addChannelImpl(Fps2.class, new Fps2Impl());
+		addChannelImpl(IPhoto2.class, new IPhoto2Impl());
 
     }
 

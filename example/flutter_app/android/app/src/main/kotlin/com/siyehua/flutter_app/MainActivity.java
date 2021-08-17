@@ -9,13 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.siyehua.example.chanel2.flutter2native.IPhoto;
-import com.siyehua.example.chanel2.native2flutter.IPhoto2;
-import com.siyehua.spiexample.channel.ChannelManager;
-import com.siyehua.spiexample.channel.flutter2native.IAccount;
-import com.siyehua.spiexample.channel.flutter2native.InnerClass;
-import com.siyehua.spiexample.channel.native2flutter.Fps;
-import com.siyehua.spiexample.channel.native2flutter.Fps2;
-import com.siyehua.spiexample.channel.native2flutter.PageInfo;
+import com.siyehua.example.chanel3.native2flutter.IPhoto2;
+import com.siyehua.spiexample1.channel.ChannelManager;
+import com.siyehua.spiexample1.channel.flutter2native.IAccount;
+import com.siyehua.spiexample1.channel.flutter2native.InnerClass;
+import com.siyehua.spiexample1.channel.native2flutter.Fps;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2;
+import com.siyehua.spiexample1.channel.native2flutter.PageInfo;
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
@@ -30,6 +30,19 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         com.siyehua.example.chanel2.ChannelManager.init(flutterEngine.getDartExecutor(), new  com.siyehua.example.chanel2.ChannelManager.JsonParse() {
+            @Nullable
+            @Override
+            public String toJSONString(@Nullable Object object) {
+                return JSON.toJSONString(object);
+            }
+
+            @Nullable
+            @Override
+            public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+                return JSON.parseObject(text, clazz);
+            }
+        });
+        com.siyehua.example.chanel3.ChannelManager.init(flutterEngine.getDartExecutor(), new  com.siyehua.example.chanel3.ChannelManager.JsonParse() {
             @Nullable
             @Override
             public String toJSONString(@Nullable Object object) {
@@ -82,7 +95,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void testMethod() {
-        com.siyehua.example.chanel2.ChannelManager.getChannel(IPhoto2.class).aaa();
+        com.siyehua.example.chanel3.ChannelManager.getChannel(IPhoto2.class).aaa();
 
         ChannelManager.getChannel(Fps2.class).getFps(" native fps str", 100L, new ChannelManager.Result<Double>() {
             @Override

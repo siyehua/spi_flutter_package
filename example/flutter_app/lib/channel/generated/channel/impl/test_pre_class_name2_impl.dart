@@ -9,5 +9,5 @@ class TestPreClassName2Impl  implements TestPreClassName2, PackageTag{
 		 ChannelManager.invoke('com.siyehua.spiexample.channel', package, _clsType.toString(), "aaa", "", );
 	}
 	@override
-	String package = "com.siyehua.spiexample.channel.flutter2native";
+	String package = "com.siyehua.spiexample1.channel.flutter2native";
 }

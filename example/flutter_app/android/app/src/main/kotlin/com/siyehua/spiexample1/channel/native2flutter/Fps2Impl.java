@@ -1,8 +1,7 @@
-package com.siyehua.spiexample.channel.native2flutter;
+package com.siyehua.spiexample1.channel.native2flutter;
 
-import com.siyehua.spiexample.channel.ChannelManager;
-import com.siyehua.spiexample.channel.ChannelManager.Result;
-import com.siyehua.spiexample.channel.flutter2native.*;
+import com.siyehua.spiexample1.channel.ChannelManager;
+import com.siyehua.spiexample1.channel.ChannelManager.Result;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;

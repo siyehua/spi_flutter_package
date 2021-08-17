@@ -257,7 +257,6 @@ void _gentJavaImpl(
     String importStr =
         "import ${packageName.replaceAll(".native2flutter", "")}.ChannelManager;\n" +
             "import ${packageName.replaceAll(".native2flutter", "")}.ChannelManager.Result;\n" +
-            "import ${packageName.replaceAll(".native2flutter", "")}.flutter2native.*;\n" +
             "import java.util.List;\n"
                 "import java.util.ArrayList;\n"
                 "import java.util.HashMap;\n"

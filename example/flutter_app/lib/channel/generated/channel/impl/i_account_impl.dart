@@ -57,5 +57,5 @@ class IAccountImpl  implements IAccount, PackageTag{
 		return _b;
 	}
 	@override
-	String package = "com.siyehua.spiexample.channel.flutter2native";
+	String package = "com.siyehua.spiexample1.channel.flutter2native";
 }

@@ -130,3 +130,7 @@ Feat: option package name
 ## 0.7.5
 
 Fix: replace impl error
+
+## 0.7.6
+
+Fix: channelManager no create

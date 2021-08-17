@@ -256,7 +256,7 @@ public class ChannelManager {
 
     @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     private static Object customClassToString(Object data) {
-        if (data != null && data.getClass().getName().startsWith(channelName)) {
+        if (data != null && data.getClass().getName().startsWith(ChannelManager.class.getPackage().getName())) {
             String customInfo = data.getClass().getSimpleName() + "___custom___" + jsonParse.toJSONString(data);
             return customInfo;
         } else if (data instanceof ArrayList) {
@@ -282,7 +282,7 @@ public class ChannelManager {
         try {
             if (data instanceof String && ((String) data).contains("___custom___")) {
                 String[] customInfo = ((String) data).split("___custom___");
-                Class cls = Class.forName(channelName + pre + customInfo[0]);
+                Class cls = Class.forName(ChannelManager.class.getPackage().getName() + pre + customInfo[0]);
                 //noinspection unchecked
                 return jsonParse.parseObject(customInfo[1], cls);
             } else if (data instanceof ArrayList) {

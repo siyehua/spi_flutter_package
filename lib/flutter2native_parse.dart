@@ -85,6 +85,14 @@ Future<void> flutter2Native(
     ////////////////////////android//////////////////////////
     ////////////////////////android//////////////////////////
     if (androidConfig != null) {
+      var info = ManagerUtils.managerInfo[config.androidPlatformConfig!.savePath + config.androidPlatformConfig!.channelName];
+      if (info == null) {
+        info = ManagerInfo();
+        ManagerUtils.managerInfo[config.androidPlatformConfig!.savePath + config.androidPlatformConfig!.channelName] = info;
+      }
+      info.savePath = config.androidPlatformConfig!.savePath;
+      info.channelName =  config.androidPlatformConfig!.channelName;
+      info.packageName = packageName.replaceAll(".flutter2native", "");
       JavaFileUtils.genJavaCode(
           [list[index]],
           config.androidPlatformConfig!.packageName,

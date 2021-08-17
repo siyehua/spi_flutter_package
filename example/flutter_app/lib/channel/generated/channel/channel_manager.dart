@@ -52,6 +52,7 @@ class ChannelManager {
 
 		_packages.add('com.siyehua.example.otherChannelName');
 		_packages.add('com.siyehua.spiexample.channel');
+		_packages.add('com.siyehua.example23.otherChannelName');
 
 
     _packages.forEach((channelName) {
