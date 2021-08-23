@@ -135,5 +135,10 @@ Fix: replace impl error
 
 Fix: channelManager no create
 
-## 0.7.6
+## 0.7.7
+
 fix: custom class null, parse error
+
+## 0.7.8
+
+fix: custom class null, from json error

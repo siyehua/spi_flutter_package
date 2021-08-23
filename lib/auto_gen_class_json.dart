@@ -182,6 +182,8 @@ String getParseStr(Property property, {String propertyName = ""}) {
   } else if (TypeUtils.isBaseType(property) || isObject(property)) {
     return "${property.name} = json['${property.name}']";
   } else {
-    return "${property.name} = ${TypeUtils.getPropertyNameStr(property)}.fromJson(json['${property.name}'])";
+    return "if (json['${property.name}'] != null) {"
+        "${property.name} = ${TypeUtils.getPropertyNameStr(property)}.fromJson(json['${property.name}']);"
+        "}";
   }
 }
