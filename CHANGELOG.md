@@ -134,3 +134,6 @@ Fix: replace impl error
 ## 0.7.6
 
 Fix: channelManager no create
+
+## 0.7.6
+fix: custom class null, parse error
