@@ -45,7 +45,12 @@ class FlutterFileUtils {
       return " $first as ${TypeUtils.getPropertyNameStr(property)}$isEmpty ";
     } else {
       //custom class
-      return "${TypeUtils.getPropertyNameStr(property)}.fromJson(jsonDecode($first.split(\"___custom___\")[1]))";
+      if (property.canBeNull) {
+        return "$first != null ? ${TypeUtils.getPropertyNameStr(property)}.fromJson(jsonDecode($first.split(\"___custom___\")[1]))"
+            ": null";
+      } else {
+        return "${TypeUtils.getPropertyNameStr(property)}.fromJson(jsonDecode($first.split(\"___custom___\")[1]))";
+      }
     }
   }
 

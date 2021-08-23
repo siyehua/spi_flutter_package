@@ -9,11 +9,11 @@ abstract class IAccount {
 
   Future<int> getAge();
 
-  Future<InnerClass> getAge2();
+  Future<InnerClass?> getAge2();
 
   Future<List<String>?> getList(InnerClass? abc);
 
-  Future<Map<List<String>?, InnerClass>> getMap();
+  Future<Map<List<String>?, InnerClass?>> getMap();
 
   void setMap(Map<int, bool>? a);
 

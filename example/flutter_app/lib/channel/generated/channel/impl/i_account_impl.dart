@@ -24,10 +24,10 @@ class IAccountImpl  implements IAccount, PackageTag{
 		return await  ChannelManager.invoke('com.siyehua.spiexample.channel', package, _clsType.toString(), "getAge", "callback", );
 	}
 	@override
-	Future<InnerClass> getAge2() async{
+	Future<InnerClass?> getAge2() async{
 		Type _clsType = IAccount;
 		dynamic result = await  ChannelManager.invoke('com.siyehua.spiexample.channel', package, _clsType.toString(), "getAge2", "callback", );
-		InnerClass _b = InnerClass.fromJson(jsonDecode(result.split("___custom___")[1]));
+		InnerClass? _b = result != null ? InnerClass.fromJson(jsonDecode(result.split("___custom___")[1])): null;
 		return _b;
 	}
 	@override
@@ -38,10 +38,10 @@ class IAccountImpl  implements IAccount, PackageTag{
 		return _b;
 	}
 	@override
-	Future<Map<List<String>?, InnerClass>> getMap() async{
+	Future<Map<List<String>?, InnerClass?>> getMap() async{
 		Type _clsType = IAccount;
 		dynamic result = await  ChannelManager.invoke('com.siyehua.spiexample.channel', package, _clsType.toString(), "getMap", "callback", );
-		Map<List<String>?, InnerClass> _b =  (result as Map).map((key, value) =>  MapEntry((key as List?)?.map((result) =>  result as String ).toList(),InnerClass.fromJson(jsonDecode(value.split("___custom___")[1]))));
+		Map<List<String>?, InnerClass?> _b =  (result as Map).map((key, value) =>  MapEntry((key as List?)?.map((result) =>  result as String ).toList(),value != null ? InnerClass.fromJson(jsonDecode(value.split("___custom___")[1])): null));
 		return _b;
 	}
 	@override
