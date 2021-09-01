@@ -142,3 +142,7 @@ fix: custom class null, parse error
 ## 0.7.8
 
 fix: custom class null, from json error
+
+## 0.7.9
+
+update: platform_gen to 0.7.6
