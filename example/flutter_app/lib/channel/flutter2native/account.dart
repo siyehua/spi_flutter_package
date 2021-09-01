@@ -5,8 +5,7 @@ abstract class IAccount {
 
   Future<String?> getToken();
 
-  void logout(InnerClass abc, List<InnerClass> list,
-      List<List<Map<int, String>>> aaa);
+  void logout(InnerClass abc, List<InnerClass> list, List<List<Map<int, String>>> aaa);
 
   Future<int> getAge();
 
@@ -39,15 +38,7 @@ class MyClass {
     if (json['aaa'] != null) {
       aaa = [];
       json['aaa'].forEach((v) {
-        aaa!.add((v as Map).map((key, value) =>
-            MapEntry(
-                (key as Map).map((key, value) =>
-                    MapEntry(
-                        (key as List?)
-                            ?.map((result) => result as String?)
-                            .toList(),
-                        value as int)),
-                (value as List?)?.map((result) => result as int).toList())));
+        aaa!.add((v as Map).map((key, value) => MapEntry((key as Map).map((key, value) => MapEntry((key as List?)?.map((result) => result as String?).toList(), value as int)), (value as List?)?.map((result) => result as int).toList())));
       });
     }
     a = json['a'];
@@ -93,56 +84,37 @@ class MyClass {
     if (json['i'] != null) {
       i = {};
       json['i'].forEach((k, v) {
-        i!.update(k as String
-            , (value) => v as int
-            , ifAbsent: () => v as int);
+        i!.update(k as String, (value) => v as int, ifAbsent: () => v as int);
       });
     }
     if (json['i1'] != null) {
       i1 = {};
       json['i1'].forEach((k, v) {
-        i1.update(k as String
-            , (value) => v as int
-            , ifAbsent: () => v as int);
+        i1.update(k as String, (value) => v as int, ifAbsent: () => v as int);
       });
     }
     if (json['i2'] != null) {
       i2 = {};
       json['i2'].forEach((k, v) {
-        i2.update(k as String?
-            , (value) => v as int
-            , ifAbsent: () => v as int);
+        i2.update(k as String?, (value) => v as int, ifAbsent: () => v as int);
       });
     }
     if (json['i3'] != null) {
       i3 = {};
       json['i3'].forEach((k, v) {
-        i3!.update(InnerClass.fromJson(jsonDecode(k.split("___custom___")[1]))
-            , (value) => v as int
-            , ifAbsent: () => v as int);
+        i3!.update(InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])), (value) => v as int, ifAbsent: () => v as int);
       });
     }
     if (json['i4'] != null) {
       i4 = {};
       json['i4'].forEach((k, v) {
-        i4!.update(InnerClass.fromJson(jsonDecode(k.split("___custom___")[1]))
-            , (value) =>
-            v != null ? InnerClass.fromJson(
-                jsonDecode(v.split("___custom___")[1])) : null
-            , ifAbsent: () =>
-            v != null ? InnerClass.fromJson(
-                jsonDecode(v.split("___custom___")[1])) : null);
+        i4!.update(InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])), (value) => v != null ? InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])) : null, ifAbsent: () => v != null ? InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])) : null);
       });
     }
     if (json['i5'] != null) {
       i5 = {};
       json['i5'].forEach((k, v) {
-        i5!.update(k != null ? InnerClass.fromJson(
-            jsonDecode(k.split("___custom___")[1])) : null
-            , (value) =>
-                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1]))
-            , ifAbsent: () =>
-                InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
+        i5!.update(k != null ? InnerClass.fromJson(jsonDecode(k.split("___custom___")[1])) : null, (value) => InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])), ifAbsent: () => InnerClass.fromJson(jsonDecode(v.split("___custom___")[1])));
       });
     }
   }
@@ -152,11 +124,7 @@ class MyClass {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['abc'] = abc?.toJson();
-    data['aaa'] = this.aaa?.map((v) =>
-        v.map((k, v) =>
-            MapEntry(
-                k.map((k, v) => MapEntry(k?.map((v) => v).toList(), v)),
-                v?.map((v) => v).toList()))).toList();
+    data['aaa'] = this.aaa?.map((v) => v.map((k, v) => MapEntry(k.map((k, v) => MapEntry(k?.map((v) => v).toList(), v)), v?.map((v) => v).toList()))).toList();
     data['a'] = this.a;
     data['b'] = this.b;
     data['c'] = this.c;
@@ -175,7 +143,6 @@ class MyClass {
     data['i5'] = this.i5?.map((k, v) => MapEntry(k?.toJson(), v.toJson()));
     return data;
   }
-
 
   InnerClass? abc;
   List<Map<Map<List<String?>?, int>, List<int>?>>? aaa;

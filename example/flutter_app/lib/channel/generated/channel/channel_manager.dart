@@ -3,12 +3,6 @@ import 'dart:typed_data';
 import 'dart:collection';
 
 import 'package:flutter/services.dart';
-import '../../flutter2native/other_busniess.dart';
-import 'impl/i_photo_impl.dart';
-import '../../flutter2native/account.dart';
-import 'impl/i_account_impl.dart';
-import '../../flutter2native/account.dart';
-import 'impl/test_pre_class_name2_impl.dart';
 import 'parse/object_parse.dart';
 
 
@@ -45,14 +39,10 @@ class ChannelManager {
   }
 
   static void init() {
-		add(IPhoto, IPhotoImpl());
-		add(IAccount, IAccountImpl());
-		add(TestPreClassName2, TestPreClassName2Impl());
 
 
 		_packages.add('com.siyehua.example.otherChannelName');
 		_packages.add('com.siyehua.spiexample.channel');
-		_packages.add('com.siyehua.example23.otherChannelName');
 
 
     _packages.forEach((channelName) {
