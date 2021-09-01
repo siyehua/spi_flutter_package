@@ -4,7 +4,7 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
  import com.siyehua.spiexample1.channel.ChannelManager.Result;
-public interface Fps {
+public class Fps {
  	void getPageName( @NotNull Long a,  @NotNull Result<String> callback);
 	void getFps( @NotNull Result<Double> callback);
 	void add11( @NotNull Long b);
