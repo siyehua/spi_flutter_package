@@ -6,8 +6,8 @@ class IPhotoImpl  implements IPhoto, PackageTag{
 	@override
 	void aaa() async{
 		Type _clsType = IPhoto;
-		 ChannelManager.invoke(package, _clsType.toString(), "aaa", "", );
+		 ChannelManager.invoke('com.siyehua.example.otherChannelName', package, _clsType.toString(), "aaa", "", );
 	}
 	@override
-	String package = "com.siyehua.spiexample.channel.flutter2native";
+	String package = "com.siyehua.example.chanel2.flutter2native";
 }

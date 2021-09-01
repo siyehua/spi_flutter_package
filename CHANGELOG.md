@@ -122,3 +122,23 @@ Feat: support option android save
 ## 0.7.3
 
 Feat: add custom channel name
+
+## 0.7.4
+
+Feat: option package name
+
+## 0.7.5
+
+Fix: replace impl error
+
+## 0.7.6
+
+Fix: channelManager no create
+
+## 0.7.7
+
+fix: custom class null, parse error
+
+## 0.7.8
+
+fix: custom class null, from json error

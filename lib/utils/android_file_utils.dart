@@ -12,19 +12,7 @@ class JavaFileUtils {
     packageName += type;
     savePath += "/" + packageName.replaceAll(".", "/");
     list.forEach((classBean) {
-      var newImport = <String>[];
-      String reg = "";
-      if (type.contains("flutter2native")) {
-        reg = "native2flutter";
-      } else {
-        reg = "flutter2native";
-      }
-      if (classBean.imports.every((element) {
-        return element.contains(reg);
-      })) {
-        newImport.add("import  ${packageName.replaceAll(type, "")}.$reg.*;\n");
-      }
-      classBean.imports = newImport;
+      classBean.imports = <String>[];
       String tmpImport =
           "import ${packageName.replaceAll(type, "")}.ChannelManager.Result;\n";
       if (!classBean.imports.contains(tmpImport)) {

@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/channel/native2flutter/other_busniess.dart';
 
 import 'channel/flutter2native/account.dart';
+import 'channel/flutter2native/other_busniess.dart';
 import 'channel/generated/channel/channel_manager.dart';
 import 'channel/native2flutter/flutter_fps.dart';
 
@@ -39,7 +41,7 @@ class FpsImpl extends Fps {
   Future<PageInfo> getPage() {
     return Future.delayed(Duration(seconds: 3)).then((value) {
       PageInfo info = PageInfo();
-      info.name = "main page";
+      info.name = "getPage";
       info.id = "123";
       info.fps = 60;
       return info;
@@ -47,11 +49,11 @@ class FpsImpl extends Fps {
   }
 
   @override
-  Future<List<PageInfo>> getListCustom(List<InnerClass> a) {
+  Future<List<PageInfo>> getListCustom(List<int> a) {
     print("getListCustom: $a");
     return Future.delayed(Duration(seconds: 3)).then((value) {
       PageInfo info = PageInfo();
-      info.name = "main page";
+      info.name = "getListCustom";
       info.id = "123";
       info.fps = 60;
       return [info];
@@ -95,6 +97,13 @@ class FpsImpl2 extends Fps2 {
   }
 }
 
+class Photo2 extends IPhoto2{
+  @override
+  void aaa() {
+    print("aaa method invoke by native use other channel name");
+  }
+}
+
 void main() {
   runApp(MyApp());
   initFlutter();
@@ -104,6 +113,7 @@ void initFlutter() async {
   ChannelManager.init();
   ChannelManager.add(Fps, FpsImpl());
   ChannelManager.add(Fps2, FpsImpl2());
+  ChannelManager.add(IPhoto2, Photo2());
 
   IAccount account = ChannelManager.getChannel(IAccount);
   var result = await account.login(null, 2);

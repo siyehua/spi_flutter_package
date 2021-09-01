@@ -1,4 +1,4 @@
-package com.siyehua.spiexample.channel;
+package com.siyehua.example.chanel2;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -87,7 +87,7 @@ public class ChannelManager {
         public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz);
     }
 
-    private static final String channelName = "com.siyehua.example.chanel.name2";
+    private static final String channelName = "com.siyehua.example.otherChannelName";
     private static final Map<String, Object> channelImplMap = new ConcurrentHashMap<>();
     private static MethodChannel methodChannel;
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -253,7 +253,7 @@ public class ChannelManager {
 
     @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     private static Object customClassToString(Object data) {
-        if (data != null && data.getClass().getName().startsWith(channelName)) {
+        if (data != null && data.getClass().getName().startsWith(ChannelManager.class.getPackage().getName())) {
             String customInfo = data.getClass().getSimpleName() + "___custom___" + jsonParse.toJSONString(data);
             return customInfo;
         } else if (data instanceof ArrayList) {
@@ -279,7 +279,7 @@ public class ChannelManager {
         try {
             if (data instanceof String && ((String) data).contains("___custom___")) {
                 String[] customInfo = ((String) data).split("___custom___");
-                Class cls = Class.forName(channelName + pre + customInfo[0]);
+                Class cls = Class.forName(ChannelManager.class.getPackage().getName() + pre + customInfo[0]);
                 //noinspection unchecked
                 return jsonParse.parseObject(customInfo[1], cls);
             } else if (data instanceof ArrayList) {

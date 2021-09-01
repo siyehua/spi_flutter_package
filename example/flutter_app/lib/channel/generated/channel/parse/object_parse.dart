@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 import 'dart:convert';
-import '../../../flutter2native/account.dart';
 extension  IParse on Object{
 	dynamic parse(instance, String cls, String method, [dynamic args]) {
+		if("IPhoto2.aaa" == "$cls.$method") {
+			return instance.aaa();
+		}
 		if("Fps.getPageName" == "$cls.$method") {
 		args[0] =   args[0] as int ;
 			return instance.getPageName(args[0], ).then((value) => value);
@@ -18,7 +20,7 @@ extension  IParse on Object{
 			return instance.getPage().then((value) => "PageInfo___custom___" + jsonEncode(value.toJson()));
 		}
 		if("Fps.getListCustom" == "$cls.$method") {
-		args[0] =  (args[0] as List).map((result) => InnerClass.fromJson(jsonDecode(result.split("___custom___")[1]))).toList();
+		args[0] =  (args[0] as List).map((result) =>  result as int ).toList();
 			return instance.getListCustom(args[0], ).then((value) => value.map((e) => "PageInfo___custom___" + jsonEncode(e.toJson())).toList());
 		}
 		if("Fps.getMapCustom" == "$cls.$method") {

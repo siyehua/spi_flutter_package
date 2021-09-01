@@ -3,9 +3,9 @@ package com.siyehua.flutter_app;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.siyehua.spiexample.channel.ChannelManager;
-import com.siyehua.spiexample.channel.flutter2native.IAccount;
-import com.siyehua.spiexample.channel.flutter2native.InnerClass;
+import com.siyehua.spiexample1.channel.ChannelManager;
+import com.siyehua.spiexample1.channel.flutter2native.IAccount;
+import com.siyehua.spiexample1.channel.flutter2native.InnerClass;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

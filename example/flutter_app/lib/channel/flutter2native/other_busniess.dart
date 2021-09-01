@@ -1,6 +1,7 @@
 /// FileConfig
-/// androidSavePath = ./android/app/src/main/kotlin2
-/// channelName = com.siyehua.example.chanel.name2
+/// androidSavePath = ./android/app/src/main/kotlin
+/// channelName = com.siyehua.example.otherChannelName
+/// packageName = com.siyehua.example.chanel2
 
 abstract class IPhoto {
   void aaa();

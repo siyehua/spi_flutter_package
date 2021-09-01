@@ -3,30 +3,20 @@ package com.siyehua.flutter_app;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.os.Bundle;
 
-import com.siyehua.spiexample.channel.ChannelManager;
-import com.siyehua.spiexample.channel.flutter2native.IAccount;
-import com.siyehua.spiexample.channel.flutter2native.InnerClass;
-import com.siyehua.spiexample.channel.native2flutter.Fps;
-import com.siyehua.spiexample.channel.native2flutter.Fps2;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-
+import com.siyehua.example.chanel2.flutter2native.IPhoto;
+import com.siyehua.example.chanel3.native2flutter.IPhoto2;
+import com.siyehua.spiexample1.channel.ChannelManager;
+import com.siyehua.spiexample1.channel.flutter2native.IAccount;
+import com.siyehua.spiexample1.channel.flutter2native.InnerClass;
+import com.siyehua.spiexample1.channel.native2flutter.Fps;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2;
+import com.siyehua.spiexample1.channel.native2flutter.PageInfo;
 import com.alibaba.fastjson.JSON;
-import com.siyehua.spiexample.channel.ChannelManager;
-import com.siyehua.spiexample.channel.flutter2native.IAccount;
-import com.siyehua.spiexample.channel.flutter2native.InnerClass;
-import com.siyehua.spiexample.channel.native2flutter.Fps;
-import com.siyehua.spiexample.channel.native2flutter.Fps2;
-import com.siyehua.spiexample.channel.native2flutter.PageInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +29,33 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+        com.siyehua.example.chanel2.ChannelManager.init(flutterEngine.getDartExecutor(), new  com.siyehua.example.chanel2.ChannelManager.JsonParse() {
+            @Nullable
+            @Override
+            public String toJSONString(@Nullable Object object) {
+                return JSON.toJSONString(object);
+            }
+
+            @Nullable
+            @Override
+            public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+                return JSON.parseObject(text, clazz);
+            }
+        });
+        com.siyehua.example.chanel3.ChannelManager.init(flutterEngine.getDartExecutor(), new  com.siyehua.example.chanel3.ChannelManager.JsonParse() {
+            @Nullable
+            @Override
+            public String toJSONString(@Nullable Object object) {
+                return JSON.toJSONString(object);
+            }
+
+            @Nullable
+            @Override
+            public <T> T parseObject(@Nullable String text, @NonNull Class<T> clazz) {
+                return JSON.parseObject(text, clazz);
+            }
+        });
+        com.siyehua.example.chanel2.ChannelManager.addChannelImpl(IPhoto.class, new PhotoImpl());
         ChannelManager.init(flutterEngine.getDartExecutor(), new ChannelManager.JsonParse() {
             @Nullable
             @Override
@@ -78,6 +95,8 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void testMethod() {
+        com.siyehua.example.chanel3.ChannelManager.getChannel(IPhoto2.class).aaa();
+
         ChannelManager.getChannel(Fps2.class).getFps(" native fps str", 100L, new ChannelManager.Result<Double>() {
             @Override
             public void success(@Nullable Double result) {
@@ -130,12 +149,15 @@ public class MainActivity extends FlutterActivity {
 
             }
         });
-        ArrayList<InnerClass> a = new ArrayList<>();
-        InnerClass innerClass = new InnerClass();
-        innerClass.a = "str from native";
-        innerClass.b = 18L;
-        a.add(innerClass);
+        ArrayList<Long> a = new ArrayList<>();
+        a.add(18L);
+        a.add(19L);
+//        InnerClass innerClass = new InnerClass();
+//        innerClass.a = "str from native";
+//        innerClass.b = 18L;
+//        a.add(innerClass);
         ChannelManager.getChannel(Fps.class).getListCustom(a, new ChannelManager.Result<ArrayList<PageInfo>>() {
+
             @Override
             public void success(@Nullable ArrayList<PageInfo> result) {
                 Log.e("android", "getListCustom:" + JSON.toJSONString(result) + "");
@@ -153,5 +175,6 @@ public class MainActivity extends FlutterActivity {
 
             }
         });
+
     }
 }
