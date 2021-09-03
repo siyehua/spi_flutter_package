@@ -1,3 +1,4 @@
+import 'package:platforms_source_gen/bean/class_parse.dart';
 import 'package:platforms_source_gen/ios_gen.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 import 'dart:io';
@@ -21,7 +22,7 @@ class ObjcFileUtils {
     savePath += "/" + projectPrefix + "/native2flutter";
 
     list
-        .where((classBean) => classBean.classInfo.type == 1)
+        .where((classBean) => classBean.classInfo.type == ClassType.abstract)
         .forEach((classBean) {
       String interfaceString = "";
       String implementationString = "";

@@ -146,3 +146,7 @@ fix: custom class null, from json error
 ## 0.7.9
 
 update: platform_gen to 0.7.6
+
+## 0.8.0
+
+fix: classType is not right

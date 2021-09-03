@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:platforms_source_gen/android_gen.dart';
+import 'package:platforms_source_gen/bean/class_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 
@@ -121,7 +122,7 @@ void _genFlutterParse(
   String methodContent = "";
   list
       .where((classBean) =>
-          classBean.classInfo.type == 1 &&
+          classBean.classInfo.type == ClassType.abstract &&
           File(classBean.path).parent.path != flutterSavePath)
       .forEach((classBean) {
     classBean.imports.forEach((element) {
@@ -210,7 +211,9 @@ void _gentJavaImpl(
 
   packageName += ".native2flutter";
 
-  list.where((classBean) => classBean.classInfo.type == 1).forEach((classBean) {
+  list
+      .where((classBean) => classBean.classInfo.type == ClassType.abstract)
+      .forEach((classBean) {
     //impl interface
     String methodStr = "";
     classBean.methods.forEach((method) {

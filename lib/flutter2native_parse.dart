@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:platforms_source_gen/bean/class_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
 import 'package:platforms_source_gen/type_utils.dart';
@@ -125,7 +126,7 @@ void _genFlutterImpl(
 
   list
       .where((classBean) =>
-          classBean.classInfo.type == 1 &&
+          classBean.classInfo.type == ClassType.abstract &&
           File(classBean.path).parent.path != flutterSavePath)
       .forEach((classBean) {
     //impl interface

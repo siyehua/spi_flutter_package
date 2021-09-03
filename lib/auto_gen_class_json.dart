@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:platforms_source_gen/bean/class_parse.dart';
 import 'package:platforms_source_gen/bean/property_parse.dart';
 import 'package:platforms_source_gen/gen_file_edit.dart';
 import 'package:platforms_source_gen/platforms_source_gen.dart';
@@ -13,7 +14,7 @@ Future<void> autoCreateJsonParse(
     List<GenClassBean> genClasses, String sourcePath, bool nullSafe) async {
   var fileInsertCount = <String, int>{};
   genClasses
-      .where((value) => value.classInfo.type == 0)
+      .where((value) => value.classInfo.type == ClassType.normal)
       .where((element) =>
           element.properties.where((element) => !element.isStatic).isNotEmpty)
       .where((value) {

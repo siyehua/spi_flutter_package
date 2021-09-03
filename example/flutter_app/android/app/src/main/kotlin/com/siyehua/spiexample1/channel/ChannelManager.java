@@ -8,6 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 
+import com.siyehua.spiexample1.channel.native2flutter.Fps;
+import com.siyehua.spiexample1.channel.native2flutter.FpsImpl;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2;
+import com.siyehua.spiexample1.channel.native2flutter.Fps2Impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -305,6 +309,8 @@ public class ChannelManager {
 
 
     static {
+		addChannelImpl(Fps.class, new FpsImpl());
+		addChannelImpl(Fps2.class, new Fps2Impl());
 
     }
 

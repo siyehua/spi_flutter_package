@@ -4,7 +4,7 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
  import com.siyehua.example.chanel3.ChannelManager.Result;
-public class IPhoto2 {
+public interface IPhoto2 {
  	void aaa();
  
 }

@@ -94,7 +94,7 @@ packages:
       name: platforms_source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.6"
+    version: "0.7.7"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -113,7 +113,7 @@ packages:
       path: "../.."
       relative: true
     source: path
-    version: "0.7.8"
+    version: "0.7.9"
   stack_trace:
     dependency: transitive
     description:
