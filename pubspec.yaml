@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  platforms_source_gen: ^0.7.7
+  platforms_source_gen: ^0.7.8
 
 dev_dependencies:
 
