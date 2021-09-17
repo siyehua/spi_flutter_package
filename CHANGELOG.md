@@ -150,3 +150,7 @@ update: platform_gen to 0.7.6
 ## 0.8.0
 
 fix: classType is not right
+
+## 0.8.1
+
+Update: platform_gen to 0.7.9
