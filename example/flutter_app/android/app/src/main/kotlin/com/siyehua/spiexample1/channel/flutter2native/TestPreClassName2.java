@@ -4,7 +4,7 @@ import java.util.ArrayList;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
  import com.siyehua.spiexample1.channel.ChannelManager.Result;
-public interface TestPreClassName2 {
+public class TestPreClassName2 {
  	void aaa();
  
 }
