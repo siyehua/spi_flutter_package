@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_END
           String methodContent =
               "\tNSMutableArray *args = [NSMutableArray array];\n" +
                   argNames +
-                  "\t[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@\"${method.name}\" args:args completion:${hasCallback ? 'callback' : 'nil'}];\n";
+                  "\t[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@\"${method.name}\" args:args fromClass:self.class completion:${hasCallback ? 'callback' : 'nil'}];\n";
           implementationString +=
               "${ObjectiveCCreate.method([method]).replaceAll(";", "")} {\n" +
                   methodContent +
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_END
         String importStr =
             "#import \"$className.h\"\n#import \"${projectPrefix}ChannelManager.h\"\n";
         String allContent = importStr +
-            "NS_ASSUME_NONNULL_BEGIN\n\n@implementation ${className}\n" +
+            "NS_ASSUME_NONNULL_BEGIN\n\n@implementation $className\n" +
             implementationString +
             "@end\nNS_ASSUME_NONNULL_END\n";
         Directory dir = Directory(savePath);
