@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol MQQFlutterGen_Fps2 <NSObject>
-@optional
+@required
 
 
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param t Agument t, type: dart.core.String.
 /// @param a Agument a, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )getFps:(NSString *)t a:(int )a callback:(void(^)(NSNumber *))callback;
+- (void )getFps:(NSString *)t a:(long long )a callback:(void(^)(NSNumber *))callback;
 
 /// Dart method declaraction:   void add23();
 - (void )add23;

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dart method declaraction:   Future<String> getPageName(int a)
 /// @param a Agument a, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )getPageName:(int )a callback:(void(^)(NSString *))callback
+- (void )getPageName:(long long )a callback:(void(^)(NSString *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:@(a)];
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Dart method declaraction:   void add11(int b)
 /// @param b Agument b, type: dart.core.int.
-- (void )add11:(int )b
+- (void )add11:(long long )b
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:@(b)];

@@ -6,6 +6,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MQQFlutterGen_MyClass : NSObject <NSCopying>
 
 
+/// Note: this method create by SPI, if change Class property or method,
+/// please remove it. it will be created by SPI again.
+/// Note: this method create by SPI, if change Class property or method,
+/// please remove it. it will be created by SPI again.
+/// Note: this method create by SPI, if change Class property or method,
+/// please remove it. it will be created by SPI again.
 /// Dart property declaration: InnerClass? abc;.
 @property (nonatomic, strong, nullable) MQQFlutterGen_InnerClass *abc;
 
@@ -13,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSArray<NSDictionary<NSDictionary<NSArray<NSString *> *, NSNumber *> *, NSArray<NSNumber *> *> *> *aaa;
 
 /// Dart property declaration: int? a;.
-@property (nonatomic, assign) int a;
+@property (nonatomic, assign) long long a;
 
 /// Dart property declaration: int b = 0;.
-@property (nonatomic, assign) int b;
+@property (nonatomic, assign) long long b;
 
 /// Dart property declaration: double? c;.
 @property (nonatomic, assign) double c;
@@ -24,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dart property declaration: String? d = "default";.
 @property (nonatomic, strong, nullable) NSString *d;
 
+// Object h; //it's not support.
 /// Dart property declaration: List<int>? g;.
 @property (nonatomic, strong, nullable) NSArray<NSNumber *> *g;
 
@@ -42,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dart property declaration: List<InnerClass>? j2 = [InnerClass(), InnerClass()];.
 @property (nonatomic, strong, nullable) NSArray<MQQFlutterGen_InnerClass *> *j2;
 
+// List e = []; //don't do it, is the same List<dynamic>, it's not support
+// List<dynamic> f = []; ////don't do it, dynamic is not support
 /// Dart property declaration: Map<String, int>? i;.
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, NSNumber *> *i;
 
