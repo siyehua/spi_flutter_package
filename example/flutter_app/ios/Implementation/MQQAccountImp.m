@@ -6,6 +6,7 @@
 //
 
 #import "MQQAccountImp.h"
+#import "MQQFlutterGen_FpsImp.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -69,6 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSLog(@"call all, a: %@, b: %@, c: %lld", a, b, c);
     callback(@{@1: @YES});
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[MQQFlutterGen_FpsImp new] add11:11];
+    });
 }
 
 @end
