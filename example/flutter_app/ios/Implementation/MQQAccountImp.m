@@ -65,9 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSLog(@"call set map, %@", a);
 }
 
-- (void )all:(nullable NSArray<NSNumber *> *)a b:(NSDictionary<NSString *, NSNumber *> *)b c:(int )c callback:(void(^)(NSDictionary<NSNumber *, NSNumber *> *))callback
+- (void )all:(nullable NSArray<NSNumber *> *)a b:(NSDictionary<NSString *, NSNumber *> *)b c:(long long)c callback:(void(^)(NSDictionary<NSNumber *, NSNumber *> *))callback
 {
-    NSLog(@"call all, a: %@, b: %@, c: %d", a, b, c);
+    NSLog(@"call all, a: %@, b: %@, c: %lld", a, b, c);
     callback(@{@1: @YES});
 }
 
