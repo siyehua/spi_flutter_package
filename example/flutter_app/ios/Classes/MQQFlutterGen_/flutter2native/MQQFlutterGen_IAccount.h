@@ -5,7 +5,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol MQQFlutterGen_IAccount <NSObject>
-@optional
+@required
 
 
 
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param b Agument b, type: dart.core.Map.
 /// @param c Agument c, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )all:(nullable NSArray<NSNumber *> *)a b:(NSDictionary<NSString *, NSNumber *> *)b c:(int )c callback:(void(^)(NSDictionary<NSNumber *, NSNumber *> *))callback;
+- (void )all:(nullable NSArray<NSNumber *> *)a b:(NSDictionary<NSString *, NSNumber *> *)b c:(long long )c callback:(void(^)(NSDictionary<NSNumber *, NSNumber *> *))callback;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -3,7 +3,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol MQQFlutterGen_IPhoto2 <NSObject>
-@optional
+@required
 
 
 

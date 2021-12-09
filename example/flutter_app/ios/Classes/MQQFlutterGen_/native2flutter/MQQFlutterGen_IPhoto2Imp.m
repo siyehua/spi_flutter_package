@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void )aaa
  {
 	NSMutableArray *args = [NSMutableArray array];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"aaa" args:args completion:nil];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"aaa" args:args fromClass:self.class completion:nil];
 }
 
 @end

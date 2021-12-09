@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:t];
 	[args addObject:t2];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPageName" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPageName" args:args fromClass:self.class completion:callback];
 }
 
 
@@ -21,12 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param t Agument t, type: dart.core.String.
 /// @param a Agument a, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )getFps:(NSString *)t a:(int )a callback:(void(^)(NSNumber *))callback
+- (void )getFps:(NSString *)t a:(long long )a callback:(void(^)(NSNumber *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:t];
 	[args addObject:@(a)];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getFps" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getFps" args:args fromClass:self.class completion:callback];
 }
 
 
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void )add23
  {
 	NSMutableArray *args = [NSMutableArray array];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"add23" args:args completion:nil];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"add23" args:args fromClass:self.class completion:nil];
 }
 
 @end

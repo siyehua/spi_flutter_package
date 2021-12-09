@@ -5,14 +5,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol MQQFlutterGen_Fps <NSObject>
-@optional
+@required
 
 
 
 /// Dart method declaraction:   Future<String> getPageName(int a);
 /// @param a Agument a, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )getPageName:(int )a callback:(void(^)(NSString *))callback;
+- (void )getPageName:(long long )a callback:(void(^)(NSString *))callback;
 
 /// Dart method declaraction:   Future<double> getFps();
 /// @param callback Agument callback, type: ChannelManager.Result.
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Dart method declaraction:   void add11(int b);
 /// @param b Agument b, type: dart.core.int.
-- (void )add11:(int )b;
+- (void )add11:(long long )b;
 
 /// Dart method declaraction:   Future<PageInfo> getPage();
 /// @param callback Agument callback, type: ChannelManager.Result.

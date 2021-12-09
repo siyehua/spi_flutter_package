@@ -4,11 +4,23 @@ String objcChannelInterfaceString = '''
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class #{projectPrefix}ChannelManager;
+
+/// Protocol for channel manager method call
+@protocol #{projectPrefix}ChannelManagerDelegate <NSObject>
+
+- (void)manager:(#{projectPrefix}ChannelManager *)manager didReceviceMethodCall:(FlutterMethodCall *)methodCall;
+- (void)manager:(#{projectPrefix}ChannelManager *)manager didHandleMethodCall:(FlutterMethodCall *)methodCall success:(BOOL)success;
+
+@end
+
 @interface #{projectPrefix}ChannelManager : NSObject
 
 + (instancetype)sharedManager;
 
 @property (nonatomic, strong, readonly) FlutterMethodChannel *methodChannel;
+
+@property (nonatomic, weak, nullable) id<#{projectPrefix}ChannelManagerDelegate> delegate;
 
 /// initialize channel manager
 /// @param messenger The binary messenger.
@@ -25,8 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Invoke a dart method
 /// @param method the method's name
 /// @param args the method's arguments
+/// @param class caller's classType
 /// @param completion the method's completion result
-- (void)invokeMethod:(NSString *)method args:(nullable NSArray *)args completion:(nullable void(^)(__nullable id result))completion;
+- (void)invokeMethod:(NSString *)method args:(nullable NSArray *)args fromClass:(Class)classType completion:(nullable void(^)(__nullable id result))completion;
 
 @end
 
@@ -82,9 +95,13 @@ NS_ASSUME_NONNULL_BEGIN
     __weak typeof(self) weakSelf = self;
     self.methodChannel = [FlutterMethodChannel methodChannelWithName:self.channelName binaryMessenger:messenger];
     [self.methodChannel setMethodCallHandler:^(FlutterMethodCall * _Nonnull call, FlutterResult  _Nonnull result) {
+        if ([weakSelf.delegate respondsToSelector:@selector(manager:didReceviceMethodCall:)]) {
+            [weakSelf.delegate manager:weakSelf didReceviceMethodCall:call];
+        }
         NSArray *methodSubstring = [call.method componentsSeparatedByString:@"#"];
         if (methodSubstring.count < 3) {
             result(FlutterMethodNotImplemented);
+            [weakSelf _handleMethodCall:call success:NO];
             return;
         }
         NSString *callClassString = methodSubstring[0];
@@ -129,9 +146,11 @@ NS_ASSUME_NONNULL_BEGIN
                 [invocation invoke];
                 if (!hasCallback) {
                     result(@YES);
+                    [weakSelf _handleMethodCall:call success:YES];
                 }
             } else {
                 result(FlutterMethodNotImplemented);
+                [weakSelf _handleMethodCall:call success:NO];
             }
         }
 
@@ -143,14 +162,20 @@ NS_ASSUME_NONNULL_BEGIN
     self.methodImplementations[name] = implementation;
 }
 
-- (void)invokeMethod:(NSString *)method args:(nullable NSArray *)args completion:(nullable void(^)(__nullable id result))completion
+- (void)invokeMethod:(NSString *)method args:(nullable NSArray *)args fromClass:(Class)classType completion:(nullable void(^)(__nullable id result))completion
 {
-    [self.methodChannel invokeMethod:method arguments:args result:^(id  _Nullable result) {
+    NSString *methodString = self.channelName;
+    NSString *protocolName = [NSStringFromClass(classType) stringByReplacingOccurrencesOfString:@"Imp" withString:@""];
+    protocolName = [protocolName stringByReplacingOccurrencesOfString:@"#{projectPrefix}" withString:@""];
+    methodString = [methodString stringByAppendingFormat:@".%@", protocolName];
+    methodString = [methodString stringByAppendingFormat:@"#%@", method];
+    [self.methodChannel invokeMethod:methodString arguments:args result:^(id  _Nullable result) {
         if (completion) {
             completion(result);
         }
     }];
 }
+
 
 #pragma mark - Private Methods
 
@@ -233,6 +258,12 @@ NS_ASSUME_NONNULL_BEGIN
     return arg;
 }
 
+- (void)_handleMethodCall:(FlutterMethodCall *)methodCall success:(BOOL)success
+{
+    if ([self.delegate respondsToSelector:@selector(manager:didHandleMethodCall:success:)]) {
+        [self.delegate manager:self didHandleMethodCall:methodCall success:success];
+    }
+}
 
 @end
 

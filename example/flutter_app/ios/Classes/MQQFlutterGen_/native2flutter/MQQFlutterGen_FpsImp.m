@@ -7,11 +7,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dart method declaraction:   Future<String> getPageName(int a)
 /// @param a Agument a, type: dart.core.int.
 /// @param callback Agument callback, type: ChannelManager.Result.
-- (void )getPageName:(int )a callback:(void(^)(NSString *))callback
+- (void )getPageName:(long long )a callback:(void(^)(NSString *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:@(a)];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPageName" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPageName" args:args fromClass:self.class completion:callback];
 }
 
 
@@ -20,17 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void )getFps:(void(^)(NSNumber *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getFps" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getFps" args:args fromClass:self.class completion:callback];
 }
 
 
 /// Dart method declaraction:   void add11(int b)
 /// @param b Agument b, type: dart.core.int.
-- (void )add11:(int )b
+- (void )add11:(long long )b
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:@(b)];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"add11" args:args completion:nil];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"add11" args:args fromClass:self.class completion:nil];
 }
 
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void )getPage:(void(^)(MQQFlutterGen_PageInfo *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPage" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getPage" args:args fromClass:self.class completion:callback];
 }
 
 
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  {
 	NSMutableArray *args = [NSMutableArray array];
 	[args addObject:a];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getListCustom" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getListCustom" args:args fromClass:self.class completion:callback];
 }
 
 
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void )getMapCustom:(void(^)(NSDictionary<MQQFlutterGen_PageInfo *, NSNumber *> *))callback
  {
 	NSMutableArray *args = [NSMutableArray array];
-	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getMapCustom" args:args completion:callback];
+	[[MQQFlutterGen_ChannelManager sharedManager] invokeMethod:@"getMapCustom" args:args fromClass:self.class completion:callback];
 }
 
 @end

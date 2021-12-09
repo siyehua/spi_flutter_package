@@ -97,7 +97,7 @@ class FpsImpl2 extends Fps2 {
   }
 }
 
-class Photo2 extends IPhoto2{
+class Photo2 extends IPhoto2 {
   @override
   void aaa() {
     print("aaa method invoke by native use other channel name");
@@ -116,7 +116,7 @@ void initFlutter() async {
   ChannelManager.add(IPhoto2, Photo2());
 
   IAccount account = ChannelManager.getChannel(IAccount);
-  var result = await account.login(null, 2);
+  var result = await account.login(null, "2");
   print(result);
   var a = InnerClass();
   a.a = "1334";
