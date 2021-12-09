@@ -154,3 +154,7 @@ fix: classType is not right
 ## 0.8.1
 
 Update: platform_gen to 0.7.9
+
+## 0.8.2
+
+Update: Complete iOS native2flutter method call
